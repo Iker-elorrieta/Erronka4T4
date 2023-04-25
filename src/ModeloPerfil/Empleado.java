@@ -1,22 +1,32 @@
 package ModeloPerfil;
 
+import java.util.Arrays;
 import java.util.Objects;
+
+import Modelo.Consulta;
+import Modelo.Gestion;
 
 public class Empleado extends Perfil implements Especializacion {
 
 
 	private int antiguedad;
 	private float salario;
+	private Consulta[] consultas;
+	private Gestion[] gestiones; 
 	private Especialidad especializacion;
 
-	public Empleado(String nombre, String apellido, String dni, String direccion, String contrasenya, int antiguedad, float salario, Especialidad especializacion) {
+
+
+	public Empleado(String nombre, String apellido, String dni, String direccion, String contrasenya, int antiguedad,
+			float salario, Consulta[] consultas, Gestion[] gestiones, Especialidad especializacion) {
 		super(nombre, apellido, dni, direccion, contrasenya);
-		// TODO Auto-generated constructor stub
 		this.antiguedad = antiguedad;
 		this.salario = salario;
+		this.consultas = consultas;
+		this.gestiones = gestiones;
 		this.especializacion = especializacion;
 	}
-	
+
 	public int getAntiguedad() {
 		return antiguedad;
 	}
@@ -67,11 +77,30 @@ public class Empleado extends Perfil implements Especializacion {
 		this.especializacion = especializacion;
 	}
 
+
+
 	@Override
 	public String toString() {
-		return "Empleado [antiguedad=" + antiguedad + ", salario=" + salario + ", especializacion=" + especializacion
-				+ ", nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni + ", direccion=" + direccion
-				+ ", contrasenya=" + contrasenya + "]";
+		return "Empleado [antiguedad=" + antiguedad + ", salario=" + salario + ", consultas="
+				+ Arrays.toString(consultas) + ", gestiones=" + Arrays.toString(gestiones) + ", especializacion="
+				+ especializacion + ", nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni + ", direccion="
+				+ direccion + ", contrasenya=" + contrasenya + "]";
+	}
+
+	public Consulta[] getConsultas() {
+		return consultas;
+	}
+
+	public void setConsultas(Consulta[] consultas) {
+		this.consultas = consultas;
+	}
+
+	public Gestion[] getGestiones() {
+		return gestiones;
+	}
+
+	public void setGestiones(Gestion[] gestiones) {
+		this.gestiones = gestiones;
 	}
 
 

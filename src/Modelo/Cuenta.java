@@ -7,8 +7,6 @@ import ModeloPerfil.Cliente;
 public class Cuenta {
 	private int numeroTarjeta;
 	private Cliente cliente;
-	
-
 
 	@Override
 	public boolean equals(Object obj) {
