@@ -2,11 +2,35 @@ package Modelo;
 
 import java.util.Objects;
 
-import ModeloPerfil.Cliente;
-
 public class Cuenta {
-	private int numeroTarjeta;
-	private Cliente cliente;
+	private String numeroCuenta;
+	private String contrasenya;
+
+	public String getContrasenya() {
+		return contrasenya;
+	}
+
+	public void setContrasenya(String contrasenya) {
+		this.contrasenya = contrasenya;
+	}
+	@Override
+	public String toString() {
+		return "Cuenta [numeroCuenta=" + numeroCuenta + ", contrasenya=" + contrasenya + "]";
+	}
+
+	public Cuenta(String numeroCuenta, String contrasenya) {
+		super();
+		this.numeroCuenta = numeroCuenta;
+		this.contrasenya = contrasenya;
+	}
+
+	public String getNumeroCuenta() {
+		return numeroCuenta;
+	}
+
+	public void setNumeroCuenta(String numeroCuenta) {
+		this.numeroCuenta = numeroCuenta;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -17,27 +41,9 @@ public class Cuenta {
 		if (getClass() != obj.getClass())
 			return false;
 		Cuenta other = (Cuenta) obj;
-		return Objects.equals(cliente, other.cliente);
+		return Objects.equals(numeroCuenta, other.numeroCuenta);
 	}
-	public int getNumeroTarjeta() {
-		return numeroTarjeta;
-	}
-	public void setNumeroTarjeta(int numeroTarjeta) {
-		this.numeroTarjeta = numeroTarjeta;
-	}
-	public Cliente getCliente() {
-		return cliente;
-	}
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-	public Cuenta(int numeroTarjeta, Cliente cliente) {
-		super();
-		this.numeroTarjeta = numeroTarjeta;
-		this.cliente = cliente;
-	}
-	@Override
-	public String toString() {
-		return "Cuenta [numeroTarjeta=" + numeroTarjeta + ", cliente=" + cliente + "]";
-	}
+
+
+	
 }

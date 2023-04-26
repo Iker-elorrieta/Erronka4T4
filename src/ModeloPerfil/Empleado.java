@@ -15,8 +15,36 @@ public class Empleado extends Perfil implements Especializacion {
 	private Gestion[] gestiones; 
 	private Especialidad especializacion;
 
-
-
+	public int getAntiguedad() {
+		return antiguedad;
+	}
+	public void setAntiguedad(int antiguedad) {
+		this.antiguedad = antiguedad;
+	}
+	public float getSalario() {
+		return salario;
+	}
+	public void setSalario(float salario) {
+		this.salario = salario;
+	}
+	public Consulta[] getConsultas() {
+		return consultas;
+	}
+	public void setConsultas(Consulta[] consultas) {
+		this.consultas = consultas;
+	}
+	public Gestion[] getGestiones() {
+		return gestiones;
+	}
+	public void setGestiones(Gestion[] gestiones) {
+		this.gestiones = gestiones;
+	}
+	public Especialidad getEspecializacion() {
+		return especializacion;
+	}
+	public void setEspecializacion(Especialidad especializacion) {
+		this.especializacion = especializacion;
+	}
 	public Empleado(String nombre, String apellido, String dni, String direccion, String contrasenya, int antiguedad,
 			float salario, Consulta[] consultas, Gestion[] gestiones, Especialidad especializacion) {
 		super(nombre, apellido, dni, direccion, contrasenya);
@@ -26,16 +54,6 @@ public class Empleado extends Perfil implements Especializacion {
 		this.gestiones = gestiones;
 		this.especializacion = especializacion;
 	}
-
-	public int getAntiguedad() {
-		return antiguedad;
-	}
-
-	public void setAntiguedad(int antiguedad) {
-		this.antiguedad = antiguedad;
-	}
-
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -48,37 +66,7 @@ public class Empleado extends Perfil implements Especializacion {
 		Perfil other = (Perfil) obj;
 		return Objects.equals(dni, other.dni);
 	}
-
-	@Override
-	public float calcularSalario(Especialidad especialidad) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public float bonoAntiguedad(int anyos, Especialidad especialidad) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public float getSalario() {
-		return salario;
-	}
-
-	public void setSalario(float salario) {
-		this.salario = salario;
-	}
-
-	public Especialidad getEspecializacion() {
-		return especializacion;
-	}
-
-	public void setEspecializacion(Especialidad especializacion) {
-		this.especializacion = especializacion;
-	}
-
-
-
+	
 	@Override
 	public String toString() {
 		return "Empleado [antiguedad=" + antiguedad + ", salario=" + salario + ", consultas="
@@ -86,25 +74,16 @@ public class Empleado extends Perfil implements Especializacion {
 				+ especializacion + ", nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni + ", direccion="
 				+ direccion + ", contrasenya=" + contrasenya + "]";
 	}
-
-	public Consulta[] getConsultas() {
-		return consultas;
+	@Override
+	public float calcularSalario(Especialidad especialidad) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
-
-	public void setConsultas(Consulta[] consultas) {
-		this.consultas = consultas;
+	@Override
+	public float bonoAntiguedad(int anyos, Especialidad especialidad) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
-
-	public Gestion[] getGestiones() {
-		return gestiones;
-	}
-
-	public void setGestiones(Gestion[] gestiones) {
-		this.gestiones = gestiones;
-	}
-
-
-
 
 
 }

@@ -52,4 +52,11 @@ class PerroTest {
 		assertFalse(perroTest.equals(perroTest3));
 		assertFalse(perroTest.equals(perroTest.getClass()));
 	}
+	@Test
+	void testCalcularVacuna() {
+
+		float coste = perroTest.costeVacuna(perroTest);
+		assertEquals(coste, 0);
+
+	}
 }

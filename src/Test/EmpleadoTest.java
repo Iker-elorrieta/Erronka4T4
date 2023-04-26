@@ -1,10 +1,10 @@
 package Test;
 
 import static org.junit.Assert.assertFalse;
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 
@@ -60,12 +60,9 @@ class EmpleadoTest {
 		assertEquals(empleadoTest.getEspecializacion(), Especialidad.Loros);
 
 		assertEquals(empleadoTest.toString(),
-				"Empleado [antiguedad=" + antiguedad + ", salario=" + salario + ", consultas="
-						+ Arrays.toString(consultas) + ", gestiones=" + Arrays.toString(gestiones)
-						+ ", especializacion=" + especializacion + ", nombre=" + nombre + ", apellido=" + apellido
-						+ ", dni=" + dni + ", direccion=" + direccion + ", contrasenya=" + contrasenya + "]");
+				"Empleado [antiguedad=2, salario=1200.3, consultas=[null], gestiones=[null], especializacion=Loros, nombre=Raul, apellido=Monterel, dni=3687951L, direccion=Calle Ave del Paraiso 8, contrasenya=dashdasijd55]");
 	}
-
+	
 	@Test
 	public void testEquals() {
 		assertTrue(empleadoTest.equals(empleadoTest1));

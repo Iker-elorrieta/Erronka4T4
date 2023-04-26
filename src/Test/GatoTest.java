@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import ModeloAnimal.Gato;
 import ModeloPerfil.Cliente;
-
 class GatoTest {
 
 	String nombreAnimal = "Casper";
@@ -51,6 +50,14 @@ class GatoTest {
 		assertTrue(gatoTest.equals(gatoTest));
 		assertFalse(gatoTest.equals(gatoTest3));
 		assertFalse(gatoTest.equals(gatoTest.getClass()));
+	}
+	
+	@Test
+	void testCalcularVacuna() {
+
+		float coste = gatoTest.costeVacuna(gatoTest);
+		assertEquals(coste, 0);
+
 	}
 
 }

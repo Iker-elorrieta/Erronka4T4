@@ -4,8 +4,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Test;
 
+import Modelo.Cuenta;
 import ModeloAnimal.Animales;
 import ModeloPerfil.Cliente;
 
@@ -17,18 +20,20 @@ class ClienteTest {
 	String apellido = "Monterel";
 	String contrasenya = "dashdasijd55";
 	String direccion = "Calle Ave del Paraiso 8";
+	Cuenta cuenta;
 
 	
 	// ---------------------------------------------------//
 	Animales[] animales;
 
-	Cliente clienteTest = new Cliente(dni, nombre, apellido, direccion, contrasenya, animales);
-	Cliente clienteTest1 = new Cliente(dni, nombre, apellido, direccion, contrasenya, animales);
+	Cliente clienteTest = new Cliente(dni, nombre, apellido, direccion, contrasenya, animales,cuenta);
+	Cliente clienteTest1 = new Cliente(dni, nombre, apellido, direccion, contrasenya, animales,cuenta);
 	Cliente clienteTest2 = null;
-	Cliente clienteTest3 = new Cliente(dni0, nombre, apellido, direccion, contrasenya, animales);
+	Cliente clienteTest3 = new Cliente(dni0, nombre, apellido, direccion, contrasenya, animales,cuenta);
 
 	@Test
 	void test() {
+		clienteTest.setCuenta(cuenta);
 		clienteTest.setDni(dni);
 		clienteTest.setNombre(nombre);
 		clienteTest.setApellido(apellido);
@@ -37,6 +42,7 @@ class ClienteTest {
 		clienteTest.setAnimales(animales);
 
 		assertEquals(clienteTest.getDni(), dni);
+		assertEquals(clienteTest.getCuenta(), cuenta);
 		assertEquals(clienteTest.getNombre(), nombre);
 		assertEquals(clienteTest.getApellido(), apellido);
 		assertEquals(clienteTest.getDireccion(), direccion);
@@ -44,7 +50,9 @@ class ClienteTest {
 		assertEquals(clienteTest.getAnimales(), animales);
 
 		assertEquals(clienteTest.toString(),
-				"Cliente [animales=null, nombre=Raul, apellido=Monterel, dni=3687951L, direccion=Calle Ave del Paraiso 8, contrasenya=dashdasijd55]");
+				"Cliente [animales=" + Arrays.toString(animales) + ", cuenta=" + cuenta + ", nombre=" + nombre
+				+ ", apellido=" + apellido + ", dni=" + dni + ", direccion=" + direccion + ", contrasenya="
+				+ contrasenya + "]");
 	}
 
 	@Test
