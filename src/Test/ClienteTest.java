@@ -4,12 +4,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
-import Modelo.Cuenta;
-import ModeloAnimal.Animales;
+import ModeloAnimal.Animal;
 import ModeloPerfil.Cliente;
 
 class ClienteTest {
@@ -20,39 +19,42 @@ class ClienteTest {
 	String apellido = "Monterel";
 	String contrasenya = "dashdasijd55";
 	String direccion = "Calle Ave del Paraiso 8";
-	Cuenta cuenta;
-
-	
 	// ---------------------------------------------------//
-	Animales[] animales;
+	ArrayList<Animal> animal;
 
-	Cliente clienteTest = new Cliente(dni, nombre, apellido, direccion, contrasenya, animales,cuenta);
-	Cliente clienteTest1 = new Cliente(dni, nombre, apellido, direccion, contrasenya, animales,cuenta);
+	Cliente clienteTest = new Cliente(dni, nombre, apellido, direccion, contrasenya, animal);
+	Cliente clienteTest1 = new Cliente(dni, nombre, apellido, direccion, contrasenya, animal);
 	Cliente clienteTest2 = null;
-	Cliente clienteTest3 = new Cliente(dni0, nombre, apellido, direccion, contrasenya, animales,cuenta);
+	Cliente clienteTest3 = new Cliente(dni0, nombre, apellido, direccion, contrasenya, animal);
 
 	@Test
 	void test() {
-		clienteTest.setCuenta(cuenta);
+		
+		Cliente clienteTestVacio = new Cliente();
+		
+		clienteTestVacio.setDni(dni);
+		clienteTestVacio.setNombre(nombre);
+		clienteTestVacio.setApellido(apellido);
+		clienteTestVacio.setDireccion(direccion);
+		clienteTestVacio.setContrasenya(contrasenya);
+		clienteTestVacio.setAnimal(animal);
+		
 		clienteTest.setDni(dni);
 		clienteTest.setNombre(nombre);
 		clienteTest.setApellido(apellido);
 		clienteTest.setDireccion(direccion);
 		clienteTest.setContrasenya(contrasenya);
-		clienteTest.setAnimales(animales);
+		clienteTest.setAnimal(animal);
 
 		assertEquals(clienteTest.getDni(), dni);
-		assertEquals(clienteTest.getCuenta(), cuenta);
 		assertEquals(clienteTest.getNombre(), nombre);
 		assertEquals(clienteTest.getApellido(), apellido);
 		assertEquals(clienteTest.getDireccion(), direccion);
 		assertEquals(clienteTest.getContrasenya(), contrasenya);
-		assertEquals(clienteTest.getAnimales(), animales);
+		assertEquals(clienteTest.getAnimal(), animal);
 
 		assertEquals(clienteTest.toString(),
-				"Cliente [animales=" + Arrays.toString(animales) + ", cuenta=" + cuenta + ", nombre=" + nombre
-				+ ", apellido=" + apellido + ", dni=" + dni + ", direccion=" + direccion + ", contrasenya="
-				+ contrasenya + "]");
+				"Cliente [animal=null, nombre=Raul, apellido=Monterel, dni=3687951L, direccion=Calle Ave del Paraiso 8, contrasenya=dashdasijd55]");
 	}
 
 	@Test

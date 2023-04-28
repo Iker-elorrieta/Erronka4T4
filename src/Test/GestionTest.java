@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.junit.jupiter.api.Test;
@@ -15,29 +16,39 @@ import ModeloPerfil.Empleado;
 
 class GestionTest {
 
-	int idGestion = 351561;
-	int idGestion0 = 0;
+	int codGestion = 351561;
+	int codGestion0 = 0;
 	int cantidad = 20;
 	Date fecha;
 	Time hora;
 	Empleado empleado;
-	Producto[] productos;
+	ArrayList<Producto> productos;
 
-	Gestion gestionTest = new Gestion(idGestion, cantidad, fecha, hora, empleado, productos);
-	Gestion gestionTest1 = new Gestion(idGestion, cantidad, fecha, hora, empleado, productos);
+	Gestion gestionTest = new Gestion(codGestion, cantidad, fecha, hora, empleado, productos);
+	Gestion gestionTest1 = new Gestion(codGestion, cantidad, fecha, hora, empleado, productos);
 	Gestion gestionTest2 = null;
-	Gestion gestionTest3 = new Gestion(idGestion0, cantidad, fecha, hora, empleado, productos);
+	Gestion gestionTest3 = new Gestion(codGestion0, cantidad, fecha, hora, empleado, productos);
 
 	@Test
 	void test() {
-		gestionTest.setIdGestion(idGestion);
+		
+		Gestion gestionTestVacio = new Gestion();;
+		
+		gestionTestVacio.setCodGestion(codGestion);
+		gestionTestVacio.setCantidad(cantidad);
+		gestionTestVacio.setFecha(fecha);
+		gestionTestVacio.setHora(hora);
+		gestionTestVacio.setEmpleado(empleado);
+		gestionTestVacio.setProductos(productos);
+		
+		gestionTest.setCodGestion(codGestion);
 		gestionTest.setCantidad(cantidad);
 		gestionTest.setFecha(fecha);
 		gestionTest.setHora(hora);
 		gestionTest.setEmpleado(empleado);
 		gestionTest.setProductos(productos);
 
-		assertEquals(gestionTest.getIdGestion(), idGestion);
+		assertEquals(gestionTest.getCodGestion(), codGestion);
 		assertEquals(gestionTest.getCantidad(), cantidad);
 		assertEquals(gestionTest.getFecha(), fecha);
 		assertEquals(gestionTest.getHora(), hora);

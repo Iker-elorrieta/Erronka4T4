@@ -5,12 +5,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
 import Modelo.ClinicaVeterinaria;
-import Modelo.Producto;
 import ModeloPerfil.Empleado;
 
 class ClinicaVeterinariaTest {
@@ -18,29 +17,32 @@ class ClinicaVeterinariaTest {
 	String ubicacion = "Bilbao";
 	int codVeterinaria = 3126354;
 	int codVeterinaria0 = 0;
-	Empleado[] empleados = new Empleado[1];
-	Producto[] productos = new Producto[1];
+	ArrayList<Empleado> empleados = new ArrayList<Empleado>();
 	
-	ClinicaVeterinaria clinicaVeterinariaTest = new ClinicaVeterinaria(ubicacion, codVeterinaria,empleados,productos);
-	ClinicaVeterinaria clinicaVeterinariaTest1 = new ClinicaVeterinaria(ubicacion, codVeterinaria,empleados,productos);
+	ClinicaVeterinaria clinicaVeterinariaTest = new ClinicaVeterinaria(ubicacion, codVeterinaria, empleados);
+	ClinicaVeterinaria clinicaVeterinariaTest1 = new ClinicaVeterinaria(ubicacion, codVeterinaria, empleados);
 	ClinicaVeterinaria clinicaVeterinariaTest2 = null;
-	ClinicaVeterinaria clinicaVeterinariaTest3 = new ClinicaVeterinaria(ubicacion, codVeterinaria0,empleados,productos);
+	ClinicaVeterinaria clinicaVeterinariaTest3 = new ClinicaVeterinaria(ubicacion, codVeterinaria0, empleados);
 	
 	@Test
 	void test() {
+		
+		ClinicaVeterinaria clinicaVeterinariaTestVacio = new ClinicaVeterinaria();
+		
+		clinicaVeterinariaTestVacio.setEmpleados(empleados);
+		clinicaVeterinariaTestVacio.setUbicacion(ubicacion);
+		clinicaVeterinariaTestVacio.setCodVeterinaria(codVeterinaria);
+		
 		clinicaVeterinariaTest.setEmpleados(empleados);
 		clinicaVeterinariaTest.setUbicacion(ubicacion);
 		clinicaVeterinariaTest.setCodVeterinaria(codVeterinaria);
-		clinicaVeterinariaTest.setProductos(productos);
 
 		assertEquals(clinicaVeterinariaTest.getUbicacion(), ubicacion);
-		assertEquals(clinicaVeterinariaTest.getProductos(), productos);
 		assertEquals(clinicaVeterinariaTest.getCodVeterinaria(), codVeterinaria);
 		assertEquals(clinicaVeterinariaTest.getEmpleados(), empleados);
 
-		assertEquals(clinicaVeterinariaTest.toString(),"ClinicaVeterinaria [ubicacion=" + ubicacion + ", codVeterinaria=" + codVeterinaria + ", empleados="
-				+ Arrays.toString(empleados) + ", productos=" + Arrays.toString(productos) + "]"
-			);
+		assertEquals(clinicaVeterinariaTest.toString(),
+				"ClinicaVeterinaria [ubicacion=Bilbao, codVeterinaria=3126354, empleados=[]]");
 	}
 
 	@Test

@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,7 @@ import ModeloPerfil.Cliente;
 
 class PedidoTest {
 
-	Producto[] productos;
+	ArrayList<Producto> productos;
 	Date fecha;
 	Time hora;
 	int cantidadProducto = 25;
@@ -31,6 +32,16 @@ class PedidoTest {
 
 	@Test
 	void test() {
+		
+		Pedido pedidoTestVacio = new Pedido();
+		
+		pedidoTestVacio.setProductos(productos);
+		pedidoTestVacio.setFecha(fecha);
+		pedidoTestVacio.setHora(hora);
+		pedidoTestVacio.setCantidadProducto(cantidadProducto);
+		pedidoTestVacio.setCodPedido(codPedido);
+		pedidoTestVacio.setCliente(cliente);
+		pedidoTestVacio.setPreciototal(preciototal);
 
 		pedidoTest.setProductos(productos);
 		pedidoTest.setFecha(fecha);

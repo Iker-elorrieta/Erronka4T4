@@ -1,12 +1,12 @@
 package Modelo;
 
 import java.sql.Time;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Date;
 import ModeloPerfil.Cliente;
 
 public class Pedido {
-	private Producto[] productos;
+	private ArrayList<Producto> productos;
 	private Date fecha;
 	private Time hora;
 	private int cantidadProducto;
@@ -14,8 +14,8 @@ public class Pedido {
 	private Cliente cliente;
 	private float preciototal;
 
-	public Pedido(Producto[] productos, Date fecha, Time hora, int cantidadProducto, int codPedido, Cliente cliente,
-			float preciototal) {
+	public Pedido(ArrayList<Producto> productos, Date fecha, Time hora, int cantidadProducto, int codPedido,
+			Cliente cliente, float preciototal) {
 		super();
 		this.productos = productos;
 		this.fecha = fecha;
@@ -25,12 +25,18 @@ public class Pedido {
 		this.cliente = cliente;
 		this.preciototal = preciototal;
 	}
+	
+	public Pedido() {
+		
+	}
 
-	public Producto[] getProductos() {
+
+
+	public ArrayList<Producto> getProductos() {
 		return productos;
 	}
 
-	public void setProductos(Producto[] productos) {
+	public void setProductos(ArrayList<Producto> productos) {
 		this.productos = productos;
 	}
 
@@ -66,18 +72,6 @@ public class Pedido {
 		this.codPedido = codPedido;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Pedido other = (Pedido) obj;
-		return codPedido == other.codPedido;
-	}
-
 	public Cliente getCliente() {
 		return cliente;
 	}
@@ -95,10 +89,24 @@ public class Pedido {
 	}
 
 	@Override
-	public String toString() {
-		return "Pedido [productos=" + Arrays.toString(productos) + ", fecha=" + fecha + ", hora=" + hora
-				+ ", cantidadProducto=" + cantidadProducto + ", codPedido=" + codPedido + ", cliente=" + cliente
-				+ ", preciototal=" + preciototal + "]";
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Pedido other = (Pedido) obj;
+		return codPedido == other.codPedido;
 	}
+
+	@Override
+	public String toString() {
+		return "Pedido [productos=" + productos + ", fecha=" + fecha + ", hora=" + hora + ", cantidadProducto="
+				+ cantidadProducto + ", codPedido=" + codPedido + ", cliente=" + cliente + ", preciototal="
+				+ preciototal + "]";
+	}
+
+
 
 }

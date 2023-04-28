@@ -2,7 +2,7 @@ package ModeloAnimal;
 
 import ModeloPerfil.Cliente;
 
-public abstract class Animales {
+public abstract class Animal {
 	protected String nombreAnimal;
 	protected int idAnimal;
 	protected int edad;
@@ -10,7 +10,7 @@ public abstract class Animales {
 	protected String sexo;
 	protected Cliente cliente;
 	
-	public Animales(String nombreAnimal, int idAnimal, int edad, String especie, String sexo,
+	public Animal(String nombreAnimal, int idAnimal, int edad, String especie, String sexo,
 
 			Cliente cliente) {
 		this.nombreAnimal = nombreAnimal;
@@ -19,6 +19,10 @@ public abstract class Animales {
 		this.especie = especie;
 		this.sexo = sexo;
 		this.cliente = cliente;
+	}
+	
+	public Animal() {
+		
 	}
 
 	public String getNombreAnimal() {

@@ -26,6 +26,16 @@ class PezTest {
 
 	@Test
 	void test() {
+		
+		Pez pezTestVacio = new Pez();
+		
+		pezTestVacio.setNombreAnimal(nombreAnimal);
+		pezTestVacio.setIdAnimal(idAnimal);
+		pezTestVacio.setEdad(edad);
+		pezTestVacio.setEspecie(especie);
+		pezTestVacio.setSexo(sexo);
+		pezTestVacio.setCliente(cliente);
+		
 		pezTest.setNombreAnimal(nombreAnimal);
 		pezTest.setIdAnimal(idAnimal);
 		pezTest.setEdad(edad);

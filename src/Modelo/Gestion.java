@@ -1,19 +1,22 @@
 package Modelo;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
 import ModeloPerfil.Empleado;
 
 public class Gestion {
-	private int idGestion;
+	private int codGestion;
 	private int cantidad;
 	private Date fecha;
 	private Time hora;
 	private Empleado empleado;
-	private Producto[] productos;
-	
-	public Gestion(int idGestion, int cantidad, Date fecha, Time hora, Empleado empleado, Producto[] productos) {
-		this.idGestion = idGestion;
+	private ArrayList<Producto> productos;
+
+	public Gestion(int idGestion, int cantidad, Date fecha, Time hora, Empleado empleado,
+			ArrayList<Producto> productos) {
+		super();
+		this.codGestion = idGestion;
 		this.cantidad = cantidad;
 		this.fecha = fecha;
 		this.hora = hora;
@@ -21,12 +24,16 @@ public class Gestion {
 		this.productos = productos;
 	}
 
-	public int getIdGestion() {
-		return idGestion;
+	public Gestion() {
+
 	}
 
-	public void setIdGestion(int idGestion) {
-		this.idGestion = idGestion;
+	public int getCodGestion() {
+		return codGestion;
+	}
+
+	public void setCodGestion(int codGestion) {
+		this.codGestion = codGestion;
 	}
 
 	public int getCantidad() {
@@ -53,6 +60,22 @@ public class Gestion {
 		this.hora = hora;
 	}
 
+	public Empleado getEmpleado() {
+		return empleado;
+	}
+
+	public void setEmpleado(Empleado empleado) {
+		this.empleado = empleado;
+	}
+
+	public ArrayList<Producto> getProductos() {
+		return productos;
+	}
+
+	public void setProductos(ArrayList<Producto> productos) {
+		this.productos = productos;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -62,29 +85,13 @@ public class Gestion {
 		if (getClass() != obj.getClass())
 			return false;
 		Gestion other = (Gestion) obj;
-		return idGestion == other.idGestion;
+		return codGestion == other.codGestion;
 	}
 
 	@Override
 	public String toString() {
-		return "Gestion [idGestion=" + idGestion + ", cantidad=" + cantidad + ", fecha=" + fecha + ", hora=" + hora
+		return "Gestion [idGestion=" + codGestion + ", cantidad=" + cantidad + ", fecha=" + fecha + ", hora=" + hora
 				+ ", empleado=" + empleado + ", productos=" + productos + "]";
-	}
-
-	public Empleado getEmpleado() {
-		return empleado;
-	}
-
-	public void setEmpleado(Empleado empleado) {
-		this.empleado = empleado;
-	}
-
-	public Producto[] getProductos() {
-		return productos;
-	}
-
-	public void setProductos(Producto[] productos) {
-		this.productos = productos;
 	}
 
 }

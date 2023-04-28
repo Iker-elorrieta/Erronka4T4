@@ -13,6 +13,10 @@ public class Producto {
 		this.stock = stock;
 		this.codProducto = codProducto;
 	}
+	
+	public Producto() {
+		
+	}
 
 	public String getNombreProducto() {
 		return nombreProducto;

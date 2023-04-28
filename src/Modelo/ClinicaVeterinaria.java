@@ -1,14 +1,24 @@
 package Modelo;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 import ModeloPerfil.Empleado;
 
 public class ClinicaVeterinaria {
 	private String ubicacion;
 	private int codVeterinaria;
-	private Empleado[] empleados;
-	private Producto[] productos;
+	private ArrayList<Empleado> empleados;
+
+	public ClinicaVeterinaria(String ubicacion, int codVeterinaria, ArrayList<Empleado> empleados) {
+		super();
+		this.ubicacion = ubicacion;
+		this.codVeterinaria = codVeterinaria;
+		this.empleados = empleados;
+	}
+
+	public ClinicaVeterinaria() {
+
+	}
 
 	public String getUbicacion() {
 		return ubicacion;
@@ -26,13 +36,12 @@ public class ClinicaVeterinaria {
 		this.codVeterinaria = codVeterinaria;
 	}
 
+	public ArrayList<Empleado> getEmpleados() {
+		return empleados;
+	}
 
-	public ClinicaVeterinaria(String ubicacion, int codVeterinaria, Empleado[] empleados, Producto[] productos) {
-		super();
-		this.ubicacion = ubicacion;
-		this.codVeterinaria = codVeterinaria;
+	public void setEmpleados(ArrayList<Empleado> empleados) {
 		this.empleados = empleados;
-		this.productos = productos;
 	}
 
 	@Override
@@ -47,26 +56,12 @@ public class ClinicaVeterinaria {
 		return codVeterinaria == other.codVeterinaria;
 	}
 
-
 	@Override
 	public String toString() {
 		return "ClinicaVeterinaria [ubicacion=" + ubicacion + ", codVeterinaria=" + codVeterinaria + ", empleados="
-				+ Arrays.toString(empleados) + ", productos=" + Arrays.toString(productos) + "]";
+				+ empleados + "]";
 	}
 
-	public Empleado[] getEmpleados() {
-		return empleados;
-	}
 
-	public void setEmpleados(Empleado[] empleados) {
-		this.empleados = empleados;
-	}
 
-	public Producto[] getProductos() {
-		return productos;
-	}
-
-	public void setProductos(Producto[] productos) {
-		this.productos = productos;
-	}
 }
