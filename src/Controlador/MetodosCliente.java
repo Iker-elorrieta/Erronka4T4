@@ -48,7 +48,7 @@ public class MetodosCliente extends ManagerAbstract {
 			String sql = "select * from " + ManagerAbstract.TABLE_CLIENTE;
 			ResultSet resul = sacaCliente.executeQuery(sql);
 			while (resul.next()) {
-	
+
 				Cliente cliente = new Cliente();
 				cliente.setNombre(resul.getString(nombreCliente));
 				cliente.setApellido(resul.getString(apellido));
