@@ -18,6 +18,7 @@ import Controlador.MetodosCliente;
 import Controlador.MetodosGenerales;
 import Excepciones.DniInvalidoException;
 import ModeloPerfil.Cliente;
+import ModeloPerfil.Empleado;
 
 class MetodosClienteTest extends ManagerAbstract {
 	final String nombreCliente = "Nombre";
@@ -108,7 +109,7 @@ class MetodosClienteTest extends ManagerAbstract {
 	}
 	
 	@Test
-	void eliminarClientetest() {
+	void eliminarClientetest() throws DniInvalidoException {
 		String nombreNuevo = "Ander";
 		String apellidosNuevo = "Perex";
 		String dniNuevo = "22761890D";
@@ -124,29 +125,67 @@ class MetodosClienteTest extends ManagerAbstract {
 		clienteNuevo.setDireccion(direccionNuevo);
 		
 		try {
+			metodosCliente.insertarCliente(clienteNuevo);
+			ArrayList<Cliente> listaEmpleado = metodosCliente.recogerClienteYSusAnimales();
+			metodosCliente.eliminarCliente(listaEmpleado, dniNuevo);
+			
+			Connection conexion;
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement sacaEmpleado = conexion.createStatement();
+			String sql = "select * from " + ManagerAbstract.TABLE_CLIENTE;
+			ResultSet resul = sacaEmpleado.executeQuery(sql);
+			while(resul.next()) {
+				assertTrue(metodosCliente.eliminarCliente(listaEmpleado, dniNuevo));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	/*
+	@Test
+	void UpdateClientetest() {
+		String[] nombreNuevo = {"Ander"};
+		String apellidosNuevo = "Perex";
+		String dniNuevo = "22761890D";
+		String direccionNuevo = "Mi casa";
+		String contrasenyaNuevo = "hola";
+		String column[] ={"Nombre"};
+		
+		Cliente clienteNuevo = new Cliente();
+
+		clienteNuevo.setDni(dniNuevo);
+		clienteNuevo.setNombre("hector");
+		clienteNuevo.setApellido(apellidosNuevo);
+		clienteNuevo.setContrasenya(contrasenyaNuevo);
+		clienteNuevo.setDireccion(direccionNuevo);
+		
+		try {
 			try {
 				metodosCliente.insertarCliente(clienteNuevo);
 				ArrayList<Cliente> listaCliente = metodosCliente.recogerClienteYSusAnimales();
-				metodosCliente.eliminarCliente(listaCliente, dniNuevo);
+				metodosCliente.updateCliente(column, nombreNuevo, clienteNuevo); 
 				
 				Connection conexion;
 				conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 				Statement sacaCliente = conexion.createStatement();
-				String sql = "DELETE FROM `" + ManagerAbstract.TABLE_CLIENTE + "`" + "WHERE cliente.DNI = '" + dni + "';";
-
+				String sql = "SELECT * from " + ManagerAbstract.TABLE_CLIENTE +" where DNI  = "+ "'"+clienteNuevo.getDni()+"'";
+				ResultSet resul = sacaCliente.executeQuery(sql);
+				while(resul.next()){
+					assertEquals(nombreNuevo[0] ,clienteNuevo.getNombre());
+				}
+				metodosCliente.eliminarCliente(listaCliente, dniNuevo);
 				
 			} catch (DniInvalidoException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-			
-			
-	}
+
+	}*/
 }

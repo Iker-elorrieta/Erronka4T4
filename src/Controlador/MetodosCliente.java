@@ -137,10 +137,11 @@ public class MetodosCliente extends ManagerAbstract {
 				+ "VALUES( '" + dni + "' , '"+ nombre + "' , '" + apellidos + "' , '" + contrasenya + "' , '" 
 				+ direccion + "' , '" + cantidadMascotas + "');");
 		
+		
 	}
 	
-	public void eliminarCliente(ArrayList<Cliente> listaCliente, String dni) throws SQLException {
-
+	public boolean eliminarCliente(ArrayList<Cliente> listaCliente, String dni) throws SQLException {
+		boolean eli = false;
 		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
@@ -151,8 +152,10 @@ public class MetodosCliente extends ManagerAbstract {
 			if (cliente.getDni().equalsIgnoreCase(dni)) {
 				resul.executeUpdate(
 						"DELETE FROM `" + ManagerAbstract.TABLE_CLIENTE + "`" + "WHERE cliente.DNI = '" + dni + "';");
+				eli =true;
 			}
 		}
+		return eli;
 	}
 	
 	public void updateCliente(String[] nombreColumna, String[] UpdateColumna, Cliente cliente) throws SQLException {
