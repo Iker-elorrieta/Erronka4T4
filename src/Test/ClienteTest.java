@@ -65,6 +65,6 @@ class ClienteTest {
 		assertTrue(clienteTest.equals(clienteTest3));
 		assertFalse(clienteTest.equals(dni.getClass()));
 	}
-
+	
 	
 }

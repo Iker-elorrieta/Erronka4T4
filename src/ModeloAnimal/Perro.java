@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import ModeloPerfil.Cliente;
 
-public class Perro extends Animal {
+public class Perro extends Animal  implements Vacuna{
 
 	public Perro(String nombreAnimal, int idAnimal, int edad, String especie, String sexo, Cliente cliente) {
 		super(nombreAnimal, idAnimal, edad, especie, sexo, cliente);
@@ -32,6 +32,12 @@ public class Perro extends Animal {
 			return false;
 		Perro other = (Perro) obj;
 		return Objects.equals(idAnimal, other.idAnimal);
+	}
+
+	@Override
+	public float CosteVacuna(Animal animal) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
