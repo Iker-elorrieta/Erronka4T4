@@ -63,9 +63,11 @@ public class MetodosEmpleado extends ManagerAbstract {
 			} else if (especializacion.equalsIgnoreCase(pez)) {
 				empleado.setEspecializacion(Especialidad.Pez);
 			} else if (especializacion.equalsIgnoreCase(limpieza)) {
-				empleado.setEspecializacion(Especialidad.limpieza);
-			} else {
-				empleado.setEspecializacion(Especialidad.ventas);
+				empleado.setEspecializacion(Especialidad.Limpieza);
+			} else if(especializacion.equalsIgnoreCase(ventas)){
+				empleado.setEspecializacion(Especialidad.Ventas);
+			}else {
+				empleado.setEspecializacion(Especialidad.Admin);
 			}
 
 			listaEmpleado.add(empleado);
@@ -108,22 +110,17 @@ public class MetodosEmpleado extends ManagerAbstract {
 
 	}
 
-	public void eliminarEmpleado(ArrayList<Empleado> listaEmpleado, String dni) throws SQLException {
+	public void eliminarEmpleado(String dni) throws SQLException {
 
 		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
-		ArrayList<Empleado> listaEmpleadoEliminar = listaEmpleado;
+		resul.executeUpdate(
+				"DELETE FROM `" + ManagerAbstract.TABLE_EMPLEADO + "`" + "WHERE empleado.DNI = '" + dni + "';");
 
-		for (Empleado empleado : listaEmpleadoEliminar) {
-			if (empleado.getDni().equalsIgnoreCase(dni)) {
-				resul.executeUpdate(
-						"DELETE FROM `" + ManagerAbstract.TABLE_EMPLEADO + "`" + "WHERE empleado.DNI = '" + dni + "';");
-			}
-		}
 	}
-	
+
 	public void updateEmpleado(String[] nombreColumna, String[] UpdateColumna, Empleado empleado) throws SQLException {
 		Connection conexion;
 		int cont = 0;

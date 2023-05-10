@@ -1,6 +1,5 @@
 package Modelo;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import ModeloPerfil.Empleado;
@@ -9,17 +8,15 @@ public class Gestion {
 	private int codGestion;
 	private int cantidad;
 	private Date fecha;
-	private Time hora;
 	private Empleado empleado;
 	private ArrayList<Producto> productos;
 
-	public Gestion(int idGestion, int cantidad, Date fecha, Time hora, Empleado empleado,
+	public Gestion(int idGestion, int cantidad, Date fecha, Empleado empleado,
 			ArrayList<Producto> productos) {
 		super();
 		this.codGestion = idGestion;
 		this.cantidad = cantidad;
 		this.fecha = fecha;
-		this.hora = hora;
 		this.empleado = empleado;
 		this.productos = productos;
 	}
@@ -52,14 +49,6 @@ public class Gestion {
 		this.fecha = fecha;
 	}
 
-	public Time getHora() {
-		return hora;
-	}
-
-	public void setHora(Time hora) {
-		this.hora = hora;
-	}
-
 	public Empleado getEmpleado() {
 		return empleado;
 	}
@@ -90,8 +79,10 @@ public class Gestion {
 
 	@Override
 	public String toString() {
-		return "Gestion [idGestion=" + codGestion + ", cantidad=" + cantidad + ", fecha=" + fecha + ", hora=" + hora
-				+ ", empleado=" + empleado + ", productos=" + productos + "]";
+		return "Gestion [codGestion=" + codGestion + ", cantidad=" + cantidad + ", fecha=" + fecha + ", empleado="
+				+ empleado + ", productos=" + productos + "]";
 	}
+
+
 
 }

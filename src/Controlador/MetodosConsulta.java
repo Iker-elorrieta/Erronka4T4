@@ -5,15 +5,16 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
-
+import java.util.Date;
 import B.D_Util.DBUtils;
 import B.D_Util.ManagerAbstract;
 import Modelo.Consulta;
 import ModeloAnimal.Animal;
 import ModeloPerfil.Empleado;
 
-public class MetodosConsulta extends ManagerAbstract{
+public class MetodosConsulta extends ManagerAbstract {
 
 	final String codConsulta = "CodConsulta";
 	final String precio = "Precio";
@@ -21,7 +22,7 @@ public class MetodosConsulta extends ManagerAbstract{
 	final String dniEmpleado = "DNI";
 	final String fecha = "Fecha";
 	final String hora = "Hora";
-	
+
 	public ArrayList<Consulta> recogerConsulta() throws SQLException {
 
 		ArrayList<Consulta> listaConsulta = new ArrayList<Consulta>();
@@ -31,38 +32,84 @@ public class MetodosConsulta extends ManagerAbstract{
 		String sql = "select distinct * from " + ManagerAbstract.TABLE_CONSULTA;
 		ResultSet resul = sacaConsulta.executeQuery(sql);
 		while (resul.next()) {
-			Consulta consulta = new Consulta ();
+			Consulta consulta = new Consulta();
 			consulta.setIdConsulta(resul.getInt(codConsulta));
 			consulta.setPrecio(resul.getFloat(precio));
-			
+
 			int idAnimalTabla = resul.getInt(idAnimal);
-			
+
 			MetodosAnimal metodosAnimal = new MetodosAnimal();
 			ArrayList<Animal> listaAnimal = metodosAnimal.recogerAnimal();
-			
+
 			for (Animal animal2 : listaAnimal) {
-				if(idAnimalTabla == animal2.getIdAnimal()) {
+				if (idAnimalTabla == animal2.getIdAnimal()) {
 					consulta.setAnimal(animal2);
 				}
 			}
-			
+
 			String dniEmpleadoTabla = resul.getString(dniEmpleado);
 			MetodosEmpleado metodosEmpleado = new MetodosEmpleado();
 			ArrayList<Empleado> listaEmpleado = metodosEmpleado.recogerEmpleado();
-			
+
 			for (Empleado empleado2 : listaEmpleado) {
-				if(dniEmpleadoTabla.equalsIgnoreCase(empleado2.getDni())) {
+				if (dniEmpleadoTabla.equalsIgnoreCase(empleado2.getDni())) {
 					consulta.setEmpleado(empleado2);
 				}
 			}
-			
+
 			consulta.setFecha(resul.getDate(fecha));
 			consulta.setHora(resul.getTime(hora));
-			
+
 			listaConsulta.add(consulta);
 		}
 		return listaConsulta;
 
 	}
-	
+
+	public void insertarConsulta(Consulta consultaNueva, int idAnimal, String dni) throws SQLException {
+
+		int idConsulta = 0;
+		float precio = 0;
+		Date fecha = null;
+		Time hora = null;
+
+		Consulta consulta = consultaNueva;
+
+		idConsulta = consulta.getIdConsulta();
+		precio = consulta.getPrecio();
+		fecha = consulta.getFecha();
+		hora = consulta.getHora();
+
+		Connection conexion;
+		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+		Statement resul = conexion.createStatement();
+
+		resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_CONSULTA + "`"
+				+ "(`CodConsulta`, `Precio`, `Fecha`, `Hora`, `DNI`, `IdAnimal`) " + "VALUES( '" + idConsulta + "' , '"
+				+ precio + "' , '" + fecha + "' , '" + hora + "' , '" + dni + "' , '" + idAnimal + "');");
+	}
+
+	public void eliminarConsulta(int idConsulta) throws SQLException {
+
+		Connection conexion;
+		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+		Statement resul = conexion.createStatement();
+
+		resul.executeUpdate(
+				"DELETE FROM `" + ManagerAbstract.TABLE_CONSULTA + "`" + "WHERE CodConsulta = '" + idConsulta + "';");
+	}
+
+	public void updateConsulta(String[] nombreColumna, String[] UpdateColumna, Consulta consulta) throws SQLException {
+		Connection conexion;
+		int cont = 0;
+		do {
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			String sql = "UPDATE consulta set " + nombreColumna[cont] + " = " + "'" + UpdateColumna[cont] + "'"
+					+ " where CodConsulta = " + "'" + consulta.getIdConsulta() + "'";
+			Statement statement = conexion.createStatement();
+			statement.executeUpdate(sql);
+			cont++;
+		} while (cont < nombreColumna.length);
+	}
+
 }

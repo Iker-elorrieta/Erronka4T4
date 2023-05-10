@@ -1,24 +1,180 @@
 package Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-
 import org.junit.jupiter.api.Test;
-
+import B.D_Util.DBUtils;
+import B.D_Util.ManagerAbstract;
 import Controlador.MetodosClinicaVeterinaria;
 import Modelo.ClinicaVeterinaria;
 
-class MetodosClinicaVeterinariaTest {
+class MetodosClinicaVeterinariaTest extends ManagerAbstract {
 
 	MetodosClinicaVeterinaria metodosClinicaVeterinaria = new MetodosClinicaVeterinaria();
+
+	final String ubicacion = "Ubicacion";
+	final String codClinica = "CodClinica";
+
+	@Test
+	void recogerClinicaVeterinariaTest() {
+
+		int codClinicaNueva = 900;
+		String ubicacionNueva = "Murcia";
+
+		try {
+
+			Connection conexion;
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement resul = conexion.createStatement();
+
+			resul.executeUpdate("INSERT INTO " + ManagerAbstract.TABLE_CLINICAVETERINARIA
+					+ "(`CodClinica`, `Ubicacion`) VALUES ('" + codClinicaNueva + "','" + ubicacionNueva + "');");
+
+			ArrayList<ClinicaVeterinaria> listaClinicaVeterinaria;
+
+			listaClinicaVeterinaria = metodosClinicaVeterinaria.recogerClinicaVeterinaria();
+
+			String resultado = "";
+
+			for (ClinicaVeterinaria clinicaVeterinaria2 : listaClinicaVeterinaria) {
+				if (clinicaVeterinaria2.getCodVeterinaria() == codClinicaNueva) {
+					int pos = listaClinicaVeterinaria.indexOf(clinicaVeterinaria2);
+					resultado = listaClinicaVeterinaria.get(pos).toString();
+				}
+			}
+
+			assertEquals(resultado, "ClinicaVeterinaria [ubicacion=Murcia, codVeterinaria=900, empleados=[]]");
+			
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement resul2 = conexion.createStatement();
+
+			resul2.executeUpdate("DELETE FROM " + ManagerAbstract.TABLE_CLINICAVETERINARIA + " WHERE CodClinica = "
+					+ "'" + codClinicaNueva + "'");
+			
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	@Test
-	void test() throws SQLException {
-		ArrayList<ClinicaVeterinaria> listaClinicaVeterinaria = metodosClinicaVeterinaria.recogerClinicaVeterinaria();
-		String resultado = listaClinicaVeterinaria.get(0).toString();
-		assertEquals(resultado, "ClinicaVeterinaria [ubicacion=Madrid, codVeterinaria=1, empleados=[Empleado [antiguedad=4, salario=1300.0, especializacion=limpieza, nombre=Hilario, apellido=Quintana, dni=05491864Q, direccion=Avenida Cotto, 747, 2º E, contrasenya=1], Empleado [antiguedad=7, salario=1500.0, especializacion=ventas, nombre=Erica , apellido=Antunez, dni=25881680X, direccion=Travesía Gamboa, 618, 4º C, contrasenya=5], Empleado [antiguedad=10, salario=2000.0, especializacion=ventas, nombre=Eduardo, apellido=Manos Tijeras, dni=34321343F, direccion=Avinguda Toro, 0, Bajo 1º, contrasenya=7], Empleado [antiguedad=1, salario=1700.0, especializacion=Gatos, nombre=Itziar , apellido=Valverde, dni=41896850G, direccion=Praza Rafael, 05, 9º B, contrasenya=8], Empleado [antiguedad=2, salario=1700.0, especializacion=Pez, nombre=Amaya , apellido=Marin, dni=64585000B, direccion=Travessera Ponce, 523, Bajo 6º, contrasenya=14], Empleado [antiguedad=11, salario=1700.0, especializacion=Loros, nombre=Consuelo , apellido=Rio, dni=72904384L, direccion=Travessera Vega, 37, 60º 9º, contrasenya=17], Empleado [antiguedad=8, salario=1700.0, especializacion=Perros, nombre=Helena , apellido=Freire, dni=94565675W, direccion=Passeig Arnau, 75, 57º 4º, contrasenya=19]]]");
+	void insertarClinicaVeterinariaTest() {
+
+		int codClinicaNueva = 900;
+		String ubicacionNueva = "Murcia";
+
+		ClinicaVeterinaria clinicaVeterinaria = new ClinicaVeterinaria();
+
+		clinicaVeterinaria.setCodVeterinaria(codClinicaNueva);
+		clinicaVeterinaria.setUbicacion(ubicacionNueva);
+
+		try {
+			metodosClinicaVeterinaria.insertarClinicaVeterinaria(clinicaVeterinaria);
+
+			Connection conexion;
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement sacaCliente = conexion.createStatement();
+			String sql = "select * from " + ManagerAbstract.TABLE_CLINICAVETERINARIA + " where CodClinica = '"
+					+ codClinicaNueva + " ';";
+			ResultSet resul = sacaCliente.executeQuery(sql);
+			while (resul.next()) {
+
+				assertEquals(codClinicaNueva, resul.getInt(codClinica));
+				assertEquals(ubicacionNueva, resul.getString(ubicacion));
+			}
+
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement resul2 = conexion.createStatement();
+
+			resul2.executeUpdate("DELETE FROM " + ManagerAbstract.TABLE_CLINICAVETERINARIA + " WHERE CodClinica = "
+					+ "'" + codClinicaNueva + "'");
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	void eliminarClinicaVeterinariaTest() {
+
+		int codClinicaNueva = 900;
+		String ubicacionNueva = "Murcia";
+
+		try {
+			Connection conexion;
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement resul = conexion.createStatement();
+
+			resul.executeUpdate("INSERT INTO " + ManagerAbstract.TABLE_CLINICAVETERINARIA
+					+ "(`CodClinica`, `Ubicacion`) VALUES ('" + codClinicaNueva + "','" + ubicacionNueva + "');");
+
+			metodosClinicaVeterinaria.eliminarClinicaVeterinaria(codClinicaNueva);
+
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement sacaEmpleado = conexion.createStatement();
+			String sql = "select * from " + ManagerAbstract.TABLE_CLINICAVETERINARIA + " where CodClinica = '"
+					+ codClinicaNueva + " ';";
+			ResultSet resul2 = sacaEmpleado.executeQuery(sql);
+
+			assertEquals(resul2.isBeforeFirst(), false);
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	void updateClinicaVeterinariaTest() {
+
+		String[] ubicacionNueva = { "Gibraltar" };
+		String ubicacionUpdatear = "Valladolid";
+		int codClinicaNueva = 900;
+		String column[] = { "Ubicacion" };
+
+		ClinicaVeterinaria clinicaVeterinaria = new ClinicaVeterinaria();
+
+		clinicaVeterinaria.setCodVeterinaria(codClinicaNueva);
+		clinicaVeterinaria.setUbicacion("Valladolid");
+
+		try {
+			Connection conexion;
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement resul = conexion.createStatement();
+
+			resul.executeUpdate("INSERT INTO " + ManagerAbstract.TABLE_CLINICAVETERINARIA
+					+ "(`CodClinica`, `Ubicacion`) VALUES ('" + codClinicaNueva + "','" + ubicacionUpdatear + "');");
+;
+			metodosClinicaVeterinaria.updateClinicaVeterinaria(column, ubicacionNueva, clinicaVeterinaria);
+
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement sacaCliente = conexion.createStatement();
+			String sql = "select * from " + ManagerAbstract.TABLE_CLINICAVETERINARIA + " where CodClinica = '"
+					+ codClinicaNueva + " ';";
+			ResultSet resul2 = sacaCliente.executeQuery(sql);
+			while (resul2.next()) {
+				
+				assertEquals(ubicacionNueva[0], resul2.getString(ubicacion));
+			}
+			
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement resul3 = conexion.createStatement();
+
+			resul3.executeUpdate("DELETE FROM " + ManagerAbstract.TABLE_CLINICAVETERINARIA + " WHERE CodClinica = "
+					+ "'" + codClinicaNueva + "'");	
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 }

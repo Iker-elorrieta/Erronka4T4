@@ -38,7 +38,16 @@ public class Loro extends Animal  implements Vacuna{
 	@Override
 	public float CosteVacuna(Animal animal) {
 		// TODO Auto-generated method stub
-		return 0;
+		float coste = 100;
+		
+		if (animal instanceof Gato) {
+			coste+=30;
+		}else if(animal instanceof Perro) {
+			coste+=50;
+		}else if(animal instanceof Loro) {
+			coste+=20;
+		}
+		return coste;
 	}
 	
 

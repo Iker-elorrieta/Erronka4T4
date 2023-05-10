@@ -63,4 +63,11 @@ class PerroTest {
 		assertFalse(perroTest.equals(perroTest3));
 		assertFalse(perroTest.equals(perroTest.getClass()));
 	}
+	
+	@Test
+	public void testCosteVacuna() {
+		float resultado = perroTest.CosteVacuna(perroTest);
+		
+		assertEquals(resultado, 0);
+	}
 }

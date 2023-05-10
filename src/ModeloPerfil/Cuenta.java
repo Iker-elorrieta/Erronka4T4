@@ -1,6 +1,5 @@
 package ModeloPerfil;
 
-import java.util.Objects;
 
 public class Cuenta {
 	private int numeroCuenta;
@@ -10,6 +9,9 @@ public class Cuenta {
 		super();
 		this.numeroCuenta = numeroCuenta;
 		this.cliente = cliente;
+	}
+	public Cuenta() {
+		// TODO Auto-generated constructor stub
 	}
 	@Override
 	public boolean equals(Object obj) {

@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
 import B.D_Util.DBUtils;
 import B.D_Util.ManagerAbstract;
 import Modelo.ClinicaVeterinaria;
@@ -33,7 +32,7 @@ public class MetodosClinicaVeterinaria extends ManagerAbstract {
 	final String perros = "Perros";
 	final String gatos = "Gatos";
 	final String loros = "Loros";
-	final String pez = "Peces";
+	final String pez = "Pez";
 	final String limpieza = "Limpieza";
 	final String ventas = "Ventas";
 
@@ -78,9 +77,11 @@ public class MetodosClinicaVeterinaria extends ManagerAbstract {
 				} else if (especializacion.equalsIgnoreCase(pez)) {
 					empleado.setEspecializacion(Especialidad.Pez);
 				} else if (especializacion.equalsIgnoreCase(limpieza)) {
-					empleado.setEspecializacion(Especialidad.limpieza);
-				} else {
-					empleado.setEspecializacion(Especialidad.ventas);
+					empleado.setEspecializacion(Especialidad.Limpieza);
+				} else if(especializacion.equalsIgnoreCase(ventas)){
+					empleado.setEspecializacion(Especialidad.Ventas);
+				}else {
+					empleado.setEspecializacion(Especialidad.Admin);
 				}
 				listaEmpleado.add(empleado);
 			}
@@ -88,6 +89,47 @@ public class MetodosClinicaVeterinaria extends ManagerAbstract {
 			listaClinicaVeterinaria.add(clinicaVeterinaria);
 		}
 		return listaClinicaVeterinaria;
+	}
 
+	public void insertarClinicaVeterinaria(ClinicaVeterinaria clinicaVeterinariaNueva) throws SQLException {
+
+		int codVeterinaria = 0;
+		String ubicacion = "";
+
+		ClinicaVeterinaria clinicaVeterinaria = clinicaVeterinariaNueva;
+
+		codVeterinaria = clinicaVeterinaria.getCodVeterinaria();
+		ubicacion = clinicaVeterinaria.getUbicacion();
+
+		Connection conexion;
+		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+		Statement resul = conexion.createStatement();
+
+		resul.executeUpdate("INSERT INTO " + ManagerAbstract.TABLE_CLINICAVETERINARIA
+				+ "(`CodClinica`, `Ubicacion`) VALUES ('" + codVeterinaria + "','" + ubicacion + "');");
+	}
+
+	public void eliminarClinicaVeterinaria(int codVeterinaria) throws SQLException {
+
+		Connection conexion;
+		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+		Statement resul = conexion.createStatement();
+
+		resul.executeUpdate("DELETE FROM " + ManagerAbstract.TABLE_CLINICAVETERINARIA + " WHERE CodClinica = " + "'"
+				+ codVeterinaria + "'");
+	}
+
+	public void updateClinicaVeterinaria(String[] nombreColumna, String[] UpdateColumna,
+			ClinicaVeterinaria clinicaVeterinaria) throws SQLException {
+		Connection conexion;
+		int cont = 0;
+		do {
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			String sql = "UPDATE clinica set " + nombreColumna[cont] + " = " + "'" + UpdateColumna[cont] + "'"
+					+ " where CodClinica = " + "'" + clinicaVeterinaria.getCodVeterinaria() + "'";
+			Statement statement = conexion.createStatement();
+			statement.executeUpdate(sql);
+			cont++;
+		} while (cont < nombreColumna.length);
 	}
 }

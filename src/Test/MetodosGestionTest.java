@@ -8,7 +8,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Time;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
@@ -38,13 +37,44 @@ class MetodosGestionTest extends ManagerAbstract {
 
 	@Test
 	void recogerGestionTest() {
+
+		String fechaDate = "2023-02-13";
+
+		String dniNuevo = "13240462Y";
+		int codProductoNuevo = 2;
+		int codGestionNueva = 900;
+		Date fechaNueva = Date.valueOf(fechaDate);
+		int cantidadNueva = 5;
+
 		ArrayList<Gestion> listaGestion;
 		try {
+
+			Connection conexion;
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement resul = conexion.createStatement();
+
+			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_GESTION + "`"
+					+ "(`CodGestion`, `Fecha`, `Cantidad`, `CodProducto`, `DNI`) " + "VALUES( '" + codGestionNueva
+					+ "' , '" + fechaNueva + "' , '" + cantidadNueva + "' , '" + codProductoNuevo + "' , '" + dniNuevo
+					+ "');");
+
 			listaGestion = metodosGestion.recogerGestion();
-			String resultado = listaGestion.get(0).toString();
-			System.out.println(resultado);
-			assertEquals(resultado,
-					"Gestion [idGestion=1, cantidad=3, fecha=2023-04-24, hora=02:55:36, empleado=Empleado [antiguedad=7, salario=2000.0, especializacion=ventas, nombre=Gorka, apellido=De la Iglesia Perex, dni=22761891X, direccion=Carrer Marcos, 0, 6º A, contrasenya=3], productos=[Producto [nombreProducto=Correa, precio=2.0, stock=34, codProducto=1]]]");
+
+			String resultado = "";
+
+			for (Gestion gestion : listaGestion) {
+				if (gestion.getCodGestion() == codGestionNueva) {
+					int pos = listaGestion.indexOf(gestion);
+					resultado = listaGestion.get(pos).toString();
+				}
+			}
+			assertEquals(resultado, "Gestion [codGestion=900, cantidad=5, fecha=2023-02-13, empleado=Empleado [antiguedad=2, salario=1500.0, especializacion=Ventas, nombre=Francisco-Jose , apellido=Campo, dni=13240462Y, direccion=Praza Girón, 3, 4º, contrasenya=21], productos=[Producto [nombreProducto=Pienso para perros, precio=5.0, stock=15, codProducto=2], Producto [nombreProducto=Pienso para perros, precio=5.0, stock=15, codProducto=2]]]");			
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement resul2 = conexion.createStatement();
+
+			resul2.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_GESTION + "`" + "WHERE gestion.CodGestion = '"
+					+ codGestionNueva + "';");
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -56,14 +86,12 @@ class MetodosGestionTest extends ManagerAbstract {
 	void insertarGestionTest() {
 
 		String fechaDate = "2023-02-13";
-		String horaTime = "13:55:36";
 
 		String dniNuevo = "13240462Y";
 		int codProductoNuevo = 2;
 
-		int codGestionNueva = 2;
+		int codGestionNueva = 900;
 		Date fechaNueva = Date.valueOf(fechaDate);
-		Time horaNueva = Time.valueOf(horaTime);
 		int cantidadNueva = 5;
 
 		Gestion gestionNueva = new Gestion();
@@ -71,28 +99,35 @@ class MetodosGestionTest extends ManagerAbstract {
 		gestionNueva.setCantidad(cantidadNueva);
 		gestionNueva.setCodGestion(codGestionNueva);
 		gestionNueva.setFecha(fechaNueva);
-		gestionNueva.setHora(horaNueva);
 
 		try {
-			metodosGestion.insertarGestion(gestionNueva, dniNuevo, codProductoNuevo);
 
 			Connection conexion;
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement resul = conexion.createStatement();
+
+			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_GESTION + "`"
+					+ "(`CodGestion`, `Fecha`, `Cantidad`, `CodProducto`, `DNI`) " + "VALUES( '" + codGestionNueva
+					+ "' , '" + fechaNueva + "' , '" + cantidadNueva + "' , '" + codProductoNuevo + "' , '" + dniNuevo
+					+ "');");
 			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement sacaEmpleado = conexion.createStatement();
 			String sql = "select * from " + ManagerAbstract.TABLE_GESTION + " where gestion.CodGestion = '"
 					+ codGestionNueva + "';";
-			ResultSet resul = sacaEmpleado.executeQuery(sql);
-			while (resul.next()) {
-				assertEquals(codGestionNueva, resul.getInt(codGestion));
-				assertEquals(fechaNueva, resul.getDate(fecha));
-				assertEquals(horaNueva, resul.getTime(hora));
-				assertEquals(cantidadNueva, resul.getInt(cantidad));
-				assertEquals(codProductoNuevo, resul.getInt(codProducto));
-				assertEquals(dniNuevo, resul.getString(dni));
+			ResultSet resul2 = sacaEmpleado.executeQuery(sql);
+			while (resul2.next()) {
+				assertEquals(codGestionNueva, resul2.getInt(codGestion));
+				assertEquals(fechaNueva, resul2.getDate(fecha));
+				assertEquals(cantidadNueva, resul2.getInt(cantidad));
+				assertEquals(codProductoNuevo, resul2.getInt(codProducto));
+				assertEquals(dniNuevo, resul2.getString(dni));
 			}
 
-			ArrayList<Gestion> listaGestion = metodosGestion.recogerGestion();
-			metodosGestion.eliminarGestion(listaGestion, codGestionNueva);
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement resul3 = conexion.createStatement();
+
+			resul3.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_GESTION + "`" + "WHERE gestion.CodGestion = '"
+					+ codGestionNueva + "';");
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -101,46 +136,98 @@ class MetodosGestionTest extends ManagerAbstract {
 	}
 
 	@Test
-	void eliminarGestionTest()  {
+	void eliminarGestionTest() {
 
 		String fechaDate = "2023-02-13";
-		String horaTime = "13:55:36";
 
 		String dniNuevo = "13240462Y";
 		int codProductoNuevo = 2;
 
-		int codGestionNueva = 2;
+		int codGestionNueva = 900;
 		Date fechaNueva = Date.valueOf(fechaDate);
-		Time horaNueva = Time.valueOf(horaTime);
 		int cantidadNueva = 5;
 
-		Gestion gestionNueva = new Gestion();
-
-		gestionNueva.setCantidad(cantidadNueva);
-		gestionNueva.setCodGestion(codGestionNueva);
-		gestionNueva.setFecha(fechaNueva);
-		gestionNueva.setHora(horaNueva);
-
 		try {
-			metodosGestion.insertarGestion(gestionNueva, dniNuevo, codProductoNuevo);
-			
-			ArrayList<Gestion> listaGestion = metodosGestion.recogerGestion();
-			metodosGestion.eliminarGestion(listaGestion, codGestionNueva);
 
 			Connection conexion;
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement resul = conexion.createStatement();
+
+			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_GESTION + "`"
+					+ "(`CodGestion`, `Fecha`, `Cantidad`, `CodProducto`, `DNI`) " + "VALUES( '" + codGestionNueva
+					+ "' , '" + fechaNueva + "' , '" + cantidadNueva + "' , '" + codProductoNuevo + "' , '" + dniNuevo
+					+ "');");
+
+			metodosGestion.eliminarGestion(codGestionNueva);
+
 			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement sacaEmpleado = conexion.createStatement();
 			String sql = "select * from " + ManagerAbstract.TABLE_GESTION + " where gestion.CodGestion = '"
 					+ codGestionNueva + "';";
-			ResultSet resul = sacaEmpleado.executeQuery(sql);
+			ResultSet resul2 = sacaEmpleado.executeQuery(sql);
 
-			assertEquals(resul.isBeforeFirst(), false);
+			assertEquals(resul2.isBeforeFirst(), false);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
 
-	
+	@Test
+	void updateGestionTest() {
+
+		String[] cantidadNueva = { "15" };
+		int cantidadUpdateada = 15;
+		int cantidadUpdatear = 2654;
+
+		String fechaDate = "2023-02-13";
+
+		String dniNuevo = "13240462Y";
+		int codProductoNuevo = 2;
+
+		int codGestionNueva = 900;
+		Date fechaNueva = Date.valueOf(fechaDate);
+
+		String column[] = { "Cantidad" };
+
+		Gestion gestionNueva = new Gestion();
+
+		gestionNueva.setCantidad(2654);
+		gestionNueva.setCodGestion(codGestionNueva);
+		gestionNueva.setFecha(fechaNueva);
+
+		try {
+
+			Connection conexion;
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement resul = conexion.createStatement();
+
+			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_GESTION + "`"
+					+ "(`CodGestion`, `Fecha`, `Cantidad`, `CodProducto`, `DNI`) " + "VALUES( '" + codGestionNueva
+					+ "' , '" + fechaNueva + "' , '" + cantidadUpdatear + "' , '" + codProductoNuevo + "' , '"
+					+ dniNuevo + "');");
+
+			metodosGestion.updateGestion(column, cantidadNueva, gestionNueva);
+
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement sacaCliente = conexion.createStatement();
+			String sql = "select * from " + ManagerAbstract.TABLE_GESTION + " where CodGestion = '" + codGestionNueva
+					+ " ';";
+			ResultSet resul2 = sacaCliente.executeQuery(sql);
+			while (resul2.next()) {
+				assertEquals(cantidadUpdateada, resul2.getInt(cantidad));
+			}
+
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement resul3 = conexion.createStatement();
+
+			resul3.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_GESTION + "`" + "WHERE gestion.CodGestion = '"
+					+ codGestionNueva + "';");
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 

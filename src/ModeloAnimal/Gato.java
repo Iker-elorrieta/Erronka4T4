@@ -4,15 +4,15 @@ import java.util.Objects;
 
 import ModeloPerfil.Cliente;
 
-public class Gato extends Animal implements Vacuna{
+public class Gato extends Animal implements Vacuna {
 
 	public Gato(String nombreAnimal, int idAnimal, int edad, String especie, String sexo, Cliente cliente) {
 		super(nombreAnimal, idAnimal, edad, especie, sexo, cliente);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public Gato() {
-		
+
 	}
 
 	@Override
@@ -37,7 +37,16 @@ public class Gato extends Animal implements Vacuna{
 	@Override
 	public float CosteVacuna(Animal animal) {
 		// TODO Auto-generated method stub
-		return 0;
+		float coste = 100;
+		
+		if (animal instanceof Gato) {
+			coste+=30;
+		}else if(animal instanceof Perro) {
+			coste+=50;
+		}else if(animal instanceof Loro) {
+			coste+=20;
+		}
+		return coste;
 	}
 
 }

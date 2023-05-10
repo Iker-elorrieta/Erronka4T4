@@ -52,10 +52,10 @@ class ClienteTest {
 		assertEquals(clienteTest.getDireccion(), direccion);
 		assertEquals(clienteTest.getContrasenya(), contrasenya);
 		assertEquals(clienteTest.getAnimal(), animal);
-
-		assertEquals(clienteTest.toString(),
-				"Cliente [animal=null, nombre=Raul, apellido=Monterel, dni=3687951L, direccion=Calle Ave del Paraiso 8, contrasenya=dashdasijd55]");
-	}
+		
+		System.out.println(clienteTest.toString());
+		assertEquals(clienteTest.toString(), "Cliente [animal=null, nombre=Raul, apellido=Monterel, dni=3687951L, direccion=Calle Ave del Paraiso 8, contrasenya=dashdasijd55]");
+				}
 
 	@Test
 	public void testEquals() {

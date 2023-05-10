@@ -1,5 +1,7 @@
 package Controlador;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -69,13 +71,13 @@ public class MetodosPedido extends ManagerAbstract {
 		return listaPedido;
 	}
 
-	public void insertarPedido(Pedido pedidoNuevo, String dni, int codProducto) throws SQLException {
+	public void insertarPedido(Pedido pedidoNuevo, String dni, int codProducto, int codPedidoNuevo)
+			throws SQLException {
 
 		MetodosCliente metodosCliente = new MetodosCliente();
 
 		Date fecha = null;
 		Time hora = null;
-		int codPedido = 0;
 		float precioTotal = 0;
 		int cantidadProductos = 0;
 
@@ -95,38 +97,54 @@ public class MetodosPedido extends ManagerAbstract {
 			if (cliente.getDni().equalsIgnoreCase(dni)) {
 				resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_PEDIDO + "`"
 						+ "(`CodPedido`, `PrecioTotal`, `Fecha`, `Hora`, `CantidadProductos`, `CodProducto`, `DNI`) "
-						+ "VALUES( '" + codPedido + "' , '" + precioTotal + "' , '" + fecha + "' , '" + hora + "' , '"
-						+ cantidadProductos + "' , '" + codProducto + "' , '" + dni + "');");
+						+ "VALUES( '" + codPedidoNuevo + "' , '" + precioTotal + "' , '" + fecha + "' , '" + hora
+						+ "' , '" + cantidadProductos + "' , '" + codProducto + "' , '" + dni + "');");
 			}
 		}
 	}
-	
-	public void eliminarPedido(ArrayList<Pedido> listaPedido, int  codPedido) throws SQLException {
+
+	public void eliminarPedido(int codPedido) throws SQLException {
 
 		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
-		ArrayList<Pedido> listaPedidoEliminar = listaPedido;
+		resul.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_PEDIDO + "`" + "WHERE pedidos.CodPedido = '"
+				+ codPedido + "';");
 
-		for (Pedido cliente : listaPedidoEliminar) {
-			if (cliente.getCodPedido() == codPedido) {
-				resul.executeUpdate(
-						"DELETE FROM `" + ManagerAbstract.TABLE_PEDIDO + "`" + "WHERE pedidos.CodPedido = '" + codPedido + "';");
-			}
-		}
 	}
-	
+
 	public void updatePedido(String[] nombreColumna, String[] UpdateColumna, Pedido pedido) throws SQLException {
 		Connection conexion;
 		int cont = 0;
 		do {
 			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			String sql = "UPDATE pedido set " + nombreColumna[cont] + " = " + "'" + UpdateColumna[cont] + "'"
-					+ " where CodPedido = " + "'" + pedido.getCodPedido() + "'";
+			String sql = "UPDATE " + ManagerAbstract.TABLE_PEDIDO + " set " + nombreColumna[cont] + " = " + "'"
+					+ UpdateColumna[cont] + "'" + " where CodPedido = " + "'" + pedido.getCodPedido() + "'";
 			Statement statement = conexion.createStatement();
 			statement.executeUpdate(sql);
 			cont++;
 		} while (cont < nombreColumna.length);
+	}
+
+	public ArrayList<Pedido> ArrayListTxt(ArrayList<Pedido> listaPedido) throws SQLException {
+		ArrayList<Pedido> listaPedidotxt = listaPedido;
+
+		String nombreArchivo = "lista.txt";
+
+		try {
+			FileWriter escritor = new FileWriter(nombreArchivo);
+			for (Pedido pedido : listaPedidotxt) {
+				escritor.write(pedido.toString() + "\n");
+			}
+			escritor.close();
+			System.out.println("Los elementos se han guardado ");
+		} catch (IOException e) {
+			System.out.println("error");
+			e.printStackTrace();
+
+		}
+
+		return listaPedido;
 	}
 }

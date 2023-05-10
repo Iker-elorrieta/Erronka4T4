@@ -62,4 +62,11 @@ class LoroTest {
 		assertTrue(loroTest.equals(loroTest3));
 		assertFalse(loroTest.equals(loroTest.getClass()));
 	}
+	
+	@Test
+	public void testCosteVacuna() {
+		float resultado = loroTest.CosteVacuna(loroTest);
+		
+		assertEquals(resultado, 0);
+	}
 }
