@@ -98,7 +98,7 @@ public class PedirCita extends JFrame {
 				}
 			}
 		});
-		btnEliminarAnimal.setBounds(139, 227, 115, 23);
+		btnEliminarAnimal.setBounds(114, 227, 166, 23);
 		contentPane.add(btnEliminarAnimal);
 
 		JButton btnPedirCita = new JButton("Pedir Cita");
