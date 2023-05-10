@@ -125,62 +125,66 @@ public class PedirCitaAnimalSeleccionado extends JFrame {
 		JButton btnNewButton = new JButton("Aceptar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				float coste = 50;
-				String hora = spinner.getValue().toString();
-				String minuto = spinner_1.getValue().toString();
-				String horaSel = hora + ":" + minuto + ":00";
-				Time time = Time.valueOf(horaSel);
-				Consulta consulta = new Consulta();
-				consulta.setAnimal(animal);
-				consulta.setEmpleado(empleado);
 				java.util.Date selectedUtilDate = (java.util.Date) datePicker.getModel().getValue();
-				long time2 = selectedUtilDate.getTime();
-				java.sql.Date selectedSqlDate = new java.sql.Date(time2);
-				SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-				String fechaFormateada = formato.format(selectedSqlDate);
-				String[] fechaAModificar = fechaFormateada.split("-");
-				String anyo = fechaAModificar[0];
-				String mes = fechaAModificar[1];
-				String dia = fechaAModificar[2];
-				String fechaFinal = anyo + "-" + mes + "-" + dia;
-				Date ponerFecha = Date.valueOf(fechaFinal);
-				consulta.setFecha(ponerFecha);
-				consulta.setHora(time);
-				consulta.setIdConsulta(0);
-				if (chckbxNewCheckBox.isSelected()) {
-					String especie = animal.getEspecie();
-					String perro1 = "Perros";
-					String gato1 = "Gatos";
-					String loro1 = "Loros";
-					if (especie.equalsIgnoreCase(perro1)) {
-						Perro perro = new Perro();
-						coste += perro.CosteVacuna(perro);
+				if(selectedUtilDate != null && comboBox_1.getSelectedItem()!=null) {
+					float coste = 50;
+					String hora = spinner.getValue().toString();
+					String minuto = spinner_1.getValue().toString();
+					String horaSel = hora + ":" + minuto + ":00";
+					Time time = Time.valueOf(horaSel);
+					Consulta consulta = new Consulta();
+					consulta.setAnimal(animal);
+					consulta.setEmpleado(empleado);
+				
+					long time2 = selectedUtilDate.getTime();
+					java.sql.Date selectedSqlDate = new java.sql.Date(time2);
+					SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+					String fechaFormateada = formato.format(selectedSqlDate);
+					String[] fechaAModificar = fechaFormateada.split("-");
+					String anyo = fechaAModificar[0];
+					String mes = fechaAModificar[1];
+					String dia = fechaAModificar[2];
+					String fechaFinal = anyo + "-" + mes + "-" + dia;
+					Date ponerFecha = Date.valueOf(fechaFinal);
+					consulta.setFecha(ponerFecha);
+					consulta.setHora(time);
+					consulta.setIdConsulta(0);
+					if (chckbxNewCheckBox.isSelected()) {
+						String especie = animal.getEspecie();
+						String perro1 = "Perros";
+						String gato1 = "Gatos";
+						String loro1 = "Loros";
+						if (especie.equalsIgnoreCase(perro1)) {
+							Perro perro = new Perro();
+							coste += perro.CosteVacuna(perro);
 
-					} else if (especie.equalsIgnoreCase(gato1)) {
-						Gato gato = new Gato();
-						coste += gato.CosteVacuna(gato);
+						} else if (especie.equalsIgnoreCase(gato1)) {
+							Gato gato = new Gato();
+							coste += gato.CosteVacuna(gato);
 
-					} else if (especie.equalsIgnoreCase(loro1)) {
-						Loro loro = new Loro();
-						coste += loro.CosteVacuna(loro);
+						} else if (especie.equalsIgnoreCase(loro1)) {
+							Loro loro = new Loro();
+							coste += loro.CosteVacuna(loro);
+						}
+
 					}
-
+					consulta.setPrecio(coste);
+					try {
+						MetodosConsulta.insertarConsulta(consulta, animal.getIdAnimal(), empleado.getDni().toString());
+						JOptionPane.showMessageDialog(null, "El coste total es " + coste);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					MetodosGenerales metodosGenerales = new MetodosGenerales();
+					try {
+						metodosGenerales.ArrayListTxt(consulta, cliente);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
-				consulta.setPrecio(coste);
-				try {
-					MetodosConsulta.insertarConsulta(consulta, animal.getIdAnimal(), empleado.getDni().toString());
-					JOptionPane.showMessageDialog(null, "El coste total es " + coste);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				MetodosGenerales metodosGenerales = new MetodosGenerales();
-				try {
-					metodosGenerales.ArrayListTxt(consulta, cliente);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				
 			}
 		});
 		btnNewButton.setBounds(289, 203, 110, 36);
