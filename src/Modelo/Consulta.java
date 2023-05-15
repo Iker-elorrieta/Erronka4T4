@@ -2,18 +2,18 @@ package Modelo;
 
 import java.sql.Time;
 import java.util.Date;
-import ModeloAnimal.Animales;
+import ModeloAnimal.Animal;
 import ModeloPerfil.Empleado;
 
 public class Consulta {
 	private int idConsulta;
 	private float precio;
-	private Animales animal;
+	private Animal animal;
 	private Empleado empleado;
 	private Date fecha;
 	private Time hora;
 
-	public Consulta(int idConsulta, float precio, Animales animal, Empleado empleado, Date fecha, Time hora) {
+	public Consulta(int idConsulta, float precio, Animal animal, Empleado empleado, Date fecha, Time hora) {
 		super();
 		this.idConsulta = idConsulta;
 		this.precio = precio;
@@ -21,6 +21,10 @@ public class Consulta {
 		this.empleado = empleado;
 		this.fecha = fecha;
 		this.hora = hora;
+	}
+	
+	public Consulta() {
+		
 	}
 	
 	public float getPrecio() {
@@ -31,11 +35,11 @@ public class Consulta {
 		this.precio = precio;
 	}
 
-	public Animales getAnimal() {
+	public Animal getAnimal() {
 		return animal;
 	}
 
-	public void setAnimal(Animales animal) {
+	public void setAnimal(Animal animal) {
 		this.animal = animal;
 	}
 

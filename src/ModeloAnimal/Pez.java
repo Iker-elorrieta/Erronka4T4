@@ -5,7 +5,7 @@ import java.util.Objects;
 
 import ModeloPerfil.Cliente;
 
-public class Pez extends Animales {
+public class Pez extends Animal {
 
 	public Pez( String nombreAnimal, int idAnimal, int edad, String especie, String sexo,
 			Cliente cliente) {
@@ -13,6 +13,9 @@ public class Pez extends Animales {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Pez() {
+		
+	}
 
 	@Override
 	public String toString() {

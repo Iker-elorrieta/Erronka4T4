@@ -1,17 +1,18 @@
 package Modelo;
 
-public class Producto {
+public class Producto extends ObjetosComprables{
 
 	private String nombreProducto;
-	private float precio;
-	private int stock;
 	private int codProducto;
 
 	public Producto(String nombreProducto, float precio, int stock, int codProducto) {
+		super(precio, stock);
 		this.nombreProducto = nombreProducto;
-		this.precio = precio;
-		this.stock = stock;
 		this.codProducto = codProducto;
+	}
+	
+	public Producto() {
+		
 	}
 
 	public String getNombreProducto() {
@@ -20,22 +21,6 @@ public class Producto {
 
 	public void setNombreProducto(String nombreProducto) {
 		this.nombreProducto = nombreProducto;
-	}
-
-	public float getPrecio() {
-		return precio;
-	}
-
-	public void setPrecio(float precio) {
-		this.precio = precio;
-	}
-
-	public int getStock() {
-		return stock;
-	}
-
-	public void setStock(int stock) {
-		this.stock = stock;
 	}
 
 	public int getCodProducto() {
