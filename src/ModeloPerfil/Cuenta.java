@@ -1,6 +1,5 @@
 package ModeloPerfil;
 
-
 public class Cuenta {
 	private int numeroCuenta;
 	Cliente cliente;
@@ -10,9 +9,27 @@ public class Cuenta {
 		this.numeroCuenta = numeroCuenta;
 		this.cliente = cliente;
 	}
+
 	public Cuenta() {
-		// TODO Auto-generated constructor stub
+
 	}
+
+	public int getNumeroCuenta() {
+		return numeroCuenta;
+	}
+
+	public void setNumeroCuenta(int numeroCuenta) {
+		this.numeroCuenta = numeroCuenta;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -24,18 +41,7 @@ public class Cuenta {
 		Cuenta other = (Cuenta) obj;
 		return numeroCuenta == other.numeroCuenta;
 	}
-	public int getNumeroCuenta() {
-		return numeroCuenta;
-	}
-	public void setNumeroCuenta(int numeroCuenta) {
-		this.numeroCuenta = numeroCuenta;
-	}
-	public Cliente getCliente() {
-		return cliente;
-	}
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
+
 	@Override
 	public String toString() {
 		return "Cuenta [numeroCuenta=" + numeroCuenta + ", cliente=" + cliente + "]";

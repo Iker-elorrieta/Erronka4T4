@@ -2,7 +2,6 @@ package Vista;
 
 import javax.swing.JFrame;
 
-
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -29,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Color;
 
 public class AnaydirAnimal extends JFrame {
+
 	/**
 	 * 
 	 */
@@ -44,6 +44,8 @@ public class AnaydirAnimal extends JFrame {
 	final String loro = "Loro";
 	final String pez = "Pez";
 	MetodosAnimal ma = new MetodosAnimal();
+	ventanaCliente ventanacliente;
+
 
 	/**
 	 * Launch the application.
@@ -51,17 +53,17 @@ public class AnaydirAnimal extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AnaydirAnimal(Cliente cliente) {
+	public AnaydirAnimal(Cliente cliente, boolean atras) {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 743, 410);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblNewLabel = new JLabel("Añade tu mascota");
+		JLabel lblNewLabel = new JLabel("Añade tu mascota:");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblNewLabel.setBounds(10, 23, 296, 41);
 		contentPane.add(lblNewLabel);
@@ -71,36 +73,36 @@ public class AnaydirAnimal extends JFrame {
 		contentPane.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_2 = new JLabel("Edad:");
-		lblNewLabel_2.setBounds(10, 121, 59, 14);
+		lblNewLabel_2.setBounds(10, 165, 59, 14);
 		contentPane.add(lblNewLabel_2);
 
 		JLabel lblNewLabel_3 = new JLabel("Especie:");
-		lblNewLabel_3.setBounds(10, 165, 59, 14);
+		lblNewLabel_3.setBounds(10, 235, 59, 14);
 		contentPane.add(lblNewLabel_3);
 
 		JLabel lblNewLabel_4 = new JLabel("Sexo:");
-		lblNewLabel_4.setBounds(10, 204, 59, 14);
+		lblNewLabel_4.setBounds(293, 235, 59, 14);
 		contentPane.add(lblNewLabel_4);
 
 		textField = new JTextField();
-		textField.setBounds(68, 83, 163, 20);
+		textField.setBounds(68, 83, 339, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
 
 		textField_1 = new JTextField();
-		textField_1.setBounds(68, 118, 59, 20);
+		textField_1.setBounds(68, 162, 339, 20);
 		contentPane.add(textField_1);
 		textField_1.setColumns(10);
 
 		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.setBounds(68, 161, 106, 22);
+		comboBox.setBounds(104, 231, 106, 22);
 		contentPane.add(comboBox);
 		for (int i = 0; i < especies.length; i++) {
 			comboBox.addItem(especies[i]);
 		}
 
 		JComboBox<String> comboBox_1 = new JComboBox<String>();
-		comboBox_1.setBounds(68, 200, 45, 22);
+		comboBox_1.setBounds(362, 231, 45, 22);
 		contentPane.add(comboBox_1);
 
 		JButton btnNewButton = new JButton("Aceptar");
@@ -178,11 +180,11 @@ public class AnaydirAnimal extends JFrame {
 					}
 				}
 				if (bien) {
-					MetodosCliente cl = new MetodosCliente();
+					MetodosCliente metodosCliente = new MetodosCliente();
 					try {
-						ArrayList<Cliente> cs = cl.recogerClienteYSusAnimales();
-						PedirCita sa = new PedirCita(cliente, cs);
-						sa.setVisible(true);
+						ArrayList<Cliente> listCliente = metodosCliente.recogerClienteYSusAnimales();
+						PedirCita pedirCita = new PedirCita(cliente, listCliente, atras);
+						pedirCita.setVisible(true);
 						dispose();
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
@@ -193,22 +195,30 @@ public class AnaydirAnimal extends JFrame {
 
 			}
 		});
-		btnNewButton.setBounds(309, 204, 106, 23);
+		btnNewButton.setBounds(611, 337, 106, 23);
 		contentPane.add(btnNewButton);
 
-		JButton btnNewButton_1 = new JButton("Atras");
-		btnNewButton_1.addActionListener(new ActionListener() {
+		JButton btnAtras = new JButton("Atras");
+		btnAtras.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				lblNewLabel_5.setVisible(false);
 				lblNewLabel_6.setVisible(false);
 				textField.setText("");
 				textField_1.setText("");
-				MetodosCliente cl = new MetodosCliente();
+				MetodosCliente metodosCliente = new MetodosCliente();
 				try {
-					ArrayList<Cliente> cs = cl.recogerClienteYSusAnimales();
-					PedirCita sa = new PedirCita(cliente, cs);
-					sa.setVisible(true);
-					dispose();
+					ArrayList<Cliente> listCliente = metodosCliente.recogerClienteYSusAnimales();
+					if(atras == false) {
+						ventanacliente = new ventanaCliente(cliente);
+                        ventanacliente.setVisible(true);
+                        dispose();
+					}else {
+						
+						PedirCita pedirCita = new PedirCita(cliente, listCliente, atras);
+						pedirCita.setVisible(true);
+						dispose();
+					}
+					
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -216,18 +226,18 @@ public class AnaydirAnimal extends JFrame {
 
 			}
 		});
-		btnNewButton_1.setBounds(309, 11, 106, 23);
-		contentPane.add(btnNewButton_1);
+		btnAtras.setBounds(10, 337, 106, 23);
+		contentPane.add(btnAtras);
 
 		lblNewLabel_5 = new JLabel("Pon un nombre");
 		lblNewLabel_5.setForeground(new Color(255, 0, 0));
-		lblNewLabel_5.setBounds(241, 86, 121, 14);
+		lblNewLabel_5.setBounds(475, 86, 153, 14);
 		contentPane.add(lblNewLabel_5);
 		lblNewLabel_5.setVisible(false);
 
 		lblNewLabel_6 = new JLabel("Pon una edad");
 		lblNewLabel_6.setForeground(new Color(255, 0, 0));
-		lblNewLabel_6.setBounds(139, 121, 92, 14);
+		lblNewLabel_6.setBounds(475, 165, 153, 14);
 		contentPane.add(lblNewLabel_6);
 		lblNewLabel_6.setVisible(false);
 		for (int i = 0; i < sexo.length; i++) {

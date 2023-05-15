@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -29,11 +30,7 @@ public class MostrarEmple extends JFrame {
 	
 	String recogerDNI="";
 	Empleado empleado;
-
-	/**
-	 * Launch the application.
-	 */
-
+	
 	/**
 	 * Create the frame.
 	 * 
@@ -50,16 +47,21 @@ public class MostrarEmple extends JFrame {
 		btnEliminarEmpleado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DefaultTableModel modelEditar;
-				modelEditar = (DefaultTableModel) table.getModel();
-				DefaultTableModel tm = (DefaultTableModel) table.getModel();
-				recogerDNI = String.valueOf(tm.getValueAt(table.getSelectedRow(), 0));
-				try {
-					metodosEmpleado.eliminarEmpleado(recogerDNI);
-					modelEditar.removeRow(table.getSelectedRow());
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				if (table.getSelectedRow() != -1) {
+					modelEditar = (DefaultTableModel) table.getModel();
+					DefaultTableModel tm = (DefaultTableModel) table.getModel();
+					recogerDNI = String.valueOf(tm.getValueAt(table.getSelectedRow(), 0));
+					try {
+						metodosEmpleado.eliminarEmpleado(recogerDNI);
+						modelEditar.removeRow(table.getSelectedRow());
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Selecciona un empleado");
 				}
+
 			}
 		});
 		contentPane.setLayout(null);
@@ -125,7 +127,6 @@ public class MostrarEmple extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
 			}
 		});
 		btnAumentarAntiguedad.setBounds(151, 337, 171, 23);

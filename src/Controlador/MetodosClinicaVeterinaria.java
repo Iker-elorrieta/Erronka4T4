@@ -32,7 +32,7 @@ public class MetodosClinicaVeterinaria extends ManagerAbstract {
 	final String perros = "Perros";
 	final String gatos = "Gatos";
 	final String loros = "Loros";
-	final String pez = "Pez";
+	final String pez = "Peces";
 	final String limpieza = "Limpieza";
 	final String ventas = "Ventas";
 
@@ -77,11 +77,9 @@ public class MetodosClinicaVeterinaria extends ManagerAbstract {
 				} else if (especializacion.equalsIgnoreCase(pez)) {
 					empleado.setEspecializacion(Especialidad.Pez);
 				} else if (especializacion.equalsIgnoreCase(limpieza)) {
-					empleado.setEspecializacion(Especialidad.Limpieza);
-				} else if(especializacion.equalsIgnoreCase(ventas)){
-					empleado.setEspecializacion(Especialidad.Ventas);
-				}else {
-					empleado.setEspecializacion(Especialidad.Admin);
+					empleado.setEspecializacion(Especialidad.limpieza);
+				} else {
+					empleado.setEspecializacion(Especialidad.ventas);
 				}
 				listaEmpleado.add(empleado);
 			}

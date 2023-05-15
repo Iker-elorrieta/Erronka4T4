@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 import Controlador.MetodosGenerales;
@@ -43,7 +44,7 @@ public class TiendaCliente extends JFrame {
 	 */
 	public TiendaCliente(Cliente clienteLogIn) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 743, 410);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -58,18 +59,28 @@ public class TiendaCliente extends JFrame {
 				dispose();
 			}
 		});
-		btnAtras.setBounds(10, 227, 89, 23);
+		btnAtras.setBounds(25, 337, 89, 23);
 		contentPane.add(btnAtras);
 		
 		scrollpanelUbicacion = new JScrollPane();
 		scrollpanelUbicacion.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-		scrollpanelUbicacion.setBounds(25, 55, 150, 73);
+		scrollpanelUbicacion.setBounds(36, 73, 281, 189);
 		contentPane.add(scrollpanelUbicacion);
+		
+		String[] titulosUbicacion = new String[] { "Ubicacion" };
 		
 		tableUbicacion = new JTable();
 		try {
-			tableUbicacion = metodosGenerales.generarTablaUbicaciones();
+			
+			Object [][] txtUbicacion = metodosGenerales.generarTablaUbicaciones();
+			
+			tableUbicacion = new JTable();
+			tableUbicacion.setModel(new DefaultTableModel(txtUbicacion, titulosUbicacion));
+			tableUbicacion.setCellSelectionEnabled(false);
+			tableUbicacion.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			tableUbicacion.setDefaultEditor(Object.class, null);
 			scrollpanelUbicacion.setViewportView(tableUbicacion);
+			
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -77,12 +88,19 @@ public class TiendaCliente extends JFrame {
 		
 		scrollpanelTienda = new JScrollPane();
 		scrollpanelTienda.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-		scrollpanelTienda.setBounds(249, 55, 150, 55);
+		scrollpanelTienda.setBounds(355, 73, 293, 191);
 		contentPane.add(scrollpanelTienda);
 		
 		tableTienda = new JTable();
 		try {
-			tableTienda = metodosGenerales.generarTablaTiendas();
+			String[] titulosTienda = new String[] { "Tienda" };
+			Object [][] txtTienda = metodosGenerales.generarTablaTiendas();
+			
+			tableTienda.setModel(new DefaultTableModel(txtTienda, titulosTienda));
+			tableTienda.setCellSelectionEnabled(false);
+			tableTienda.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			tableTienda.setDefaultEditor(Object.class, null);
+			
 			scrollpanelTienda.setViewportView(tableTienda);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
@@ -111,15 +129,15 @@ public class TiendaCliente extends JFrame {
 				}
 			}
 		});
-		btnAceptar.setBounds(335, 227, 89, 23);
+		btnAceptar.setBounds(628, 337, 89, 23);
 		contentPane.add(btnAceptar);
 		
 		lblUbicacion = new JLabel("Selecciona una ubicacion:");
-		lblUbicacion.setBounds(25, 30, 150, 14);
+		lblUbicacion.setBounds(36, 30, 150, 14);
 		contentPane.add(lblUbicacion);
 		
 		lblElemento = new JLabel("Selecciona una elemento:");
-		lblElemento.setBounds(249, 30, 150, 14);
+		lblElemento.setBounds(355, 30, 150, 14);
 		contentPane.add(lblElemento);
 	}
 }

@@ -72,14 +72,14 @@ class EmpleadoTest {
 	@Test
 	void testCalcularSalarioProgramador() {
 
-		float salarioEsperado = empleadoTest.calcularSalario(Especialidad.Limpieza);
+		float salarioEsperado = empleadoTest.calcularSalario(Especialidad.limpieza);
 		assertEquals(salarioEsperado, 0);
 
 	}
 
 	@Test
 	void testBonoAntiguedadProgramador() {
-		float bonoAntiguedad = empleadoTest.bonoAntiguedad(antiguedad, Especialidad.Ventas);
+		float bonoAntiguedad = empleadoTest.bonoAntiguedad(antiguedad, Especialidad.ventas);
 		assertEquals(bonoAntiguedad, 0);
 	}
 }

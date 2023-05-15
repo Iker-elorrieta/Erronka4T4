@@ -58,10 +58,7 @@ public class PedirCitaAnimalSeleccionado extends JFrame {
 	
 	Empleado empleado;
 	JCheckBox chckbxNewCheckBox;
-
-	/**
-	 * Launch the application.
-	 */
+	PedirCita ventanaPedirCita;
 
 	/**
 	 * Create the frame.
@@ -70,7 +67,7 @@ public class PedirCitaAnimalSeleccionado extends JFrame {
 	 */
 	Animal animal;
 
-	public PedirCitaAnimalSeleccionado(Cliente cliente, int valor) {
+	public PedirCitaAnimalSeleccionado(Cliente cliente, int valor, boolean atras) {
 		MetodosAnimal ma = new MetodosAnimal();
 		try {
 			ArrayList<Animal> an = ma.recogerAnimal();
@@ -85,7 +82,7 @@ public class PedirCitaAnimalSeleccionado extends JFrame {
 		}
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 743, 410);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		UtilDateModel model = new UtilDateModel();
@@ -94,7 +91,7 @@ public class PedirCitaAnimalSeleccionado extends JFrame {
 
 		JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
 		datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-		datePicker.setBounds(80, 83, 165, 25);
+		datePicker.setBounds(454, 76, 165, 25);
 		contentPane.add(datePicker);
 
 		setContentPane(contentPane);
@@ -107,19 +104,19 @@ public class PedirCitaAnimalSeleccionado extends JFrame {
 
 		JLabel lblNewLabel_1 = new JLabel("Ubicacion:");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblNewLabel_1.setBounds(10, 47, 68, 25);
+		lblNewLabel_1.setBounds(10, 76, 68, 25);
 		contentPane.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_2 = new JLabel("Fecha:");
-		lblNewLabel_2.setBounds(10, 83, 60, 25);
+		lblNewLabel_2.setBounds(402, 77, 60, 25);
 		contentPane.add(lblNewLabel_2);
 
 		JLabel lblNewLabel_3 = new JLabel("Hora:");
-		lblNewLabel_3.setBounds(10, 119, 55, 25);
+		lblNewLabel_3.setBounds(10, 138, 55, 25);
 		contentPane.add(lblNewLabel_3);
 
 		comboBox = new JComboBox<String>();
-		comboBox.setBounds(82, 49, 119, 22);
+		comboBox.setBounds(88, 78, 119, 22);
 		contentPane.add(comboBox);
 
 		JButton btnNewButton = new JButton("Aceptar");
@@ -171,23 +168,30 @@ public class PedirCitaAnimalSeleccionado extends JFrame {
 					consulta.setPrecio(coste);
 					try {
 						MetodosConsulta.insertarConsulta(consulta, animal.getIdAnimal(), empleado.getDni().toString());
-						JOptionPane.showMessageDialog(null, "El coste total es " + coste);
+						JOptionPane.showMessageDialog(null, "El coste total es " + coste + "$");
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					MetodosGenerales metodosGenerales = new MetodosGenerales();
 					try {
+						
 						metodosGenerales.ArrayListTxt(consulta, cliente);
+						ArrayList<Cliente> listaCliente = metodosCliente.recogerClienteYSusAnimales();
+						ventanaPedirCita = new PedirCita(cliente, listaCliente, atras);
+						ventanaPedirCita.setVisible(true);
+						dispose();
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Rellena todos los campos");
 				}
 				
 			}
 		});
-		btnNewButton.setBounds(289, 203, 110, 36);
+		btnNewButton.setBounds(585, 324, 110, 36);
 		contentPane.add(btnNewButton);
 		comboBox.addActionListener(e -> {
 			comboBox_1.removeAllItems();
@@ -213,34 +217,34 @@ public class PedirCitaAnimalSeleccionado extends JFrame {
 
 		spinner = new JSpinner();
 		spinner.setModel(new SpinnerNumberModel(8, 8, 18, 1));
-		spinner.setBounds(53, 121, 51, 22);
+		spinner.setBounds(91, 139, 51, 22);
 		contentPane.add(spinner);
 
 		JLabel lblNewLabel_4 = new JLabel(":");
 		lblNewLabel_4.setFont(new Font("Dialog", Font.PLAIN, 18));
-		lblNewLabel_4.setBounds(100, 120, 27, 24);
+		lblNewLabel_4.setBounds(152, 138, 27, 24);
 		contentPane.add(lblNewLabel_4);
 
 		spinner_1 = new JSpinner();
 		spinner_1.setModel(new SpinnerNumberModel(0, 0, 59, 1));
-		spinner_1.setBounds(116, 122, 46, 22);
+		spinner_1.setBounds(161, 138, 46, 22);
 		contentPane.add(spinner_1);
 
 		JLabel lblNewLabel_5 = new JLabel("Empleados disponibles:");
-		lblNewLabel_5.setBounds(10, 164, 152, 16);
+		lblNewLabel_5.setBounds(10, 199, 152, 16);
 		contentPane.add(lblNewLabel_5);
 
 		comboBox_1 = new JComboBox<String>();
-		comboBox_1.setBounds(163, 161, 129, 22);
+		comboBox_1.setBounds(165, 196, 129, 22);
 		contentPane.add(comboBox_1);
 
 		chckbxNewCheckBox = new JCheckBox("Poner Vacuna");
-		chckbxNewCheckBox.setBounds(10, 207, 107, 28);
+		chckbxNewCheckBox.setBounds(10, 249, 107, 28);
 		contentPane.add(chckbxNewCheckBox);
 
 		JLabel lblNewLabel_6 = new JLabel("Coste de la consulta normal: 50$");
 		lblNewLabel_6.setFont(new Font("Dialog", Font.PLAIN, 13));
-		lblNewLabel_6.setBounds(208, 15, 220, 19);
+		lblNewLabel_6.setBounds(475, 15, 220, 19);
 		contentPane.add(lblNewLabel_6);
 		
 		JButton btnNewButton_1 = new JButton("Atras");
@@ -248,7 +252,7 @@ public class PedirCitaAnimalSeleccionado extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					ArrayList<Cliente> listaCliente = metodosCliente.recogerClienteYSusAnimales();
-					PedirCita ventanaPedirCita = new PedirCita(cliente, listaCliente);
+					PedirCita ventanaPedirCita = new PedirCita(cliente, listaCliente, atras);
 					ventanaPedirCita.setVisible(true);
 					dispose();
 				} catch (SQLException e1) {
@@ -259,7 +263,7 @@ public class PedirCitaAnimalSeleccionado extends JFrame {
 				
 			}
 		});
-		btnNewButton_1.setBounds(139, 210, 106, 29);
+		btnNewButton_1.setBounds(11, 328, 106, 29);
 		contentPane.add(btnNewButton_1);
 		if (animal.getEspecie().equalsIgnoreCase(Especialidad.Pez.toString())) {
 			chckbxNewCheckBox.setEnabled(false);

@@ -16,6 +16,7 @@ import B.D_Util.DBUtils;
 import B.D_Util.ManagerAbstract;
 import Controlador.MetodosGestion;
 import Modelo.Gestion;
+import ModeloPerfil.Especializacion.Especialidad;
 
 class MetodosGestionTest extends ManagerAbstract {
 
@@ -34,26 +35,59 @@ class MetodosGestionTest extends ManagerAbstract {
 	final String codProducto = "CodProducto";
 	// -------------------------------------------//
 	final String dni = "DNI";
+	
+	// --------------------VariablesNecesariasParaElTest--------------------//
+	String fechaDate = "2023-02-13";
+	String dniNuevo = "26285531G";
+	int codGestionNueva = 900;
+	Date fechaNueva = Date.valueOf(fechaDate);
+	int cantidadNueva = 5;
+	String[] cantidadUpdate = { "15" };
+	int cantidadUpdateada = 15;
+	int cantidadUpdatear = 2654;
+	String column[] = { "Cantidad" };
+	
+	int codProductoNuevo = 900;
+	String nombreNuevoProducto = "Bolsas";
+	int stockNuevo = 16;
+	float precioNuevo = 18;
+
+	String nombreNuevoEmpleado = "Juan";
+	String apellidosNuevo = "Calvo";
+	String direccionNuevo = "AveCesas";
+	String contrasenyaNuevo = "2684";
+	float salarioNuevo = 5615;
+	int antiguedadNuevo = 25;
+	Especialidad especializacionNuevo = Especialidad.Perros;
+	int codClinicaNuevo = 900;
+	String ubicacionNueva = "Murcia";
 
 	@Test
 	void recogerGestionTest() {
 
-		String fechaDate = "2023-02-13";
-
-		String dniNuevo = "13240462Y";
-		int codProductoNuevo = 2;
-		int codGestionNueva = 900;
-		Date fechaNueva = Date.valueOf(fechaDate);
-		int cantidadNueva = 5;
-
 		ArrayList<Gestion> listaGestion;
 		try {
 
-			Connection conexion;
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			
 			Statement resul = conexion.createStatement();
+			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_PRODUCTOS + "`"
+					+ "(`CodProducto`, `Nombre`, `Stock`, `Precio`) " + "VALUES( '" + codProductoNuevo + "' , '"
+					+ nombreNuevoProducto + "' , '" + stockNuevo + "' , '" + precioNuevo + "');");
+			
+			Statement resul2 = conexion.createStatement();
+			resul2.executeUpdate("INSERT INTO " + ManagerAbstract.TABLE_CLINICAVETERINARIA
+					+ "(`CodClinica`, `Ubicacion`) VALUES ('" + codClinicaNuevo + "','" + ubicacionNueva + "');");
+			
+			Statement resu3 = conexion.createStatement();
+			resu3.executeUpdate("Insert into `" + ManagerAbstract.TABLE_EMPLEADO + "`"
+					+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`, `Salario`, `Antiguedad`, `Especializacion`, `CodClinica`) "
+					+ "VALUES( '" + dniNuevo + "' , '" + nombreNuevoEmpleado + "' , '" + apellidosNuevo + "' , '" + contrasenyaNuevo + "' , '"
+					+ direccionNuevo + "' , '" + salarioNuevo + "' , '" + antiguedadNuevo + "' , '" + especializacionNuevo + "' , '"
+					+ codClinicaNuevo + "');");
 
-			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_GESTION + "`"
+			Statement resul4 = conexion.createStatement();
+			resul4.executeUpdate("Insert into `" + ManagerAbstract.TABLE_GESTION + "`"
 					+ "(`CodGestion`, `Fecha`, `Cantidad`, `CodProducto`, `DNI`) " + "VALUES( '" + codGestionNueva
 					+ "' , '" + fechaNueva + "' , '" + cantidadNueva + "' , '" + codProductoNuevo + "' , '" + dniNuevo
 					+ "');");
@@ -68,12 +102,21 @@ class MetodosGestionTest extends ManagerAbstract {
 					resultado = listaGestion.get(pos).toString();
 				}
 			}
-			assertEquals(resultado, "Gestion [codGestion=900, cantidad=5, fecha=2023-02-13, empleado=Empleado [antiguedad=2, salario=1500.0, especializacion=Ventas, nombre=Francisco-Jose , apellido=Campo, dni=13240462Y, direccion=Praza Girón, 3, 4º, contrasenya=21], productos=[Producto [nombreProducto=Pienso para perros, precio=5.0, stock=15, codProducto=2], Producto [nombreProducto=Pienso para perros, precio=5.0, stock=15, codProducto=2]]]");			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			Statement resul2 = conexion.createStatement();
-
-			resul2.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_GESTION + "`" + "WHERE gestion.CodGestion = '"
-					+ codGestionNueva + "';");
+			
+			assertEquals(resultado, 
+					"Gestion [codGestion=900, cantidad=5, fecha=2023-02-13, empleado=Empleado [antiguedad=25, salario=5615.0, especializacion=Perros, nombre=Juan, apellido=Calvo, dni=26285531G, direccion=AveCesas, contrasenya=2684], productos=[Producto [nombreProducto=Bolsas, precio=18.0, stock=16, codProducto=900]]]");
+			
+			Statement resul5 = conexion.createStatement();
+			resul5.executeUpdate(
+					"DELETE FROM `" + ManagerAbstract.TABLE_EMPLEADO + "`" + "WHERE empleado.DNI = '" + dniNuevo + "';");
+			
+			Statement resul6 = conexion.createStatement();
+			resul6.executeUpdate("DELETE FROM " + ManagerAbstract.TABLE_CLINICAVETERINARIA + " WHERE CodClinica = "
+					+ "'" + codClinicaNuevo + "'");
+			
+			Statement resul7 = conexion.createStatement();
+			resul7.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_PRODUCTOS + "`" + "WHERE CodProducto = '"
+					+ codProductoNuevo + "';");
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -85,15 +128,6 @@ class MetodosGestionTest extends ManagerAbstract {
 	@Test
 	void insertarGestionTest() {
 
-		String fechaDate = "2023-02-13";
-
-		String dniNuevo = "13240462Y";
-		int codProductoNuevo = 2;
-
-		int codGestionNueva = 900;
-		Date fechaNueva = Date.valueOf(fechaDate);
-		int cantidadNueva = 5;
-
 		Gestion gestionNueva = new Gestion();
 
 		gestionNueva.setCantidad(cantidadNueva);
@@ -102,32 +136,49 @@ class MetodosGestionTest extends ManagerAbstract {
 
 		try {
 
-			Connection conexion;
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			
 			Statement resul = conexion.createStatement();
+			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_PRODUCTOS + "`"
+					+ "(`CodProducto`, `Nombre`, `Stock`, `Precio`) " + "VALUES( '" + codProductoNuevo + "' , '"
+					+ nombreNuevoProducto + "' , '" + stockNuevo + "' , '" + precioNuevo + "');");
+			
+			Statement resul2 = conexion.createStatement();
+			resul2.executeUpdate("INSERT INTO " + ManagerAbstract.TABLE_CLINICAVETERINARIA
+					+ "(`CodClinica`, `Ubicacion`) VALUES ('" + codClinicaNuevo + "','" + ubicacionNueva + "');");
+			
+			Statement resu3 = conexion.createStatement();
+			resu3.executeUpdate("Insert into `" + ManagerAbstract.TABLE_EMPLEADO + "`"
+					+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`, `Salario`, `Antiguedad`, `Especializacion`, `CodClinica`) "
+					+ "VALUES( '" + dniNuevo + "' , '" + nombreNuevoEmpleado + "' , '" + apellidosNuevo + "' , '" + contrasenyaNuevo + "' , '"
+					+ direccionNuevo + "' , '" + salarioNuevo + "' , '" + antiguedadNuevo + "' , '" + especializacionNuevo + "' , '"
+					+ codClinicaNuevo + "');");
 
-			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_GESTION + "`"
-					+ "(`CodGestion`, `Fecha`, `Cantidad`, `CodProducto`, `DNI`) " + "VALUES( '" + codGestionNueva
-					+ "' , '" + fechaNueva + "' , '" + cantidadNueva + "' , '" + codProductoNuevo + "' , '" + dniNuevo
-					+ "');");
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			metodosGestion.insertarGestion(gestionNueva, dniNuevo, codProductoNuevo);
+			
 			Statement sacaEmpleado = conexion.createStatement();
 			String sql = "select * from " + ManagerAbstract.TABLE_GESTION + " where gestion.CodGestion = '"
 					+ codGestionNueva + "';";
-			ResultSet resul2 = sacaEmpleado.executeQuery(sql);
-			while (resul2.next()) {
-				assertEquals(codGestionNueva, resul2.getInt(codGestion));
-				assertEquals(fechaNueva, resul2.getDate(fecha));
-				assertEquals(cantidadNueva, resul2.getInt(cantidad));
-				assertEquals(codProductoNuevo, resul2.getInt(codProducto));
-				assertEquals(dniNuevo, resul2.getString(dni));
+			ResultSet resul5 = sacaEmpleado.executeQuery(sql);
+			while (resul5.next()) {
+				assertEquals(codGestionNueva, resul5.getInt(codGestion));
+				assertEquals(fechaNueva, resul5.getDate(fecha));
+				assertEquals(cantidadNueva, resul5.getInt(cantidad));
+				assertEquals(codProductoNuevo, resul5.getInt(codProducto));
+				assertEquals(dniNuevo, resul5.getString(dni));
 			}
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			Statement resul3 = conexion.createStatement();
-
-			resul3.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_GESTION + "`" + "WHERE gestion.CodGestion = '"
-					+ codGestionNueva + "';");
+			Statement resul6 = conexion.createStatement();
+			resul6.executeUpdate(
+					"DELETE FROM `" + ManagerAbstract.TABLE_EMPLEADO + "`" + "WHERE empleado.DNI = '" + dniNuevo + "';");
+			
+			Statement resul7 = conexion.createStatement();
+			resul7.executeUpdate("DELETE FROM " + ManagerAbstract.TABLE_CLINICAVETERINARIA + " WHERE CodClinica = "
+					+ "'" + codClinicaNuevo + "'");
+			
+			Statement resul8 = conexion.createStatement();
+			resul8.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_PRODUCTOS + "`" + "WHERE CodProducto = '"
+					+ codProductoNuevo + "';");
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -138,35 +189,53 @@ class MetodosGestionTest extends ManagerAbstract {
 	@Test
 	void eliminarGestionTest() {
 
-		String fechaDate = "2023-02-13";
-
-		String dniNuevo = "13240462Y";
-		int codProductoNuevo = 2;
-
-		int codGestionNueva = 900;
-		Date fechaNueva = Date.valueOf(fechaDate);
-		int cantidadNueva = 5;
-
 		try {
 
-			Connection conexion;
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			
 			Statement resul = conexion.createStatement();
+			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_PRODUCTOS + "`"
+					+ "(`CodProducto`, `Nombre`, `Stock`, `Precio`) " + "VALUES( '" + codProductoNuevo + "' , '"
+					+ nombreNuevoProducto + "' , '" + stockNuevo + "' , '" + precioNuevo + "');");
+			
+			Statement resul2 = conexion.createStatement();
+			resul2.executeUpdate("INSERT INTO " + ManagerAbstract.TABLE_CLINICAVETERINARIA
+					+ "(`CodClinica`, `Ubicacion`) VALUES ('" + codClinicaNuevo + "','" + ubicacionNueva + "');");
+			
+			Statement resu3 = conexion.createStatement();
+			resu3.executeUpdate("Insert into `" + ManagerAbstract.TABLE_EMPLEADO + "`"
+					+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`, `Salario`, `Antiguedad`, `Especializacion`, `CodClinica`) "
+					+ "VALUES( '" + dniNuevo + "' , '" + nombreNuevoEmpleado + "' , '" + apellidosNuevo + "' , '" + contrasenyaNuevo + "' , '"
+					+ direccionNuevo + "' , '" + salarioNuevo + "' , '" + antiguedadNuevo + "' , '" + especializacionNuevo + "' , '"
+					+ codClinicaNuevo + "');");
 
-			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_GESTION + "`"
+			Statement resul4 = conexion.createStatement();
+			resul4.executeUpdate("Insert into `" + ManagerAbstract.TABLE_GESTION + "`"
 					+ "(`CodGestion`, `Fecha`, `Cantidad`, `CodProducto`, `DNI`) " + "VALUES( '" + codGestionNueva
 					+ "' , '" + fechaNueva + "' , '" + cantidadNueva + "' , '" + codProductoNuevo + "' , '" + dniNuevo
 					+ "');");
 
 			metodosGestion.eliminarGestion(codGestionNueva);
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement sacaEmpleado = conexion.createStatement();
 			String sql = "select * from " + ManagerAbstract.TABLE_GESTION + " where gestion.CodGestion = '"
 					+ codGestionNueva + "';";
-			ResultSet resul2 = sacaEmpleado.executeQuery(sql);
-
-			assertEquals(resul2.isBeforeFirst(), false);
+			ResultSet resul5 = sacaEmpleado.executeQuery(sql);
+			
+			assertEquals(resul5.isBeforeFirst(), false);
+			
+			Statement resul6 = conexion.createStatement();
+			resul6.executeUpdate(
+					"DELETE FROM `" + ManagerAbstract.TABLE_EMPLEADO + "`" + "WHERE empleado.DNI = '" + dniNuevo + "';");
+			
+			Statement resul7 = conexion.createStatement();
+			resul7.executeUpdate("DELETE FROM " + ManagerAbstract.TABLE_CLINICAVETERINARIA + " WHERE CodClinica = "
+					+ "'" + codClinicaNuevo + "'");
+			
+			Statement resul8 = conexion.createStatement();
+			resul8.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_PRODUCTOS + "`" + "WHERE CodProducto = '"
+					+ codProductoNuevo + "';");
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -176,20 +245,6 @@ class MetodosGestionTest extends ManagerAbstract {
 	@Test
 	void updateGestionTest() {
 
-		String[] cantidadNueva = { "15" };
-		int cantidadUpdateada = 15;
-		int cantidadUpdatear = 2654;
-
-		String fechaDate = "2023-02-13";
-
-		String dniNuevo = "13240462Y";
-		int codProductoNuevo = 2;
-
-		int codGestionNueva = 900;
-		Date fechaNueva = Date.valueOf(fechaDate);
-
-		String column[] = { "Cantidad" };
-
 		Gestion gestionNueva = new Gestion();
 
 		gestionNueva.setCantidad(2654);
@@ -197,32 +252,51 @@ class MetodosGestionTest extends ManagerAbstract {
 		gestionNueva.setFecha(fechaNueva);
 
 		try {
-
-			Connection conexion;
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			
 			Statement resul = conexion.createStatement();
+			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_PRODUCTOS + "`"
+					+ "(`CodProducto`, `Nombre`, `Stock`, `Precio`) " + "VALUES( '" + codProductoNuevo + "' , '"
+					+ nombreNuevoProducto + "' , '" + stockNuevo + "' , '" + precioNuevo + "');");
+			
+			Statement resul2 = conexion.createStatement();
+			resul2.executeUpdate("INSERT INTO " + ManagerAbstract.TABLE_CLINICAVETERINARIA
+					+ "(`CodClinica`, `Ubicacion`) VALUES ('" + codClinicaNuevo + "','" + ubicacionNueva + "');");
+			
+			Statement resu3 = conexion.createStatement();
+			resu3.executeUpdate("Insert into `" + ManagerAbstract.TABLE_EMPLEADO + "`"
+					+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`, `Salario`, `Antiguedad`, `Especializacion`, `CodClinica`) "
+					+ "VALUES( '" + dniNuevo + "' , '" + nombreNuevoEmpleado + "' , '" + apellidosNuevo + "' , '" + contrasenyaNuevo + "' , '"
+					+ direccionNuevo + "' , '" + salarioNuevo + "' , '" + antiguedadNuevo + "' , '" + especializacionNuevo + "' , '"
+					+ codClinicaNuevo + "');");
 
-			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_GESTION + "`"
+			Statement resul4 = conexion.createStatement();
+			resul4.executeUpdate("Insert into `" + ManagerAbstract.TABLE_GESTION + "`"
 					+ "(`CodGestion`, `Fecha`, `Cantidad`, `CodProducto`, `DNI`) " + "VALUES( '" + codGestionNueva
-					+ "' , '" + fechaNueva + "' , '" + cantidadUpdatear + "' , '" + codProductoNuevo + "' , '"
-					+ dniNuevo + "');");
+					+ "' , '" + fechaNueva + "' , '" + cantidadNueva + "' , '" + codProductoNuevo + "' , '" + dniNuevo
+					+ "');");
+			
+			metodosGestion.updateGestion(column, cantidadUpdate, gestionNueva);
 
-			metodosGestion.updateGestion(column, cantidadNueva, gestionNueva);
-
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement sacaCliente = conexion.createStatement();
 			String sql = "select * from " + ManagerAbstract.TABLE_GESTION + " where CodGestion = '" + codGestionNueva
 					+ " ';";
-			ResultSet resul2 = sacaCliente.executeQuery(sql);
-			while (resul2.next()) {
-				assertEquals(cantidadUpdateada, resul2.getInt(cantidad));
+			ResultSet resul5 = sacaCliente.executeQuery(sql);
+			while (resul5.next()) {
+				assertEquals(cantidadUpdateada, resul5.getInt(cantidad));
 			}
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			Statement resul3 = conexion.createStatement();
-
-			resul3.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_GESTION + "`" + "WHERE gestion.CodGestion = '"
-					+ codGestionNueva + "';");
+			Statement resul6 = conexion.createStatement();
+			resul6.executeUpdate(
+					"DELETE FROM `" + ManagerAbstract.TABLE_EMPLEADO + "`" + "WHERE empleado.DNI = '" + dniNuevo + "';");
+			
+			Statement resul7 = conexion.createStatement();
+			resul7.executeUpdate("DELETE FROM " + ManagerAbstract.TABLE_CLINICAVETERINARIA + " WHERE CodClinica = "
+					+ "'" + codClinicaNuevo + "'");
+			
+			Statement resul8 = conexion.createStatement();
+			resul8.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_PRODUCTOS + "`" + "WHERE CodProducto = '"
+					+ codProductoNuevo + "';");
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

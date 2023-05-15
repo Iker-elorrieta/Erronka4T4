@@ -1,8 +1,7 @@
 package Modelo;
 
 import java.sql.Time;
-
-import java.sql.Date;
+import java.util.Date;
 import ModeloAnimal.Animal;
 import ModeloPerfil.Empleado;
 

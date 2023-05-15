@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import B.D_Util.DBUtils;
 import B.D_Util.ManagerAbstract;
+import Modelo.ObjetosComprables;
 import ModeloAnimal.Mascota;
 
 public class MetodosMascota extends ManagerAbstract {
@@ -85,13 +86,13 @@ public class MetodosMascota extends ManagerAbstract {
 		} while (cont < nombreColumna.length);
 	}
 	
-	public ArrayList<Mascota> recogerMascotaTienda(String valorUbicacion) throws SQLException {
+	public ArrayList<ObjetosComprables> recogerMascotaTienda(String valorUbicacion) throws SQLException {
 
-		ArrayList<Mascota> listaMascota = new ArrayList<Mascota>();
+		ArrayList<ObjetosComprables> listaMascota = new ArrayList<ObjetosComprables>();
 		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement sacaProducto = conexion.createStatement();
-		String sql = "select m.Especie, m.Precio, m.Stock from " + ManagerAbstract.TABLE_MASCOTA + " m join " + ManagerAbstract.TABLE_TIENE +
+		String sql = "select m.Especie, m.Precio, m.Stock, m.CodMascota from " + ManagerAbstract.TABLE_MASCOTA + " m join " + ManagerAbstract.TABLE_TIENE +
 				" t on m.CodMascota = t.CodMascota join " + ManagerAbstract.TABLE_CLINICAVETERINARIA + " c on t.CodClinica = c.CodClinica " +
 				" WHERE c.Ubicacion = '" + valorUbicacion + "';";
 		ResultSet resul = sacaProducto.executeQuery(sql);
@@ -100,6 +101,7 @@ public class MetodosMascota extends ManagerAbstract {
 			mascota.setEspecie(resul.getString(especie));
 			mascota.setPrecio(resul.getFloat(precio));
 			mascota.setStock(resul.getInt(stock));
+			mascota.setCodMascota(resul.getInt(stock));
 			listaMascota.add(mascota);
 		}
 		return listaMascota;

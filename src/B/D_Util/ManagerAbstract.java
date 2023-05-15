@@ -14,11 +14,11 @@ public abstract class ManagerAbstract {
 	protected static final String TABLE_CONSULTA = "consulta";
 	protected static final String TABLE_GESTION = "gestion";
 	protected static final String TABLE_PEDIDO = "pedidos";
+	protected static final String TABLE_CUENTA = "cuenta";
+	protected static final String TABLE_MASCOTA = "mascotas";
 	protected static final String TABLE_ADOPCION = "adopcion";
 	protected static final String TABLE_GESTIONANIMAL = "gestionanimal";
-	protected static final String TABLE_MASCOTA = "mascotas";
-	protected static final String TABLE_CUENTA = "cuenta";
-	protected static final String TABLE_ALMACEN = "almacen";
 	protected static final String TABLE_TIENE = "tiene";
+	protected static final String TABLE_ALMACEN = "almacen";
 }
 

@@ -25,9 +25,9 @@ public class MetodosCliente extends ManagerAbstract {
 	final String cantidadMascotas = "CantidadMascotas";
 	// -------------------------------------------//
 	String especie = "";
-	final String perro = "Perros";
-	final String gato = "Gatos";
-	final String loro = "Loros";
+	final String perro = "Perro";
+	final String gato = "Gato";
+	final String loro = "Loro";
 	final String pez = "Pez";
 	// -------------------------------------------//
 	final String idAnimal = "IdAnimal";
@@ -106,6 +106,7 @@ public class MetodosCliente extends ManagerAbstract {
 		return listaClientes;
 
 	}
+	
 
 	public void insertarCliente(Cliente clienteNuevo) throws SQLException{
 

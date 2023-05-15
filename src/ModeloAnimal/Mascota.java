@@ -1,22 +1,23 @@
 package ModeloAnimal;
 
-public class Mascota {
+import Modelo.ObjetosComprables;
+
+public class Mascota extends ObjetosComprables{
 
 	private int codMascota;
 	private String especie;
-	private int stock;
-	private float precio;
 
-	public Mascota(int codMascota, String especie, int stock, float precio) {
+
+	public Mascota(int codMascota, String especie, float precio, int stock) {
+		super(precio, stock);
 		this.codMascota = codMascota;
 		this.especie = especie;
-		this.stock = stock;
-		this.precio = precio;
 	}
+
 
 	public Mascota() {
-
 	}
+
 
 	public int getCodMascota() {
 		return codMascota;

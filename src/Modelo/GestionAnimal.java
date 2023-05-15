@@ -80,7 +80,10 @@ public class GestionAnimal {
 
 	@Override
 	public String toString() {
-		return "GestionAnimal [codGestionAnimal=" + codGestionAnimal + ", fecha=" + fecha + ", cantidad=" + cantidad + ", listaMAscota=" + listaMAscota + ", empleado=" + empleado + "]";
+		return "GestionAnimal [codGestionAnimal=" + codGestionAnimal + ", fecha=" + fecha + ", cantidad=" + cantidad
+				+ ", listaMAscota=" + listaMAscota + ", empleado=" + empleado + "]";
 	}
+
+
 
 }

@@ -6,9 +6,8 @@ import ModeloPerfil.Cliente;
 
 public class Loro extends Animal  implements Vacuna{
 
-	public Loro(String nombreAnimal, int idAnimal, int edad, String especie, String sexo,
-			Cliente cliente) {
-		super( nombreAnimal, idAnimal, edad, especie, sexo, cliente);
+	public Loro(String nombreAnimal, int idAnimal, int edad, String especie, String sexo,Cliente cliente) {
+		super(nombreAnimal, idAnimal, edad, especie, sexo, cliente);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -35,7 +34,6 @@ public class Loro extends Animal  implements Vacuna{
 		return Objects.equals(idAnimal, other.idAnimal);
 	}
 
-	@Override
 	public float CosteVacuna(Animal animal) {
 		// TODO Auto-generated method stub
 		float coste = 100;

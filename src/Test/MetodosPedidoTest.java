@@ -31,78 +31,89 @@ class MetodosPedidoTest extends ManagerAbstract {
 	final String codPedido = "CodPedido";
 	final String preciototal = "PrecioTotal";
 
+	// --------------------VariablesNecesariasParaElTest--------------------/
+	String fechaDate = "2023-02-13";
+	String horaTime = "13:55:36";
+	Date fechaNueva = Date.valueOf(fechaDate);
+	Time horaNueva = Time.valueOf(horaTime);
+	int codPedidoNuevo = 900;
+	float precioTotalNuevo = 16813;
+	int cantidadProductosNuevo = 15;
+	String[] precioTotalNuevoUpdate = { "15" };
+	float precioTotalUpdateado = 15;
+	float precioTotalUpdatear = 1532;
+	String column[] = { "PrecioTotal" };
+
+	String nombreNuevo = "Ander";
+	String apellidosNuevo = "Perex";
+	String dniNuevo = "22761890D";
+	String direccionNuevo = "Mi casa";
+	String contrasenyaNuevo = "hola";
+
+	int codProductoNuevo = 900;
+	String nombreNuevoProducto = "Bolsas";
+	int stockNuevo = 16;
+	float precioNuevo = 18;
+
 	@Test
 	void recogerPedidoTest() {
-
-		String fechaDate = "2023-02-13";
-		String horaTime = "13:55:36";
-
-		String dniNuevo = "45894650J";
-		int codProductoNuevo = 3;
-
-		Date fechaNueva = Date.valueOf(fechaDate);
-		Time horaNueva = Time.valueOf(horaTime);
-		int codPedidoNuevo = 900;
-		float precioTotalNuevo = 16813;
-		int cantidadProductosNuevo = 15;
 
 		ArrayList<Pedido> listaPedido;
 
 		try {
-			
-			Connection conexion;
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
 			Statement resul = conexion.createStatement();
-			
-			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_PEDIDO + "`"
+			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_CLIENTE + "`"
+					+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`) " + "VALUES( '" + dniNuevo + "' , '"
+					+ nombreNuevo + "' , '" + apellidosNuevo + "' , '" + contrasenyaNuevo + "' , '" + direccionNuevo
+					+ "');");
+
+			Statement resul2 = conexion.createStatement();
+			resul2.executeUpdate("Insert into `" + ManagerAbstract.TABLE_PRODUCTOS + "`"
+					+ "(`CodProducto`, `Nombre`, `Stock`, `Precio`) " + "VALUES( '" + codProductoNuevo + "' , '"
+					+ nombreNuevo + "' , '" + stockNuevo + "' , '" + precioNuevo + "');");
+
+			Statement resul3 = conexion.createStatement();
+			resul3.executeUpdate("Insert into `" + ManagerAbstract.TABLE_PEDIDO + "`"
 					+ "(`CodPedido`, `PrecioTotal`, `Fecha`, `Hora`, `CantidadProductos`, `CodProducto`, `DNI`) "
-					+ "VALUES( '" + codPedidoNuevo + "' , '" + precioTotalNuevo + "' , '" + fechaNueva + "' , '" + horaNueva
-					+ "' , '" + cantidadProductosNuevo + "' , '" + codProductoNuevo + "' , '" + dniNuevo + "');");
-		
+					+ "VALUES( '" + codPedidoNuevo + "' , '" + precioTotalNuevo + "' , '" + fechaNueva + "' , '"
+					+ horaNueva + "' , '" + cantidadProductosNuevo + "' , '" + codProductoNuevo + "' , '" + dniNuevo
+					+ "');");
+
 			listaPedido = metodosPedido.recogerPedido();
-			
+
 			String resultado = "";
-			
+
 			for (Pedido pedido : listaPedido) {
-				if(pedido.getCodPedido() == codPedidoNuevo) {
+				if (pedido.getCodPedido() == codPedidoNuevo) {
 					int pos = listaPedido.indexOf(pedido);
 					resultado = listaPedido.get(pos).toString();
 				}
 			}
-			
-			assertEquals(resultado, "Pedido [productos=[Producto [nombreProducto=Pienso para gatos, precio=5.0, stock=3, codProducto=3]], fecha=2023-02-13, hora=13:55:36, cantidadProducto=15, codPedido=900, cliente=null, preciototal=16813.0]");
-			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			Statement resul2 = conexion.createStatement();
 
-			resul2.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_PEDIDO + "`" + "WHERE pedidos.CodPedido = '"
-					+ codPedidoNuevo + "';");
-			
-			
-		}catch(
+			assertEquals(resultado,
+					"Pedido [productos=[Producto [nombreProducto=Ander, precio=18.0, stock=16, codProducto=900]], fecha=2023-02-13, hora=13:55:36, cantidadProducto=15, codPedido=900, cliente=null, preciototal=16813.0]");
 
-	SQLException e)
-	{
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+			Statement resul4 = conexion.createStatement();
+			resul4.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_PRODUCTOS + "`" + "WHERE CodProducto = '"
+					+ codProductoNuevo + "';");
+
+			Statement resul5 = conexion.createStatement();
+			resul5.executeUpdate(
+					"DELETE FROM `" + ManagerAbstract.TABLE_CLIENTE + "`" + "WHERE cliente.DNI = '" + dniNuevo + "';");
+
+		} catch (
+
+		SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
 	@Test
 	void insertarPedidoTest() {
-
-		String fechaDate = "2023-02-13";
-		String horaTime = "13:55:36";
-		
-		String dniNuevo = "45894650J";
-		int codProductoNuevo = 3;
-
-		Date fechaNueva = Date.valueOf(fechaDate);
-		Time horaNueva = Time.valueOf(horaTime);
-		int codPedidoNuevo = 900;
-		float precioTotalNuevo = 16813;
-		int cantidadProductosNuevo = 15;
 
 		Pedido pedidoNueva = new Pedido();
 
@@ -112,26 +123,40 @@ class MetodosPedidoTest extends ManagerAbstract {
 		pedidoNueva.setFecha(fechaNueva);
 		pedidoNueva.setHora(horaNueva);
 		try {
+
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
+			Statement resul = conexion.createStatement();
+			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_CLIENTE + "`"
+					+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`) " + "VALUES( '" + dniNuevo + "' , '"
+					+ nombreNuevo + "' , '" + apellidosNuevo + "' , '" + contrasenyaNuevo + "' , '" + direccionNuevo
+					+ "');");
+
+			Statement resul2 = conexion.createStatement();
+			resul2.executeUpdate("Insert into `" + ManagerAbstract.TABLE_PRODUCTOS + "`"
+					+ "(`CodProducto`, `Nombre`, `Stock`, `Precio`) " + "VALUES( '" + codProductoNuevo + "' , '"
+					+ nombreNuevo + "' , '" + stockNuevo + "' , '" + precioNuevo + "');");
+
 			metodosPedido.insertarPedido(pedidoNueva, dniNuevo, codProductoNuevo, codPedidoNuevo);
 
-			Connection conexion;
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement sacaEmpleado = conexion.createStatement();
 			String sql = "select * from " + ManagerAbstract.TABLE_PEDIDO + " where CodPedido = '" + codPedidoNuevo
 					+ "';";
-			ResultSet resul = sacaEmpleado.executeQuery(sql);
-			while (resul.next()) {
-				assertEquals(codPedidoNuevo, resul.getInt(codPedido));
-				assertEquals(fechaNueva, resul.getDate(fecha));
-				assertEquals(precioTotalNuevo, resul.getFloat(preciototal));
-				assertEquals(cantidadProductosNuevo, resul.getInt(cantidadProducto));
+			ResultSet resul3 = sacaEmpleado.executeQuery(sql);
+			while (resul3.next()) {
+				assertEquals(codPedidoNuevo, resul3.getInt(codPedido));
+				assertEquals(fechaNueva, resul3.getDate(fecha));
+				assertEquals(precioTotalNuevo, resul3.getFloat(preciototal));
+				assertEquals(cantidadProductosNuevo, resul3.getInt(cantidadProducto));
 			}
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			Statement resul2 = conexion.createStatement();
+			Statement resul4 = conexion.createStatement();
+			resul4.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_PRODUCTOS + "`" + "WHERE CodProducto = '"
+					+ codProductoNuevo + "';");
 
-			resul2.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_PEDIDO + "`" + "WHERE pedidos.CodPedido = '"
-					+ codPedidoNuevo + "';");
+			Statement resul5 = conexion.createStatement();
+			resul5.executeUpdate(
+					"DELETE FROM `" + ManagerAbstract.TABLE_CLIENTE + "`" + "WHERE cliente.DNI = '" + dniNuevo + "';");
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -142,39 +167,42 @@ class MetodosPedidoTest extends ManagerAbstract {
 	@Test
 	void eliminarPedidoTest() {
 
-		String fechaDate = "2023-02-13";
-		String horaTime = "13:55:36";
-
-		String dniNuevo = "45894650J";
-		int codProductoNuevo = 3;
-
-		Date fechaNueva = Date.valueOf(fechaDate);
-		Time horaNueva = Time.valueOf(horaTime);
-		int codPedidoNuevo = 900;
-		float precioTotalNuevo = 16813;
-		int cantidadProductosNuevo = 15;
-
-		
-
 		try {
-			
-			Connection conexion;
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul = conexion.createStatement();
-			
-			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_PEDIDO + "`"
+			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_CLIENTE + "`"
+					+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`) " + "VALUES( '" + dniNuevo + "' , '"
+					+ nombreNuevo + "' , '" + apellidosNuevo + "' , '" + contrasenyaNuevo + "' , '" + direccionNuevo
+					+ "');");
+
+			Statement resul2 = conexion.createStatement();
+			resul2.executeUpdate("Insert into `" + ManagerAbstract.TABLE_PRODUCTOS + "`"
+					+ "(`CodProducto`, `Nombre`, `Stock`, `Precio`) " + "VALUES( '" + codProductoNuevo + "' , '"
+					+ nombreNuevo + "' , '" + stockNuevo + "' , '" + precioNuevo + "');");
+
+			Statement resul3 = conexion.createStatement();
+			resul3.executeUpdate("Insert into `" + ManagerAbstract.TABLE_PEDIDO + "`"
 					+ "(`CodPedido`, `PrecioTotal`, `Fecha`, `Hora`, `CantidadProductos`, `CodProducto`, `DNI`) "
-					+ "VALUES( '" + codPedidoNuevo + "' , '" + precioTotalNuevo + "' , '" + fechaNueva + "' , '" + horaNueva
-					+ "' , '" + cantidadProductosNuevo + "' , '" + codProductoNuevo + "' , '" + dniNuevo + "');");
+					+ "VALUES( '" + codPedidoNuevo + "' , '" + precioTotalNuevo + "' , '" + fechaNueva + "' , '"
+					+ horaNueva + "' , '" + cantidadProductosNuevo + "' , '" + codProductoNuevo + "' , '" + dniNuevo
+					+ "');");
 
 			metodosPedido.eliminarPedido(codPedidoNuevo);
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement sacaEmpleado = conexion.createStatement();
 			String sql = "select * from " + ManagerAbstract.TABLE_PEDIDO + " where CodPedido = '" + codPedidoNuevo
 					+ "';";
-			ResultSet resul2 = sacaEmpleado.executeQuery(sql);
-			assertEquals(resul2.isBeforeFirst(), false);
+			ResultSet resul4 = sacaEmpleado.executeQuery(sql);
+			assertEquals(resul4.isBeforeFirst(), false);
+			
+			Statement resul5 = conexion.createStatement();
+			resul5.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_PRODUCTOS + "`" + "WHERE CodProducto = '"
+					+ codProductoNuevo + "';");
+
+			Statement resul6 = conexion.createStatement();
+			resul6.executeUpdate(
+					"DELETE FROM `" + ManagerAbstract.TABLE_CLIENTE + "`" + "WHERE cliente.DNI = '" + dniNuevo + "';");
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -185,22 +213,6 @@ class MetodosPedidoTest extends ManagerAbstract {
 	@Test
 	void UpdatePedidoTest() {
 
-		String[] precioTotalNuevo = { "15" };
-		float precioTotalUpdateado = 15;
-		float precioTotalUpdatear = 1532;
-		String fechaDate = "2023-02-13";
-		String horaTime = "13:55:36";
-
-		String dniNuevo = "45894650J";
-		int codProductoNuevo = 3;
-
-		Date fechaNueva = Date.valueOf(fechaDate);
-		Time horaNueva = Time.valueOf(horaTime);
-		int codPedidoNuevo = 900;
-		int cantidadProductosNuevo = 15;
-
-		String column[] = { "PrecioTotal" };
-
 		Pedido pedidoNuevo = new Pedido();
 
 		pedidoNuevo.setCantidadProducto(cantidadProductosNuevo);
@@ -210,33 +222,45 @@ class MetodosPedidoTest extends ManagerAbstract {
 		pedidoNuevo.setHora(horaNueva);
 
 		try {
-			
-			Connection conexion;
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul = conexion.createStatement();
-			
-			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_PEDIDO + "`"
+			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_CLIENTE + "`"
+					+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`) " + "VALUES( '" + dniNuevo + "' , '"
+					+ nombreNuevo + "' , '" + apellidosNuevo + "' , '" + contrasenyaNuevo + "' , '" + direccionNuevo
+					+ "');");
+
+			Statement resul2 = conexion.createStatement();
+			resul2.executeUpdate("Insert into `" + ManagerAbstract.TABLE_PRODUCTOS + "`"
+					+ "(`CodProducto`, `Nombre`, `Stock`, `Precio`) " + "VALUES( '" + codProductoNuevo + "' , '"
+					+ nombreNuevo + "' , '" + stockNuevo + "' , '" + precioNuevo + "');");
+
+			Statement resul3 = conexion.createStatement();
+			resul3.executeUpdate("Insert into `" + ManagerAbstract.TABLE_PEDIDO + "`"
 					+ "(`CodPedido`, `PrecioTotal`, `Fecha`, `Hora`, `CantidadProductos`, `CodProducto`, `DNI`) "
-					+ "VALUES( '" + codPedidoNuevo + "' , '" + precioTotalUpdatear + "' , '" + fechaNueva + "' , '" + horaNueva
-					+ "' , '" + cantidadProductosNuevo + "' , '" + codProductoNuevo + "' , '" + dniNuevo + "');");
+					+ "VALUES( '" + codPedidoNuevo + "' , '" + precioTotalNuevo + "' , '" + fechaNueva + "' , '"
+					+ horaNueva + "' , '" + cantidadProductosNuevo + "' , '" + codProductoNuevo + "' , '" + dniNuevo
+					+ "');");
 
-			metodosPedido.updatePedido(column, precioTotalNuevo, pedidoNuevo);
+			metodosPedido.updatePedido(column, precioTotalNuevoUpdate, pedidoNuevo);
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement sacaCliente = conexion.createStatement();
 			String sql = "select * from " + ManagerAbstract.TABLE_PEDIDO + " where CodPedido = '" + codPedidoNuevo
 					+ " ';";
-			ResultSet resul2 = sacaCliente.executeQuery(sql);
-			while (resul2.next()) {
-				assertEquals(precioTotalUpdateado, resul2.getFloat(preciototal));
+			ResultSet resul4 = sacaCliente.executeQuery(sql);
+			while (resul4.next()) {
+				assertEquals(precioTotalUpdateado, resul4.getFloat(preciototal));
 			}
-			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			Statement resul3 = conexion.createStatement();
 
-			resul3.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_PEDIDO + "`" + "WHERE pedidos.CodPedido = '"
-					+ codPedidoNuevo + "';");
-			
+			Statement resul5 = conexion.createStatement();
+			resul5.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_PRODUCTOS + "`" + "WHERE CodProducto = '"
+					+ codProductoNuevo + "';");
+
+			Statement resul6 = conexion.createStatement();
+			resul6.executeUpdate(
+					"DELETE FROM `" + ManagerAbstract.TABLE_CLIENTE + "`" + "WHERE cliente.DNI = '" + dniNuevo + "';");
+
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -246,14 +270,6 @@ class MetodosPedidoTest extends ManagerAbstract {
 	@Test
 	public void testArrayListTxt() {
 		ArrayList<Pedido> listaPedido = new ArrayList<>();
-		String fechaDate = "2023-02-13";
-		String horaTime = "13:55:36";
-
-		Date fechaNueva = Date.valueOf(fechaDate);
-		Time horaNueva = Time.valueOf(horaTime);
-		int codPedidoNuevo = 900;
-		float precioTotalNuevo = 16813;
-		int cantidadProductosNuevo = 15;
 
 		Pedido pedidoNueva = new Pedido();
 		pedidoNueva.setCliente(null);

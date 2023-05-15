@@ -44,7 +44,7 @@ public class Inicio extends JFrame implements MouseListener{
 	 */
 	public Inicio() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 621, 392);
+		setBounds(100, 100, 743, 410);
 		contentPane = new JPanel();
 		
 
@@ -53,22 +53,22 @@ public class Inicio extends JFrame implements MouseListener{
 		
 		panel = new JPanel();
 		panel.addMouseListener((MouseListener) this);
-		ImageIcon img = new ImageIcon("imgBienvenida/bienvenida.png");
+		ImageIcon img = new ImageIcon("imgReto2/imgBienvenida/bienvenida.png");
 		img = new ImageIcon(img.getImage().getScaledInstance(609, 250, Image.SCALE_DEFAULT));
 
 	
 		panel.setBackground(new Color(192, 192, 192));
-		panel.setBounds(0, 0, 605, 353);
+		panel.setBounds(0, 0, 727, 371);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblIMG = new JLabel();
-		lblIMG.setBounds(10, 60, 585, 258);
+		lblIMG.setBounds(67, 57, 585, 258);
 		panel.add(lblIMG);
 		lblIMG.setIcon(img);
 		
 		lblBienvenida = new JLabel("Bienvenido");
-		lblBienvenida.setBounds(226, 0, 159, 66);
+		lblBienvenida.setBounds(275, 0, 159, 66);
 		panel.add(lblBienvenida);
 		lblBienvenida.setFont(new Font("Tahoma", Font.PLAIN, 26));
 	}
@@ -77,13 +77,12 @@ public class Inicio extends JFrame implements MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		try {
 			ventanaLogIn = new LogIn();
+			ventanaLogIn.setVisible(true);
+			dispose();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
-		ventanaLogIn.setVisible(true);
-		dispose();
 	}
 
 	@Override

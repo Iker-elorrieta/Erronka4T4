@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import B.D_Util.DBUtils;
 import B.D_Util.ManagerAbstract;
 import Controlador.MetodosProducto;
+import Modelo.ObjetosComprables;
 import Modelo.Producto;
 
 class MetodosProductoTest extends ManagerAbstract {
@@ -25,58 +26,54 @@ class MetodosProductoTest extends ManagerAbstract {
 
 	MetodosProducto metodosProducto = new MetodosProducto();
 
+	// --------------------VariablesNecesariasParaElTest--------------------/
+	int codProductoNuevo = 900;
+	String nombreNuevo = "Bolsas";
+	int stockNuevo = 16;
+	float precioNuevo = 18;
+
+	String[] stockNuevoUpdate = { "4" };
+	int stockNuevoUpdateado = 4;
+	int stockUpdatear = 0;
+	String[] column = { "Stock" };
+
 	@Test
 	void RecogerProductoTest() {
-		
-		int codProductoNuevo = 900;
-		String nombreNuevo = "Bolsas";
-		int stockNuevo = 16;
-		float precioNuevo = 18;
-		
+
 		ArrayList<Producto> listaProducto;
 		try {
-			
-			Connection conexion;
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			Statement resul = conexion.createStatement();
 
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement resul = conexion.createStatement();
 			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_PRODUCTOS + "`"
-					+ "(`CodProducto`, `Nombre`, `Stock`, `Precio`) "
-					+ "VALUES( '" + codProductoNuevo + "' , '"+ nombreNuevo + "' , '" + stockNuevo + "' , '" + precioNuevo + "');");
-			
+					+ "(`CodProducto`, `Nombre`, `Stock`, `Precio`) " + "VALUES( '" + codProductoNuevo + "' , '"
+					+ nombreNuevo + "' , '" + stockNuevo + "' , '" + precioNuevo + "');");
+
 			listaProducto = metodosProducto.recogerProducto();
-			
+
 			String resultado = "";
-			
+
 			for (Producto producto : listaProducto) {
-				if(producto.getCodProducto() == codProductoNuevo) {
+				if (producto.getCodProducto() == codProductoNuevo) {
 					int pos = listaProducto.indexOf(producto);
 					resultado = listaProducto.get(pos).toString();
 				}
 			}
-			
-			assertEquals(resultado, "Producto [nombreProducto=Bolsas, precio=18.0, stock=16, codProducto=900]");
-			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			Statement resul2 = conexion.createStatement();
 
-			resul2.executeUpdate(
-					"DELETE FROM `" + ManagerAbstract.TABLE_PRODUCTOS + "`" + "WHERE CodProducto = '" + codProductoNuevo + "';");
-			
+			assertEquals(resultado, "Producto [nombreProducto=Bolsas, precio=18.0, stock=16, codProducto=900]");
+
+			Statement resul2 = conexion.createStatement();
+			resul2.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_PRODUCTOS + "`" + "WHERE CodProducto = '"
+					+ codProductoNuevo + "';");
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-
 	@Test
 	void insertarProductoTest() {
-
-		int codProductoNuevo = 900;
-		String nombreNuevo = "Bolsas";
-		int stockNuevo = 16;
-		float precioNuevo = 18;
 
 		Producto producto = new Producto();
 
@@ -86,10 +83,11 @@ class MetodosProductoTest extends ManagerAbstract {
 		producto.setStock(stockNuevo);
 
 		try {
+
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
 			metodosProducto.insertarProducto(producto);
 
-			Connection conexion;
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement sacaCliente = conexion.createStatement();
 			String sql = "select * from " + ManagerAbstract.TABLE_PRODUCTOS + " where CodProducto = '"
 					+ codProductoNuevo + " ';";
@@ -103,11 +101,9 @@ class MetodosProductoTest extends ManagerAbstract {
 
 			}
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul2 = conexion.createStatement();
-
-			resul2.executeUpdate(
-					"DELETE FROM `" + ManagerAbstract.TABLE_PRODUCTOS + "`" + "WHERE CodProducto = '" + codProductoNuevo + "';");
+			resul2.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_PRODUCTOS + "`" + "WHERE CodProducto = '"
+					+ codProductoNuevo + "';");
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -118,23 +114,17 @@ class MetodosProductoTest extends ManagerAbstract {
 	@Test
 	void eliminarProductoTest() {
 
-		int codProductoNuevo = 900;
-		String nombreNuevo = "Bolsas";
-		int stockNuevo = 16;
-		float precioNuevo = 18;
-
 		try {
-			Connection conexion;
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul = conexion.createStatement();
 
 			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_PRODUCTOS + "`"
-					+ "(`CodProducto`, `Nombre`, `Stock`, `Precio`) "
-					+ "VALUES( '" + codProductoNuevo + "' , '"+ nombreNuevo + "' , '" + stockNuevo + "' , '" + precioNuevo + "');");
+					+ "(`CodProducto`, `Nombre`, `Stock`, `Precio`) " + "VALUES( '" + codProductoNuevo + "' , '"
+					+ nombreNuevo + "' , '" + stockNuevo + "' , '" + precioNuevo + "');");
 
 			metodosProducto.eliminarProducto(codProductoNuevo);
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement sacaCliente = conexion.createStatement();
 			String sql = "select * from " + ManagerAbstract.TABLE_PRODUCTOS + " where CodProducto = '"
 					+ codProductoNuevo + " ';";
@@ -151,14 +141,6 @@ class MetodosProductoTest extends ManagerAbstract {
 	@Test
 	void UpdateProductoTest() {
 
-		String[] stockNuevo = { "4" };
-		int stockNuevoUpdateado = 4;
-		int stockUpdatear = 0;
-		int codProductoNuevo = 900;
-		String nombreNuevo = "Bolsas";
-		float precioNuevo = 18;
-		String[] column = { "Stock" };
-
 		Producto producto = new Producto();
 
 		producto.setCodProducto(codProductoNuevo);
@@ -167,36 +149,84 @@ class MetodosProductoTest extends ManagerAbstract {
 		producto.setStock(0);
 
 		try {
-			
-			Connection conexion;
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			Statement resul = conexion.createStatement();
 
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement resul = conexion.createStatement();
 			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_PRODUCTOS + "`"
-					+ "(`CodProducto`, `Nombre`, `Stock`, `Precio`) "
-					+ "VALUES( '" + codProductoNuevo + "' , '"+ nombreNuevo + "' , '" + stockUpdatear + "' , '" + precioNuevo + "');");
-			
-			metodosProducto.updateProducto(column, stockNuevo, producto);
-			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+					+ "(`CodProducto`, `Nombre`, `Stock`, `Precio`) " + "VALUES( '" + codProductoNuevo + "' , '"
+					+ nombreNuevo + "' , '" + stockUpdatear + "' , '" + precioNuevo + "');");
+
+			metodosProducto.updateProducto(column, stockNuevoUpdate, producto);
+
 			Statement sacaCliente = conexion.createStatement();
 			String sql = "select * from " + ManagerAbstract.TABLE_PRODUCTOS + " where CodProducto = '"
 					+ codProductoNuevo + " ';";
 			ResultSet resul2 = sacaCliente.executeQuery(sql);
-			while(resul2.next()) {
+			while (resul2.next()) {
 				assertEquals(stockNuevoUpdateado, resul2.getInt(stock));
 			}
-			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
 			Statement resul3 = conexion.createStatement();
+			resul3.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_PRODUCTOS + "`" + "WHERE CodProducto = '"
+					+ codProductoNuevo + "';");
 
-			resul3.executeUpdate(
-					"DELETE FROM `" + ManagerAbstract.TABLE_PRODUCTOS + "`" + "WHERE CodProducto = '" + codProductoNuevo + "';");
-
-			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+
+	@Test
+	void recogerProductoTiendaTest() {
+
+		int codProductoNuevo = 900;
+		String nombreNuevo = "Bolsas";
+		int stockNuevo = 16;
+		float precioNuevo = 18;
+
+		int codClinicaNueva = 900;
+		String ubicacionNueva = "Murcia";
+
+		ArrayList<ObjetosComprables> listaProducto;
+
+		try {
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement resul = conexion.createStatement();
+			resul.executeUpdate("INSERT INTO " + ManagerAbstract.TABLE_CLINICAVETERINARIA
+					+ "(`CodClinica`, `Ubicacion`) VALUES ('" + codClinicaNueva + "','" + ubicacionNueva + "');");
+
+			Statement resul2 = conexion.createStatement();
+			resul2.executeUpdate("Insert into `" + ManagerAbstract.TABLE_PRODUCTOS + "`"
+					+ "(`CodProducto`, `Nombre`, `Stock`, `Precio`) " + "VALUES( '" + codProductoNuevo + "' , '"
+					+ nombreNuevo + "' , '" + stockNuevo + "' , '" + precioNuevo + "');");
+			
+			Statement resul3 = conexion.createStatement();
+			resul3.executeUpdate("Insert into `" + ManagerAbstract.TABLE_ALMACEN + "`"
+					+ "(`CodProducto`, `CodClinica`) " + "VALUES( '" + codProductoNuevo + "' , '"
+					+ codClinicaNueva + "');");
+
+			listaProducto = metodosProducto.recogerProductoTienda(ubicacionNueva);
+
+			String resultado = "";
+
+			for (ObjetosComprables objetosComprables : listaProducto) {
+				resultado = objetosComprables.toString();
+			}
+			assertEquals(resultado, "Producto [nombreProducto=Bolsas, precio=18.0, stock=16, codProducto=900]");
+
+			Statement resul4 = conexion.createStatement();
+			resul4.executeUpdate("DELETE FROM " + ManagerAbstract.TABLE_CLINICAVETERINARIA + " WHERE CodClinica = "
+					+ "'" + codClinicaNueva + "'");
+
+			Statement resul5 = conexion.createStatement();
+			resul5.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_PRODUCTOS + "`" + "WHERE CodProducto = '"
+					+ codProductoNuevo + "';");
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 }

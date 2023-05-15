@@ -39,26 +39,29 @@ class MetodosClienteTest extends ManagerAbstract {
 
 	MetodosCliente metodosCliente = new MetodosCliente();
 	MetodosAnimal metodosAnimal = new MetodosAnimal();
+	
+	// --------------------VariablesNecesariasParaElTest--------------------/
+	String nombreNuevo = "Ander";
+	String apellidosNuevo = "Perex";
+	String dniNuevo = "22761890D";
+	String direccionNuevo = "Mi casa";
+	String contrasenyaNuevo = "hola";
+	String column[] = { "Nombre" };
+	String[] nombreNuevoUpdateado = { "Ander" };
+	String nombreUpdatear = "hector";
 
 	@Test
 	void recogerClienteYSusAnimalesTest() {
 
-		String nombreNuevo = "Ander";
-		String apellidosNuevo = "Perex";
-		String dniNuevo = "22761890D";
-		String direccionNuevo = "Mi casa";
-		String contrasenyaNuevo = "hola";
-
-		Connection conexion;
 		try {
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul = conexion.createStatement();
-
 			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_CLIENTE + "`"
 					+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`) " + "VALUES( '" + dniNuevo + "' , '"
 					+ nombreNuevo + "' , '" + apellidosNuevo + "' , '" + contrasenyaNuevo + "' , '" + direccionNuevo
 					+ "');");
-
+			
 			ArrayList<Cliente> listaCliente = metodosCliente.recogerClienteYSusAnimales();
 
 			String resultado = "";
@@ -73,9 +76,7 @@ class MetodosClienteTest extends ManagerAbstract {
 			assertEquals(resultado,
 					"Cliente [animal=null, nombre=Ander, apellido=Perex, dni=22761890D, direccion=Mi casa, contrasenya=hola]");
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul2 = conexion.createStatement();
-
 			resul2.executeUpdate(
 					"DELETE FROM `" + ManagerAbstract.TABLE_CLIENTE + "`" + "WHERE cliente.DNI = '" + dniNuevo + "';");
 
@@ -88,11 +89,6 @@ class MetodosClienteTest extends ManagerAbstract {
 
 	@Test
 	void insertarClientetest() {
-		String nombreNuevo = "Ander";
-		String apellidosNuevo = "Perex";
-		String dniNuevo = "22761890D";
-		String direccionNuevo = "Mi casa";
-		String contrasenyaNuevo = "hola";
 
 		Cliente clienteNuevo = new Cliente();
 
@@ -102,12 +98,10 @@ class MetodosClienteTest extends ManagerAbstract {
 		clienteNuevo.setContrasenya(contrasenyaNuevo);
 		clienteNuevo.setDireccion(direccionNuevo);
 		try {
-			
+				Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+				
 				metodosCliente.insertarCliente(clienteNuevo);
 
-				Connection conexion;
-
-				conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 				Statement sacaCliente = conexion.createStatement();
 				String sql = "select * from " + ManagerAbstract.TABLE_CLIENTE + " where dni = '" + dniNuevo + " ';";
 				ResultSet resul = sacaCliente.executeQuery(sql);
@@ -121,7 +115,6 @@ class MetodosClienteTest extends ManagerAbstract {
 
 				}
 
-				conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 				Statement resul2 = conexion.createStatement();
 
 				resul2.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_CLIENTE + "`" + "WHERE cliente.DNI = '"
@@ -135,15 +128,9 @@ class MetodosClienteTest extends ManagerAbstract {
 
 	@Test
 	void eliminarClienteTest() {
-		String nombreNuevo = "Ander";
-		String apellidosNuevo = "Perex";
-		String dniNuevo = "22761890D";
-		String direccionNuevo = "Mi casa";
-		String contrasenyaNuevo = "hola";
 
 		try {
-			Connection conexion;
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul = conexion.createStatement();
 
 			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_CLIENTE + "`"
@@ -153,7 +140,6 @@ class MetodosClienteTest extends ManagerAbstract {
 
 			metodosCliente.eliminarCliente(dniNuevo);
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement sacaEmpleado = conexion.createStatement();
 			String sql = "select * from " + ManagerAbstract.TABLE_CLIENTE + " where dni = '" + dniNuevo + " ';";
 			ResultSet resul2 = sacaEmpleado.executeQuery(sql);
@@ -169,14 +155,7 @@ class MetodosClienteTest extends ManagerAbstract {
 
 	@Test
 	void UpdateClienteTest() {
-		String[] nombreNuevo = { "Ander" };
-		String nombreUpdatear = "hector";
-		String apellidosNuevo = "Perex";
-		String dniNuevo = "22761890D";
-		String direccionNuevo = "Mi casa";
-		String contrasenyaNuevo = "hola";
 
-		String column[] = { "Nombre" };
 
 		Cliente clienteNuevo = new Cliente();
 
@@ -188,8 +167,8 @@ class MetodosClienteTest extends ManagerAbstract {
 
 		try {
 
-			Connection conexion;
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			
 			Statement resul = conexion.createStatement();
 
 			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_CLIENTE + "`"
@@ -197,17 +176,15 @@ class MetodosClienteTest extends ManagerAbstract {
 					+ nombreUpdatear + "' , '" + apellidosNuevo + "' , '" + contrasenyaNuevo + "' , '" + direccionNuevo
 					+ "');");
 
-			metodosCliente.updateCliente(column, nombreNuevo, clienteNuevo);
+			metodosCliente.updateCliente(column, nombreNuevoUpdateado, clienteNuevo);
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement sacaCliente = conexion.createStatement();
 			String sql = "select * from " + ManagerAbstract.TABLE_CLIENTE + " where dni = '" + dniNuevo + " ';";
 			ResultSet resul2 = sacaCliente.executeQuery(sql);
 			while (resul2.next()) {
-				assertEquals(nombreNuevo[0], resul2.getString(nombreCliente));
+				assertEquals(nombreNuevoUpdateado[0], resul2.getString(nombreCliente));
 			}
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul3 = conexion.createStatement();
 
 			resul3.executeUpdate(

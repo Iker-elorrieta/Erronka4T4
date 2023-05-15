@@ -40,6 +40,7 @@ public class LogIn extends JFrame {
 
 	MetodosCliente metodosCliente = new MetodosCliente();
 	MetodosEmpleado metodosEmpleado = new MetodosEmpleado();
+	private JLabel lblTexto;
 
 	/**
 	 * Create the frame.
@@ -52,7 +53,7 @@ public class LogIn extends JFrame {
 		ArrayList<Empleado> listaEmpleado = metodosEmpleado.recogerEmpleado();
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 743, 410);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -60,11 +61,11 @@ public class LogIn extends JFrame {
 		contentPane.setLayout(null);
 
 		lblDNI = new JLabel("DNI");
-		lblDNI.setBounds(69, 69, 46, 14);
+		lblDNI.setBounds(141, 106, 46, 14);
 		contentPane.add(lblDNI);
 
 		lblContra = new JLabel("Contraseña");
-		lblContra.setBounds(69, 133, 115, 14);
+		lblContra.setBounds(141, 168, 115, 14);
 		contentPane.add(lblContra);
 
 		btnLogIn = new JButton("Log In");
@@ -124,7 +125,7 @@ public class LogIn extends JFrame {
 
 			}
 		});
-		btnLogIn.setBounds(95, 215, 89, 23);
+		btnLogIn.setBounds(117, 300, 163, 23);
 		contentPane.add(btnLogIn);
 
 		btnRegistro = new JButton("Registrarse");
@@ -135,22 +136,26 @@ public class LogIn extends JFrame {
 				dispose();
 			}
 		});
-		btnRegistro.setBounds(225, 215, 121, 23);
+		btnRegistro.setBounds(375, 300, 177, 23);
 		contentPane.add(btnRegistro);
 
 		txtUsuario = new JTextField();
-		txtUsuario.setBounds(193, 66, 163, 20);
+		txtUsuario.setBounds(313, 103, 239, 20);
 		contentPane.add(txtUsuario);
 		txtUsuario.setColumns(10);
 
 		passContra = new JPasswordField();
-		passContra.setBounds(193, 130, 163, 20);
+		passContra.setBounds(313, 165, 239, 20);
 		contentPane.add(passContra);
 
 		lblMensaje = new JLabel("El DNI o la contraseña son erroneos");
 		lblMensaje.setForeground(new Color(255, 0, 0));
-		lblMensaje.setBounds(117, 177, 239, 14);
+		lblMensaje.setBounds(239, 239, 239, 14);
 		lblMensaje.setVisible(false);
 		contentPane.add(lblMensaje);
+		
+		lblTexto = new JLabel("Introduce el DNI y la contraseña para iniciar sesion:");
+		lblTexto.setBounds(51, 38, 408, 14);
+		contentPane.add(lblTexto);
 	}
 }

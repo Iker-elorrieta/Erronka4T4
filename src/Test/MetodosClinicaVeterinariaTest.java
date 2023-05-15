@@ -19,19 +19,23 @@ class MetodosClinicaVeterinariaTest extends ManagerAbstract {
 
 	final String ubicacion = "Ubicacion";
 	final String codClinica = "CodClinica";
-
+	
+	// --------------------VariablesNecesariasParaElTest--------------------//
+	int codClinicaNueva = 900;
+	String ubicacionNueva = "Murcia";
+	
+	String column[] = { "Ubicacion" };
+	String[] ubicacionNuevaUpdateado = { "Gibraltar" };
+	String ubicacionUpdatear = "Valladolid";
+	
 	@Test
 	void recogerClinicaVeterinariaTest() {
-
-		int codClinicaNueva = 900;
-		String ubicacionNueva = "Murcia";
-
+		
 		try {
 
 			Connection conexion;
 			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul = conexion.createStatement();
-
 			resul.executeUpdate("INSERT INTO " + ManagerAbstract.TABLE_CLINICAVETERINARIA
 					+ "(`CodClinica`, `Ubicacion`) VALUES ('" + codClinicaNueva + "','" + ubicacionNueva + "');");
 
@@ -50,9 +54,7 @@ class MetodosClinicaVeterinariaTest extends ManagerAbstract {
 
 			assertEquals(resultado, "ClinicaVeterinaria [ubicacion=Murcia, codVeterinaria=900, empleados=[]]");
 			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul2 = conexion.createStatement();
-
 			resul2.executeUpdate("DELETE FROM " + ManagerAbstract.TABLE_CLINICAVETERINARIA + " WHERE CodClinica = "
 					+ "'" + codClinicaNueva + "'");
 			
@@ -66,19 +68,17 @@ class MetodosClinicaVeterinariaTest extends ManagerAbstract {
 	@Test
 	void insertarClinicaVeterinariaTest() {
 
-		int codClinicaNueva = 900;
-		String ubicacionNueva = "Murcia";
-
 		ClinicaVeterinaria clinicaVeterinaria = new ClinicaVeterinaria();
 
 		clinicaVeterinaria.setCodVeterinaria(codClinicaNueva);
 		clinicaVeterinaria.setUbicacion(ubicacionNueva);
 
 		try {
+			
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			
 			metodosClinicaVeterinaria.insertarClinicaVeterinaria(clinicaVeterinaria);
 
-			Connection conexion;
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement sacaCliente = conexion.createStatement();
 			String sql = "select * from " + ManagerAbstract.TABLE_CLINICAVETERINARIA + " where CodClinica = '"
 					+ codClinicaNueva + " ';";
@@ -89,9 +89,8 @@ class MetodosClinicaVeterinariaTest extends ManagerAbstract {
 				assertEquals(ubicacionNueva, resul.getString(ubicacion));
 			}
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			Statement resul2 = conexion.createStatement();
 
+			Statement resul2 = conexion.createStatement();
 			resul2.executeUpdate("DELETE FROM " + ManagerAbstract.TABLE_CLINICAVETERINARIA + " WHERE CodClinica = "
 					+ "'" + codClinicaNueva + "'");
 
@@ -104,20 +103,14 @@ class MetodosClinicaVeterinariaTest extends ManagerAbstract {
 	@Test
 	void eliminarClinicaVeterinariaTest() {
 
-		int codClinicaNueva = 900;
-		String ubicacionNueva = "Murcia";
-
 		try {
-			Connection conexion;
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul = conexion.createStatement();
-
 			resul.executeUpdate("INSERT INTO " + ManagerAbstract.TABLE_CLINICAVETERINARIA
 					+ "(`CodClinica`, `Ubicacion`) VALUES ('" + codClinicaNueva + "','" + ubicacionNueva + "');");
 
 			metodosClinicaVeterinaria.eliminarClinicaVeterinaria(codClinicaNueva);
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement sacaEmpleado = conexion.createStatement();
 			String sql = "select * from " + ManagerAbstract.TABLE_CLINICAVETERINARIA + " where CodClinica = '"
 					+ codClinicaNueva + " ';";
@@ -134,10 +127,7 @@ class MetodosClinicaVeterinariaTest extends ManagerAbstract {
 	@Test
 	void updateClinicaVeterinariaTest() {
 
-		String[] ubicacionNueva = { "Gibraltar" };
-		String ubicacionUpdatear = "Valladolid";
-		int codClinicaNueva = 900;
-		String column[] = { "Ubicacion" };
+
 
 		ClinicaVeterinaria clinicaVeterinaria = new ClinicaVeterinaria();
 
@@ -145,28 +135,24 @@ class MetodosClinicaVeterinariaTest extends ManagerAbstract {
 		clinicaVeterinaria.setUbicacion("Valladolid");
 
 		try {
-			Connection conexion;
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul = conexion.createStatement();
-
 			resul.executeUpdate("INSERT INTO " + ManagerAbstract.TABLE_CLINICAVETERINARIA
 					+ "(`CodClinica`, `Ubicacion`) VALUES ('" + codClinicaNueva + "','" + ubicacionUpdatear + "');");
-;
-			metodosClinicaVeterinaria.updateClinicaVeterinaria(column, ubicacionNueva, clinicaVeterinaria);
+			
+			metodosClinicaVeterinaria.updateClinicaVeterinaria(column, ubicacionNuevaUpdateado, clinicaVeterinaria);
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
 			Statement sacaCliente = conexion.createStatement();
 			String sql = "select * from " + ManagerAbstract.TABLE_CLINICAVETERINARIA + " where CodClinica = '"
 					+ codClinicaNueva + " ';";
 			ResultSet resul2 = sacaCliente.executeQuery(sql);
 			while (resul2.next()) {
 				
-				assertEquals(ubicacionNueva[0], resul2.getString(ubicacion));
+				assertEquals(ubicacionNuevaUpdateado[0], resul2.getString(ubicacion));
 			}
 			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul3 = conexion.createStatement();
-
 			resul3.executeUpdate("DELETE FROM " + ManagerAbstract.TABLE_CLINICAVETERINARIA + " WHERE CodClinica = "
 					+ "'" + codClinicaNueva + "'");	
 

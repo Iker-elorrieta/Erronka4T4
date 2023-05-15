@@ -16,10 +16,10 @@ class MascotaTest {
 	int stockMascota = 10;
 	float precioMascota = 50;
 	
-	Mascota mascotaTest = new Mascota(codMascota, especieMascota, stockMascota, precioMascota);
-	Mascota mascotaTest1 = new Mascota(codMascota, especieMascota, stockMascota, precioMascota);
+	Mascota mascotaTest = new Mascota(codMascota, especieMascota, precioMascota, stockMascota);
+	Mascota mascotaTest1 = new Mascota(codMascota, especieMascota, precioMascota, stockMascota);
 	Mascota mascotaTest2 = null;
-	Mascota mascotaTest3 = new Mascota(codMascota0, especieMascota, stockMascota, precioMascota);
+	Mascota mascotaTest3 = new Mascota(codMascota0, especieMascota, precioMascota, stockMascota);
 	
 	
 	@Test

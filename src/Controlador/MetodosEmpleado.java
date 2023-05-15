@@ -63,11 +63,11 @@ public class MetodosEmpleado extends ManagerAbstract {
 			} else if (especializacion.equalsIgnoreCase(pez)) {
 				empleado.setEspecializacion(Especialidad.Pez);
 			} else if (especializacion.equalsIgnoreCase(limpieza)) {
-				empleado.setEspecializacion(Especialidad.Limpieza);
+				empleado.setEspecializacion(Especialidad.limpieza);
 			} else if(especializacion.equalsIgnoreCase(ventas)){
-				empleado.setEspecializacion(Especialidad.Ventas);
+				empleado.setEspecializacion(Especialidad.ventas);
 			}else {
-				empleado.setEspecializacion(Especialidad.Admin);
+				empleado.setEspecializacion(Especialidad.admin);
 			}
 
 			listaEmpleado.add(empleado);

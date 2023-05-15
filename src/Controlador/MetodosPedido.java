@@ -70,6 +70,46 @@ public class MetodosPedido extends ManagerAbstract {
 
 		return listaPedido;
 	}
+	
+	public ArrayList<Pedido> recogerPedidoCliente(String dnicliente) throws SQLException {
+
+		ArrayList<Pedido> listaPedido = new ArrayList<Pedido>();
+		Connection conexion;
+		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+		Statement sacaPedido = conexion.createStatement();
+		String sql = "select * from " + ManagerAbstract.TABLE_PEDIDO  + " where dni = '" + dnicliente + "';";
+		ResultSet resul = sacaPedido.executeQuery(sql);
+		while (resul.next()) {
+
+			Pedido pedido = new Pedido();
+
+			pedido.setFecha(resul.getDate(fecha));
+			pedido.setHora(resul.getTime(hora));
+			pedido.setCantidadProducto(resul.getInt(cantidadProducto));
+			pedido.setCodPedido(resul.getInt(codPedido));
+			pedido.setPreciototal(resul.getFloat(preciototal));
+
+			ArrayList<Producto> listaProducto = new ArrayList<Producto>();
+			Statement sacaProducto = conexion.createStatement();
+			String sql2 = "select distinct * from " + ManagerAbstract.TABLE_PRODUCTOS + " join "
+					+ ManagerAbstract.TABLE_PEDIDO
+					+ " on productos.CodProducto = pedidos.CodProducto where pedidos.CodProducto = '"
+					+ resul.getInt(codProducto) + "'";
+			ResultSet resul2 = sacaProducto.executeQuery(sql2);
+			while (resul2.next()) {
+				Producto producto = new Producto();
+				producto.setNombreProducto(resul2.getString(nombreProducto));
+				producto.setPrecio(resul2.getFloat(precio));
+				producto.setStock(resul2.getInt(stock));
+				producto.setCodProducto(resul2.getInt(codProducto));
+				listaProducto.add(producto);
+			}
+			pedido.setProductos(listaProducto);
+			listaPedido.add(pedido);
+		}
+
+		return listaPedido;
+	}
 
 	public void insertarPedido(Pedido pedidoNuevo, String dni, int codProducto, int codPedidoNuevo)
 			throws SQLException {

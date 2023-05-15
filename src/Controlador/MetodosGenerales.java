@@ -1,17 +1,19 @@
 package Controlador;
 
+import java.io.FileWriter;
 import java.io.IOException;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.JOptionPane;
-import java.io.FileWriter;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import B.D_Util.DBUtils;
@@ -22,6 +24,7 @@ import Modelo.ClinicaVeterinaria;
 import Modelo.Consulta;
 import Modelo.Gestion;
 import Modelo.GestionAnimal;
+import Modelo.ObjetosComprables;
 import Modelo.Pedido;
 import Modelo.Producto;
 import ModeloAnimal.Animal;
@@ -41,11 +44,21 @@ public class MetodosGenerales extends ManagerAbstract {
 	MetodosGestionAnimal metodosGestionAnimal = new MetodosGestionAnimal();
 	MetodosAdopcion metodosAdopcion = new MetodosAdopcion();
 
+	private final String precio = "Precio";
+	private final String stock = "Stock";
+	private final String especie = "Especie";
+	private final String nombreProducto = "Producto";
+	private final String mascota = "Mascota";
+	private final String cantidad = "Cantidad";
+	private final String fecha = "Fecha";
+	private final String hora = "Hora";
+
+	Connection conexion;
+
 	public void LogIn(String dni, String contra) throws SQLException, DniInvalidoException, NumberFormatException {
 		boolean errorLogIN = true;
 		MetodosCliente metodosCliente = new MetodosCliente();
-		MetodosGenerales metodosGenerales = new MetodosGenerales();
-		metodosGenerales.comprobarDni(dni);
+		MetodosGenerales.comprobarDni(dni);
 
 		ArrayList<Cliente> listaClientes = new ArrayList<Cliente>();
 		listaClientes = metodosCliente.recogerClienteYSusAnimales();
@@ -61,7 +74,7 @@ public class MetodosGenerales extends ManagerAbstract {
 		}
 	}
 
-	public boolean comprobarDni(String dni) throws DniInvalidoException, NumberFormatException {
+	public static boolean comprobarDni(String dni) throws DniInvalidoException, NumberFormatException {
 		boolean dniCorrecto = true;
 		final int longitudDNI = 9;
 		final String LETRAS_DNI = "TRWAGMYFPDXBNJZSQVHLCKE";
@@ -99,13 +112,23 @@ public class MetodosGenerales extends ManagerAbstract {
 
 	public void EliminarStockProducto(Producto producto, Pedido pedido, Cliente cliente) throws SQLException {
 
-		String cantidad = String.valueOf(pedido.getCantidadProducto() - producto.getStock());
+		String cantidad = String.valueOf(producto.getStock() - pedido.getCantidadProducto());
 
 		String[] cantidadNueva = { cantidad };
 		String column[] = { "Stock" };
 
 		metodosPedido.insertarPedido(pedido, cliente.getDni(), producto.getCodProducto(), 0);
 		metodosProducto.updateProducto(column, cantidadNueva, producto);
+	}
+	
+	public void EliminarGestion(Gestion gestion, int numero) throws SQLException {
+
+		String cantidad = String.valueOf(numero);
+
+		String[] cantidadNueva = { cantidad };
+		String column[] = { "Stock" };
+
+		metodosGestion.updateGestion(column, cantidadNueva, gestion);
 	}
 
 	public void AnadirStockAnimal(Mascota mascota, GestionAnimal gestionanimal, Empleado empleado) throws SQLException {
@@ -117,6 +140,61 @@ public class MetodosGenerales extends ManagerAbstract {
 
 		metodosGestionAnimal.insertarGestion(gestionanimal, empleado.getDni(), mascota.getCodMascota());
 		metodoMascota.updateMascota(column, cantidadNueva, mascota);
+
+	}
+
+	public void AnadirEdadAnimal(Animal animal, int numero) throws SQLException {
+
+		String edad = String.valueOf(numero);
+
+		String[] edadNueva = { edad };
+		String column[] = { "Edad" };
+
+		metodosAnimal.updateAnimal(column, edadNueva, animal);
+
+	}
+
+	public void EditarCantidadGestion(Gestion gestion, int numero) throws SQLException {
+
+		String cantidad = String.valueOf(numero);
+
+		String[] cantidadNueva = { cantidad };
+		String column[] = { "Cantidad" };
+
+		metodosGestion.updateGestion(column, cantidadNueva, gestion);
+
+	}
+	
+	public void EditarCantidadPedido(Pedido pedido, int numero) throws SQLException {
+
+		String cantidad = String.valueOf(numero);
+
+		String[] cantidadNueva = { cantidad };
+		String column[] = { "CantidadProductos" };
+
+		metodosPedido.updatePedido(column, cantidadNueva, pedido);
+
+	}
+	
+	public void EditarCantidadAdopcion(Adopcion adopcion, int numero) throws SQLException {
+
+		String cantidad = String.valueOf(numero);
+
+		String[] cantidadNueva = { cantidad };
+		String column[] = { "CantidadProductos" };
+
+		metodosAdopcion.updateAnimalADoptado(column, cantidadNueva, adopcion);
+
+	}
+
+	public void EditarCantidadGestionAnimal(GestionAnimal gestionAnimal, int numero) throws SQLException {
+
+		String cantidad = String.valueOf(numero);
+
+		String[] cantidadNueva = { cantidad };
+		String column[] = { "Cantidad" };
+
+		metodosGestionAnimal.updateGestion(column, cantidadNueva, gestionAnimal);
 
 	}
 
@@ -132,82 +210,80 @@ public class MetodosGenerales extends ManagerAbstract {
 
 	}
 
-	public JTable generarTablaUbicaciones() throws SQLException {
-		String[] titulos = null;
-		Object[][] txt = null;
+	public Object[][] generarTablaUbicaciones() throws SQLException {
 		MetodosClinicaVeterinaria metodosClinicaveterinaria = new MetodosClinicaVeterinaria();
 		ArrayList<ClinicaVeterinaria> listaClinicaVeterinaria = metodosClinicaveterinaria.recogerClinicaVeterinaria();
-		titulos = new String[] { "Ubicacion" };
-		txt = new String[listaClinicaVeterinaria.size()][titulos.length];
+		String[] titulos = new String[] { "Ubicacion" };
+		Object[][] txt = new String[listaClinicaVeterinaria.size()][titulos.length];
 		int cont = 0;
 		for (ClinicaVeterinaria clini : listaClinicaVeterinaria) {
 			txt[cont][0] = clini.getUbicacion();
 			cont++;
 		}
-
-		JTable table = new JTable();
-		table.setModel(new DefaultTableModel(txt, titulos));
-
-		return table;
+		return txt;
 	}
 
-	public JTable generarTablaTiendas() throws SQLException {
+	public Object[][] generarTablaTiendas() throws SQLException {
 		String[] titulos = null;
 		Object[][] txt = null;
 		titulos = new String[] { "Tienda" };
 		txt = new String[2][titulos.length];
 		txt[0][0] = "Mascotas";
 		txt[1][0] = "Productos";
-		JTable table = new JTable();
-		table.setModel(new DefaultTableModel(txt, titulos));
 
-		return table;
+		return txt;
 	}
 
-	public JTable generarTablaSeleccionMascotas(String valorUbicacion) throws SQLException {
-		String[] titulos = null;
-		Object[][] txt = null;
-		MetodosMascota metodosMascota = new MetodosMascota();
-		ArrayList<Mascota> listaMascota = metodosMascota.recogerMascotaTienda(valorUbicacion);
-		titulos = new String[] { "Mascotas", "Precio", "Stock" };
-		txt = new String[listaMascota.size()][titulos.length];
+	public JTable generarTablaSeleccionMascotas(ArrayList<ObjetosComprables> listaMascota) throws SQLException {
+		String[] titulos = new String[] { mascota, precio, stock };
+		Object[][] txt = new String[listaMascota.size()][titulos.length];
 		int cont = 0;
-		for (Mascota mascota : listaMascota) {
-			txt[cont][0] = mascota.getEspecie();
-			txt[cont][1] = String.valueOf(mascota.getPrecio());
-			txt[cont][2] = String.valueOf(mascota.getStock());
-			cont++;
+		for (ObjetosComprables objetosComprables : listaMascota) {
+			if (objetosComprables instanceof Mascota) {
+				Mascota mascota = (Mascota) objetosComprables;
+				txt[cont][0] = mascota.getEspecie();
+				txt[cont][1] = String.valueOf(mascota.getPrecio());
+				txt[cont][2] = String.valueOf(mascota.getStock());
+				cont++;
+			}
 		}
 
 		JTable table = new JTable();
 		table.setModel(new DefaultTableModel(txt, titulos));
+		table.setCellSelectionEnabled(false);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setDefaultEditor(Object.class, null);
 
 		return table;
 	}
 
-	public JTable generarTablaSeleccionProductos(String valorUbicacion) throws SQLException {
+	public JTable generarTablaSeleccionProductos(ArrayList<ObjetosComprables> listaProducto) throws SQLException {
 		String[] titulos = null;
 		Object[][] txt = null;
-		MetodosProducto metodosProducto = new MetodosProducto();
-		ArrayList<Producto> listaProducto = metodosProducto.recogerProductoTienda(valorUbicacion);
-		titulos = new String[] { "Productos", "Precio", "Stock" };
+		titulos = new String[] { nombreProducto, precio, stock };
 		txt = new String[listaProducto.size()][titulos.length];
 		int cont = 0;
-		for (Producto producto : listaProducto) {
-			txt[cont][0] = producto.getNombreProducto();
-			txt[cont][1] = String.valueOf(producto.getPrecio());
-			txt[cont][2] = String.valueOf(producto.getStock());
-			cont++;
+
+		for (ObjetosComprables objetosComprables : listaProducto) {
+			if (objetosComprables instanceof Producto) {
+				Producto producto = (Producto) objetosComprables;
+				txt[cont][0] = producto.getNombreProducto();
+				txt[cont][1] = String.valueOf(producto.getPrecio());
+				txt[cont][2] = String.valueOf(producto.getStock());
+				cont++;
+			}
 		}
 
 		JTable table = new JTable();
 		table.setModel(new DefaultTableModel(txt, titulos));
+		table.setCellSelectionEnabled(false);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setDefaultEditor(Object.class, null);
 
 		return table;
 	}
 
 	public JTable generarTablasALL() throws SQLException {
-		// TODO Auto-generated method stub
 		String[] titulos = null;
 		Object[][] txt = null;
 		MetodosEmpleado metodosEmpleado = new MetodosEmpleado();
@@ -230,6 +306,9 @@ public class MetodosGenerales extends ManagerAbstract {
 
 		JTable table = new JTable();
 		table.setModel(new DefaultTableModel(txt, titulos));
+		table.setCellSelectionEnabled(false);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setDefaultEditor(Object.class, null);
 		return table;
 	}
 
@@ -252,6 +331,9 @@ public class MetodosGenerales extends ManagerAbstract {
 		}
 		JTable table = new JTable();
 		table.setModel(new DefaultTableModel(txt, titulos));
+		table.setCellSelectionEnabled(false);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setDefaultEditor(Object.class, null);
 		return table;
 	}
 
@@ -260,55 +342,103 @@ public class MetodosGenerales extends ManagerAbstract {
 		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement modificarSalario = conexion.createStatement();
-		String sql = "call ModificarSalarioAntiguedad (" + dni + ", " + antiguedad + ");";
+		String sql = "call ModificarSalarioAntiguedad ('" + dni + "', '" + antiguedad + "');";
 		ResultSet resul = modificarSalario.executeQuery(sql);
 		while (resul.next()) {
-			System.out.println(dni);
 		}
 	}
 
 	public void asignarSalario(String dni) throws SQLException {
-
-		Connection conexion;
-		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-		Statement modificarSalario = conexion.createStatement();
-		String sql = "call AsignarSalario (" + dni + ");";
-		ResultSet resul = modificarSalario.executeQuery(sql);
-		while (resul.next()) {
-			System.out.println(dni);
-		}
-	}
-
-	public JTable generarTablasAnimalDelCliente(Cliente cliente, ArrayList<Cliente> cs) throws SQLException {
-		// TODO Auto-generated method stub
-		String[] titulos = null;
-		Object[][] txt = null;
-		MetodosCliente mc = new MetodosCliente();
-		int pos = cs.indexOf(cliente);
-		ArrayList<Cliente> cl = mc.recogerClienteYSusAnimales();
-		titulos = new String[] { "Nombre", "Edad", "Especie", "Sexo", "ID" };
-		txt = new String[cl.get(pos).getAnimal().size()][titulos.length];
-		int cont = 0;
-		for (Cliente cli : cl) {
-
-			if (cli.getDni().equals(cliente.getDni())) {
-
-				for (int i = 0; i < cli.getAnimal().size(); i++) {
-					txt[cont][0] = cli.getAnimal().get(i).getNombreAnimal();
-					txt[cont][1] = String.valueOf(cli.getAnimal().get(i).getEdad());
-					txt[cont][2] = cli.getAnimal().get(i).getEspecie();
-					txt[cont][3] = cli.getAnimal().get(i).getSexo();
-					txt[cont][4] = String.valueOf(cli.getAnimal().get(i).getIdAnimal());
-					cont++;
-				}
-				break;
+		try {
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement asignarSalario = conexion.createStatement();
+			asignarSalario.executeUpdate("call AsignarSalario ('" + dni + "');");
+		} finally {
+			if (conexion != null) {
+				conexion.close();
 			}
 		}
 
+	}
+
+	public void ordenarPorPrecioDesc(ArrayList<ObjetosComprables> listaObjetocomprablesPrecio, boolean precio) {
+
+		if (precio == true) {
+			Collections.sort(listaObjetocomprablesPrecio, new Comparator<ObjetosComprables>() {
+
+				@Override
+				public int compare(ObjetosComprables oc1, ObjetosComprables oc2) {
+
+					return Double.compare(oc2.getPrecio(), oc1.getPrecio());
+				}
+			});
+		} else {
+			Collections.sort(listaObjetocomprablesPrecio, new Comparator<ObjetosComprables>() {
+
+				@Override
+				public int compare(ObjetosComprables oc1, ObjetosComprables oc2) {
+
+					return Double.compare(oc1.getPrecio(), oc2.getPrecio());
+				}
+			});
+		}
+	}
+
+	public void ordenarPorStockDesc(ArrayList<ObjetosComprables> listaObjetocomprablesStock, boolean stock) {
+		if (stock == true) {
+			Collections.sort(listaObjetocomprablesStock, new Comparator<ObjetosComprables>() {
+				@Override
+				public int compare(ObjetosComprables oc1, ObjetosComprables oc2) {
+					return Double.compare(oc2.getStock(), oc1.getStock());
+				}
+			});
+		} else {
+			Collections.sort(listaObjetocomprablesStock, new Comparator<ObjetosComprables>() {
+
+				@Override
+				public int compare(ObjetosComprables oc1, ObjetosComprables oc2) {
+
+					return Double.compare(oc1.getStock(), oc2.getStock());
+				}
+			});
+		}
+	}
+
+	public JTable generarTablaGestionarAnimalCliente(Cliente cliente, ArrayList<Cliente> clienteRecibido)
+			throws SQLException {
+
+		String[] titulos = null;
+		Object[][] txt = null;
+		titulos = new String[] { "Nombre", "Edad", "Especie", "Sexo" };
+
+		if (!(cliente == null)) {
+			int pos = clienteRecibido.indexOf(cliente);
+			ArrayList<Cliente> listaCliente = metodosCliente.recogerClienteYSusAnimales();
+
+			txt = new String[listaCliente.get(pos).getAnimal().size()][titulos.length];
+			int cont = 0;
+			for (Cliente clienteTabla : listaCliente) {
+
+				if (clienteTabla.getDni().equals(cliente.getDni())) {
+
+					for (int i = 0; i < clienteTabla.getAnimal().size(); i++) {
+						txt[cont][0] = clienteTabla.getAnimal().get(i).getNombreAnimal();
+						txt[cont][1] = String.valueOf(clienteTabla.getAnimal().get(i).getEdad());
+						txt[cont][2] = clienteTabla.getAnimal().get(i).getEspecie();
+						txt[cont][3] = clienteTabla.getAnimal().get(i).getSexo();
+						cont++;
+					}
+					break;
+				}
+			}
+		}
 		JTable table = new JTable();
 		table.setModel(new DefaultTableModel(txt, titulos));
-
+		table.setCellSelectionEnabled(false);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setDefaultEditor(Object.class, null);
 		return table;
+
 	}
 
 	public ArrayList<Consulta> ArrayListTxt(Consulta consulta, Cliente cliente) throws SQLException {
@@ -318,18 +448,188 @@ public class MetodosGenerales extends ManagerAbstract {
 		try {
 			FileWriter escritor = new FileWriter(nombreArchivo);
 			String txtx = "Te atendera " + consulta.getEmpleado().getNombre() + ", el dia =" + consulta.getFecha()
-					+ "//" + "a las =" + consulta.getHora() + "." + " La mascota es "
-					+ consulta.getAnimal().getNombreAnimal() + ", y el coste será " + consulta.getPrecio() + "."
-					+ " Un saludo " + cliente.getNombre() + " " + cliente.getApellido();
+					+ "a las =" + consulta.getHora() + "." + " La mascota es " + consulta.getAnimal().getNombreAnimal()
+					+ ", y el coste será " + consulta.getPrecio() + ".$" + " Un saludo " + cliente.getNombre() + " "
+					+ cliente.getApellido();
 			escritor.write(txtx + "\n");
 			escritor.close();
-			System.out.println("Los elementos se han guardado ");
 		} catch (IOException e) {
-			System.out.println("error");
 			e.printStackTrace();
-
 		}
 		return lista;
 	}
 
+	public JTable generarTablaSeleccionMascotasTiendaEmpleado(ArrayList<Mascota> listaObjetosMascota)
+			throws SQLException {
+
+		String[] titulos = new String[] { especie, stock, precio };
+		Object[][] txt = new String[listaObjetosMascota.size()][titulos.length];
+
+		int cont = 0;
+		for (ObjetosComprables objetosComprables : listaObjetosMascota) {
+			if (objetosComprables instanceof Mascota) {
+				Mascota mascota = (Mascota) objetosComprables;
+				txt[cont][0] = mascota.getEspecie();
+				txt[cont][1] = String.valueOf(mascota.getStock());
+				txt[cont][2] = String.valueOf(mascota.getPrecio());
+				cont++;
+			}
+		}
+
+		JTable table = new JTable();
+		table.setModel(new DefaultTableModel(txt, titulos));
+		table.setCellSelectionEnabled(false);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setDefaultEditor(Object.class, null);
+		return table;
+	}
+
+	public JTable generarTablaSeleccionProductosTiendaEmpleado(ArrayList<Producto> listaObjetosComprables)
+			throws SQLException {
+		String[] titulos = null;
+		Object[][] txt = null;
+
+		titulos = new String[] { nombreProducto, stock, precio };
+		txt = new String[listaObjetosComprables.size()][titulos.length];
+
+		int cont = 0;
+
+		for (ObjetosComprables objetosComprables : listaObjetosComprables) {
+			if (objetosComprables instanceof Producto) {
+				Producto producto = (Producto) objetosComprables;
+				txt[cont][0] = producto.getNombreProducto();
+				txt[cont][1] = String.valueOf(producto.getStock());
+				txt[cont][2] = String.valueOf(producto.getPrecio());
+				cont++;
+			}
+		}
+
+		JTable table = new JTable();
+		table.setModel(new DefaultTableModel(txt, titulos));
+		table.setCellSelectionEnabled(false);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setDefaultEditor(Object.class, null);
+		return table;
+	}
+
+	public JTable generarTablaSeleccionGestionTiendaEmpleado(ArrayList<Gestion> listaGestiones) throws SQLException {
+
+		String[] titulos = new String[] { nombreProducto, cantidad, fecha };
+		Object[][] txt = new String[listaGestiones.size()][titulos.length];
+
+		int cont = 0;
+
+		for (Gestion gestion : listaGestiones) {
+
+			txt[cont][0] = String.valueOf(gestion.getCodGestion());
+			txt[cont][1] = String.valueOf(gestion.getCantidad());
+			txt[cont][2] = String.valueOf(gestion.getFecha());
+			cont++;
+
+		}
+
+		JTable table = new JTable();
+		table.setModel(new DefaultTableModel(txt, titulos));
+		table.setCellSelectionEnabled(false);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setDefaultEditor(Object.class, null);
+		return table;
+	}
+	
+
+	public JTable generarTablaSeleccionPedidoCliente(ArrayList<Pedido> listaPedido) throws SQLException {
+
+		String[] titulos = new String[] { nombreProducto, cantidad, fecha , hora , precio};
+		Object[][] txt = new String[listaPedido.size()][titulos.length];
+
+		int cont = 0;
+
+		for (Pedido pedido : listaPedido) {
+
+			txt[cont][0] = String.valueOf(pedido.getCodPedido());
+			txt[cont][1] = String.valueOf(pedido.getCantidadProducto());
+			txt[cont][2] = String.valueOf(pedido.getFecha());
+			txt[cont][3] = String.valueOf(pedido.getHora());
+			txt[cont][4] = String.valueOf(pedido.getPreciototal());
+			cont++;
+
+		}
+
+		JTable table = new JTable();
+		table.setModel(new DefaultTableModel(txt, titulos));
+		table.setCellSelectionEnabled(false);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setDefaultEditor(Object.class, null);
+		return table;
+	}
+	
+	public Object[][] generarTablaSeleccionGestionTAnimaliendaEmpleado(ArrayList<GestionAnimal> listaGestionAnimal) throws SQLException {
+
+		String[] titulos = new String[] { nombreProducto, cantidad, fecha };
+		Object[][] txt = new String[listaGestionAnimal.size()][titulos.length];
+
+		int cont = 0;
+
+		for (GestionAnimal gestionAnimal : listaGestionAnimal) {
+
+			txt[cont][0] = String.valueOf(gestionAnimal.getCodGestionAnimal());
+			txt[cont][1] = String.valueOf(gestionAnimal.getCantidad());
+			txt[cont][2] = String.valueOf(gestionAnimal.getFecha());
+			cont++;
+
+		}
+		return txt;
+	}
+	
+	public Object[][] generarTablaSeleccionAdopcionCliente(ArrayList<Adopcion> listaAdopcion) throws SQLException {
+
+		String[] titulos = new String[] { nombreProducto, fecha , precio};
+		Object[][] txt = new String[listaAdopcion.size()][titulos.length];
+
+		int cont = 0;
+
+		for (Adopcion adopcion : listaAdopcion) {
+			
+			txt[cont][0] = String.valueOf(adopcion.getCodAdopcion());
+			txt[cont][1] = String.valueOf(adopcion.getFecha());
+			txt[cont][2] = String.valueOf(adopcion.getPrecioTotal());
+			cont++;
+		}
+
+		return txt;
+	}
+	
+	public Object[][] generarTablaClienteAnimal(Cliente cliente, ArrayList<Cliente> cs) throws SQLException {
+		MetodosCliente mc = new MetodosCliente();
+		int pos = cs.indexOf(cliente);
+		ArrayList<Cliente> cl = mc.recogerClienteYSusAnimales();
+		String[] titulos = new String[] { "Nombre", "Edad", "Especie", "Sexo" };
+		Object[][] txt = new String[cl.get(pos).getAnimal().size()][titulos.length];
+		int cont = 0;
+		for (Cliente cli : cl) {
+
+			if (cli.getDni().equals(cliente.getDni())) {
+
+				int i = 0;
+				while (i < cl.size()) {
+					cli = cl.get(i);
+					if (cli.getDni().equals(cliente.getDni())) {
+						int j = 0;
+						while (j < cli.getAnimal().size()) {
+							txt[cont][0] = cli.getAnimal().get(j).getNombreAnimal();
+							txt[cont][1] = String.valueOf(cli.getAnimal().get(j).getEdad());
+							txt[cont][2] = cli.getAnimal().get(j).getEspecie();
+							txt[cont][3] = cli.getAnimal().get(j).getSexo();
+							cont++;
+							j++;
+						}
+						i++;
+					} else {
+						i++;
+					}
+				}
+			}
+		}
+		return txt ;
+	}
 }

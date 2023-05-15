@@ -7,6 +7,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Controlador.MetodosAnimal;
+import Controlador.MetodosGenerales;
+import ModeloAnimal.Gato;
+import ModeloAnimal.Loro;
+import ModeloAnimal.Perro;
+import ModeloAnimal.Pez;
 import ModeloPerfil.Cliente;
 
 import javax.swing.JButton;
@@ -16,6 +21,9 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class PedirCita extends JFrame {
 	/**
@@ -28,16 +36,25 @@ public class PedirCita extends JFrame {
 	ventanaCliente ventanaCliente;
 	private JTable table;
 	private int valor = -1;
+	Cliente cli = null;
+	
+	Gato gato = new Gato();
+	Perro perro = new Perro();
+	Loro loro = new Loro();
+	Pez pez = new Pez();
+
+	MetodosGenerales metodosGenerales = new MetodosGenerales();
 
 	/**
 	 * Create the frame.
 	 * 
-	 * @param cs
+	 * @param listaCliente
 	 */
-	public PedirCita(Cliente cliente, ArrayList<Cliente> cs) {
+	public PedirCita(Cliente cliente, ArrayList<Cliente> listaCliente, boolean atras) {
+		cli = cliente;
 		MetodosAnimal metodosAnimal = new MetodosAnimal();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 743, 410);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -52,28 +69,33 @@ public class PedirCita extends JFrame {
 				dispose();
 			}
 		});
-		btnAtras.setBounds(10, 227, 89, 23);
+		btnAtras.setBounds(25, 337, 107, 23);
 		contentPane.add(btnAtras);
 
 		btnAnyadirAnimal = new JButton("Añadir animal");
 		btnAnyadirAnimal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AnaydirAnimal aa = new AnaydirAnimal(cliente);
+				AnaydirAnimal aa = new AnaydirAnimal(cliente, atras);
 				aa.setVisible(true);
 				dispose();
 
 			}
 		});
-		btnAnyadirAnimal.setBounds(290, 227, 134, 23);
+		btnAnyadirAnimal.setBounds(372, 337, 134, 23);
 		contentPane.add(btnAnyadirAnimal);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(25, 25, 377, 155);
+		scrollPane.setBounds(25, 69, 680, 204);
 		contentPane.add(scrollPane);
 
 		table = new JTable();
 		try {
-			table = metodosAnimal.generarTablaClienteAnimal(cliente, cs);
+			Object[][] clienteAnimal =  metodosGenerales.generarTablaClienteAnimal(cliente, listaCliente);
+			String[] titulos = new String[] { "Nombre", "Edad", "Especie", "Sexo" };
+			table.setModel(new DefaultTableModel(clienteAnimal, titulos));
+			table.setCellSelectionEnabled(false);
+			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			table.setDefaultEditor(Object.class, null);
 			scrollPane.setViewportView(table);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
@@ -86,39 +108,111 @@ public class PedirCita extends JFrame {
 				DefaultTableModel modelEditar;
 				if (table.getSelectedRow() != -1) {
 					modelEditar = (DefaultTableModel) table.getModel();
-					DefaultTableModel tm = (DefaultTableModel) table.getModel();
-					String dato = String.valueOf(tm.getValueAt(table.getSelectedRow(), 4));
+					int filaseleccionada = table.getSelectedRow();
+					valor = cli.getAnimal().get(filaseleccionada).getIdAnimal();
 					try {
-						metodosAnimal.eliminarAnimal(Integer.valueOf(dato));
+						metodosAnimal.eliminarAnimal(Integer.valueOf(valor));
 						modelEditar.removeRow(table.getSelectedRow());
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Selecciona un animal");
 				}
 			}
 		});
-		btnEliminarAnimal.setBounds(114, 227, 166, 23);
+		btnEliminarAnimal.setBounds(183, 337, 144, 23);
 		contentPane.add(btnEliminarAnimal);
 
 		JButton btnPedirCita = new JButton("Pedir Cita");
 		btnPedirCita.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				if (table.getSelectedRow() != -1) {
-					DefaultTableModel tm = (DefaultTableModel) table.getModel();
-					String dato = String.valueOf(tm.getValueAt(table.getSelectedRow(), 4));
-					valor = Integer.valueOf(dato);
-
+					int filaseleccionada = table.getSelectedRow();
+					valor = cli.getAnimal().get(filaseleccionada).getIdAnimal();
 					PedirCitaAnimalSeleccionado pedirCitaAnimalSeleccionado = new PedirCitaAnimalSeleccionado(cliente,
-							valor);
+							valor, atras);
 					pedirCitaAnimalSeleccionado.setVisible(true);
 					dispose();
+				} else {
+					JOptionPane.showMessageDialog(null, "Selecciona un animal");
 				}
-
 			}
 		});
-		btnPedirCita.setBounds(290, 193, 134, 23);
+		btnPedirCita.setBounds(571, 337, 134, 23);
 		contentPane.add(btnPedirCita);
+
+		JLabel lblNewLabel = new JLabel("En esta tabla se muestran todos tus animales registrados.");
+		lblNewLabel.setBounds(25, 44, 680, 14);
+		contentPane.add(lblNewLabel);
+
+		JButton btnActualizarEdadAnimal = new JButton("Actualizar edad animal");
+		btnActualizarEdadAnimal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (table.getSelectedRow() != -1) {
+					int filaseleccionada = table.getSelectedRow();
+					String especieAnimal = cli.getAnimal().get(filaseleccionada).getEspecie();
+					int idAnimal = cli.getAnimal().get(filaseleccionada).getIdAnimal();
+
+					int numero = 0;
+					String numeroStr;
+					boolean valorValido = false;
+					do {
+						numeroStr = JOptionPane.showInputDialog(null, "Introduce la ead actual:");
+						if (numeroStr == null) {
+							valorValido = false;
+						} else {
+							try {
+								numero = Integer.parseInt(numeroStr);
+								valorValido = true;
+							} catch (NumberFormatException e1) {
+								JOptionPane.showMessageDialog(null, "Debe introducir un valor entero.", "Error",
+										JOptionPane.ERROR_MESSAGE);
+							}
+						}
+					} while (numero < 1 && valorValido);
+					
+					if (especieAnimal == "Gatos") {
+							gato.setIdAnimal(idAnimal);
+							try {
+								metodosGenerales.AnadirEdadAnimal(gato, numero);
+							} catch (SQLException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+					} else if  (especieAnimal == "Perros"){
+						perro.setIdAnimal(idAnimal);
+						try {
+							metodosGenerales.AnadirEdadAnimal(perro, numero);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					} else if  (especieAnimal == "Loros"){
+						loro.setIdAnimal(idAnimal);
+						try {
+							metodosGenerales.AnadirEdadAnimal(loro, numero);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					} else {
+						pez.setIdAnimal(idAnimal);
+						try {
+							metodosGenerales.AnadirEdadAnimal(pez, numero);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+
+				} else {
+					JOptionPane.showMessageDialog(null, "Selecciona un animal");
+				}
+			}
+		});
+		btnActualizarEdadAnimal.setBounds(305, 293, 237, 21);
+		contentPane.add(btnActualizarEdadAnimal);
 	}
 }

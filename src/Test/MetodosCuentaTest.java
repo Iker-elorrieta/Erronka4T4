@@ -26,32 +26,34 @@ class MetodosCuentaTest extends ManagerAbstract {
 	MetodosCuenta metodosCuenta = new MetodosCuenta();
 	MetodosCliente metodosCliente = new MetodosCliente();
 
+	int numeroCuentaNuevo = 900;
+
+	String nombreNuevo = "Ander";
+	String apellidosNuevo = "Perex";
+	String dniNuevo = "22761890D";
+	String direccionNuevo = "Mi casa";
+	String contrasenyaNuevo = "hola";
+
+	String[] numCuentaNueva = { "1000" };
+	int numCuentaNuevaUpdate = 1000;
+	String column[] = { "NumeroCuenta" };
+
+	// --------------------VariablesNecesariasParaElTest--------------------//
+
 	@Test
 	void recogerCuentaTest() {
-
-		int numeroCuentaNuevo = 900;
-
-		String nombreNuevo = "Ander";
-		String apellidosNuevo = "Perex";
-		String dniNuevo = "23361399T";
-		String direccionNuevo = "Mi casa";
-		String contrasenyaNuevo = "hola";
 
 		ArrayList<Cuenta> listaCuenta;
 		try {
 
-			Connection conexion;
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul = conexion.createStatement();
-
 			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_CLIENTE + "`"
 					+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`) " + "VALUES( '" + dniNuevo + "' , '"
 					+ nombreNuevo + "' , '" + apellidosNuevo + "' , '" + contrasenyaNuevo + "' , '" + direccionNuevo
 					+ "');");
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul2 = conexion.createStatement();
-
 			resul2.executeUpdate("Insert into `" + ManagerAbstract.TABLE_CUENTA + "`" + "(`NumeroCuenta`, `DNI`) "
 					+ "VALUES( '" + numeroCuentaNuevo + "' , '" + dniNuevo + "');");
 
@@ -65,12 +67,11 @@ class MetodosCuentaTest extends ManagerAbstract {
 					resultado = listaCuenta.get(pos).toString();
 				}
 			}
+
 			assertEquals(resultado,
-					"Cuenta [numeroCuenta=900, cliente=Cliente [animal=null, nombre=Ander, apellido=Perex, dni=23361399T, direccion=Mi casa, contrasenya=hola]]");
+					"Cuenta [numeroCuenta=900, cliente=Cliente [animal=null, nombre=Ander, apellido=Perex, dni=22761890D, direccion=Mi casa, contrasenya=hola]]");
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul3 = conexion.createStatement();
-
 			resul3.executeUpdate(
 					"DELETE FROM `" + ManagerAbstract.TABLE_CLIENTE + "`" + "WHERE cliente.DNI = '" + dniNuevo + "';");
 
@@ -82,59 +83,41 @@ class MetodosCuentaTest extends ManagerAbstract {
 
 	@Test
 	void insertarCuentaTest() {
-		int numeroCuentaNuevo = 900;
-		String dniNuevoCuenta = "23361399T";
 
 		Cuenta cuentaNueva = new Cuenta();
 		cuentaNueva.setNumeroCuenta(numeroCuentaNuevo);
-
-		String nombreNuevo = "Ander";
-		String apellidosNuevo = "Perex";
-		String dniNuevo = "23361399T";
-		String direccionNuevo = "Mi casa";
-		String contrasenyaNuevo = "hola";
-
 
 		try {
 			MetodosGenerales MetodosGenerales = new MetodosGenerales();
 			MetodosGenerales.comprobarDni(dniNuevo);
 			try {
 
-				Connection conexion;
-				conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+				Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 				Statement resul = conexion.createStatement();
-
 				resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_CLIENTE + "`"
 						+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`) " + "VALUES( '" + dniNuevo
 						+ "' , '" + nombreNuevo + "' , '" + apellidosNuevo + "' , '" + contrasenyaNuevo + "' , '"
 						+ direccionNuevo + "');");
 
 				metodosCuenta.insertarCuenta(cuentaNueva, dniNuevo);
-				try {
-					conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-					Statement sacaCliente = conexion.createStatement();
-					String sql = "select * from " + ManagerAbstract.TABLE_CUENTA + " where dni = '" + dniNuevoCuenta
-							+ " ';";
-					ResultSet resul2 = sacaCliente.executeQuery(sql);
-					while (resul2.next()) {
 
-						assertEquals(dniNuevo, resul2.getString(dni));
-						assertEquals(numeroCuentaNuevo, resul2.getInt(numeroCuenta));
-					}
+				Statement sacaCliente = conexion.createStatement();
+				String sql = "select * from " + ManagerAbstract.TABLE_CUENTA + " where dni = '" + dniNuevo + " ';";
+				ResultSet resul2 = sacaCliente.executeQuery(sql);
+				while (resul2.next()) {
 
-					conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-					Statement resul3 = conexion.createStatement();
-
-					resul3.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_CLIENTE + "`" + "WHERE cliente.DNI = '"
-							+ dniNuevo + "';");
-
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					assertEquals(dniNuevo, resul2.getString(dni));
+					assertEquals(numeroCuentaNuevo, resul2.getInt(numeroCuenta));
 				}
-			} catch (SQLException e1) {
+
+				Statement resul3 = conexion.createStatement();
+
+				resul3.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_CLIENTE + "`" + "WHERE cliente.DNI = '"
+						+ dniNuevo + "';");
+
+			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				e.printStackTrace();
 			}
 
 		} catch (NumberFormatException | DniInvalidoException e) {
@@ -146,45 +129,29 @@ class MetodosCuentaTest extends ManagerAbstract {
 
 	@Test
 	void eliminarCuentaTest() {
-		int numeroCuentaNuevo = 900;
-
-		String nombreNuevo = "Ander";
-		String apellidosNuevo = "Perex";
-		String dniNuevo = "23361399T";
-		String direccionNuevo = "Mi casa";
-		String contrasenyaNuevo = "hola";
-
 
 		try {
 
-			Connection conexion;
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul = conexion.createStatement();
-
 			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_CLIENTE + "`"
 					+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`) " + "VALUES( '" + dniNuevo + "' , '"
 					+ nombreNuevo + "' , '" + apellidosNuevo + "' , '" + contrasenyaNuevo + "' , '" + direccionNuevo
 					+ "');");
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul2 = conexion.createStatement();
-
 			resul2.executeUpdate("Insert into `" + ManagerAbstract.TABLE_CUENTA + "`" + "(`NumeroCuenta`, `DNI`) "
 					+ "VALUES( '" + numeroCuentaNuevo + "' , '" + dniNuevo + "');");
 
 			metodosCuenta.eliminarCuenta(numeroCuentaNuevo);
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement sacaEmpleado = conexion.createStatement();
 			String sql = "select * from " + ManagerAbstract.TABLE_CUENTA + " where NumeroCuenta = '" + numeroCuentaNuevo
 					+ " ';";
 			ResultSet resul3 = sacaEmpleado.executeQuery(sql);
-
 			assertEquals(resul3.isBeforeFirst(), false);
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul4 = conexion.createStatement();
-
 			resul4.executeUpdate(
 					"DELETE FROM `" + ManagerAbstract.TABLE_CLIENTE + "`" + "WHERE cliente.DNI = '" + dniNuevo + "';");
 
@@ -197,18 +164,8 @@ class MetodosCuentaTest extends ManagerAbstract {
 	@Test
 	void updateCuentaTest() {
 
-		int numeroCuentaNuevo = 900;
-		String[] dniNuevoCuenta = { "X3096746A" };
-		String dniUpadate = "X3096746A";
-
-		String nombreNuevo = "Ander";
-		String apellidosNuevo = "Perex";
-		String dniNuevo = "48038965S";
-		String direccionNuevo = "Mi casa";
-		String contrasenyaNuevo = "hola";
-		// -------------------------------------------//
 		Cliente clienteNuevo = new Cliente();
-		clienteNuevo.setDni("48038965S");
+		clienteNuevo.setDni(dni);
 		clienteNuevo.setNombre(nombreNuevo);
 		clienteNuevo.setApellido(apellidosNuevo);
 		clienteNuevo.setContrasenya(contrasenyaNuevo);
@@ -217,50 +174,34 @@ class MetodosCuentaTest extends ManagerAbstract {
 		Cuenta cuentaNueva = new Cuenta();
 		cuentaNueva.setNumeroCuenta(numeroCuentaNuevo);
 
-		String column[] = { "DNI" };
-
 		try {
-			Connection conexion;
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul = conexion.createStatement();
-
 			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_CLIENTE + "`"
 					+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`) " + "VALUES( '" + dniNuevo + "' , '"
 					+ nombreNuevo + "' , '" + apellidosNuevo + "' , '" + contrasenyaNuevo + "' , '" + direccionNuevo
 					+ "');");
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul2 = conexion.createStatement();
-
 			resul2.executeUpdate("Insert into `" + ManagerAbstract.TABLE_CUENTA + "`" + "(`NumeroCuenta`, `DNI`) "
 					+ "VALUES( '" + numeroCuentaNuevo + "' , '" + dniNuevo + "');");
 
-			int cont = 0;
-			do {
-				conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-				String sql = "UPDATE cliente set " + column[cont] + " = " + "'" + dniNuevoCuenta[cont] + "'"
-						+ " where DNI = " + "'" + clienteNuevo.getDni() + "'";
-				Statement statement = conexion.createStatement();
-				statement.executeUpdate(sql);
-				cont++;
-			} while (cont < column.length);
+			metodosCuenta.updateCuenta(column, numCuentaNueva, cuentaNueva);
 
-			metodosCuenta.updateCuenta(column, dniNuevoCuenta, cuentaNueva);
-
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement sacaEmpleado = conexion.createStatement();
-			String sql = "select * from " + ManagerAbstract.TABLE_CUENTA + " where NumeroCuenta = '" + numeroCuentaNuevo
-					+ " ';";
+			String sql = "select * from " + ManagerAbstract.TABLE_CUENTA + " where NumeroCuenta = '" + numCuentaNuevaUpdate
+					+ "';";
 			ResultSet resul3 = sacaEmpleado.executeQuery(sql);
 			while (resul3.next()) {
-				assertEquals(dniNuevoCuenta[0].toString(), resul3.getString(dni));
+				
+				System.out.println(numCuentaNuevaUpdate);
+				System.out.println(resul3.getInt(numeroCuenta));
+				assertEquals(numCuentaNuevaUpdate, resul3.getInt(numeroCuenta));
 			}
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul4 = conexion.createStatement();
-
-			resul4.executeUpdate(
-					"DELETE FROM `" + ManagerAbstract.TABLE_CLIENTE + "`" + "WHERE cliente.DNI = '" + dniUpadate + "';");
+			resul4.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_CLIENTE + "`" + "WHERE cliente.DNI = '"
+					+ numCuentaNuevaUpdate + "';");
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import B.D_Util.DBUtils;
 import B.D_Util.ManagerAbstract;
+import Modelo.ObjetosComprables;
 import Modelo.Producto;
 
 public class MetodosProducto extends ManagerAbstract {
@@ -84,21 +85,22 @@ public class MetodosProducto extends ManagerAbstract {
 		} while (cont < nombreColumna.length);
 	}
 	
-	public ArrayList<Producto> recogerProductoTienda(String valorUbicacion) throws SQLException {
+	public ArrayList<ObjetosComprables> recogerProductoTienda(String valorUbicacion) throws SQLException {
 
-		ArrayList<Producto> listaProducto = new ArrayList<Producto>();
+		ArrayList<ObjetosComprables> listaProducto = new ArrayList<ObjetosComprables>();
 		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement sacaProducto = conexion.createStatement();
-		String sql = "select p.Nombre, p.Precio, p.Stock from " + ManagerAbstract.TABLE_PRODUCTOS + " p join " + ManagerAbstract.TABLE_ALMACEN +
+		String sql = "select p.Nombre, p.Precio, p.Stock, p.CodProducto from " + ManagerAbstract.TABLE_PRODUCTOS + " p join " + ManagerAbstract.TABLE_ALMACEN +
 				" a on p.CodProducto = a.CodProducto join " + ManagerAbstract.TABLE_CLINICAVETERINARIA + " c on a.CodClinica = c.CodClinica " +
-				" WHERE c.Ubicacion = '" + valorUbicacion + "';";
+				" WHERE c.Ubicacion = '" + valorUbicacion + "' and p.Stock > 0;";
 		ResultSet resul = sacaProducto.executeQuery(sql);
 		while (resul.next()) {
 			Producto producto = new Producto ();
 			producto.setNombreProducto(resul.getString(nombreProducto));
 			producto.setPrecio(resul.getFloat(precio));
 			producto.setStock(resul.getInt(stock));
+			producto.setCodProducto(resul.getInt(codProducto));
 			listaProducto.add(producto);
 		}
 		return listaProducto;

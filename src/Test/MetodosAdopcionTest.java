@@ -27,38 +27,50 @@ class MetodosAdopcionTest extends ManagerAbstract {
 	String cFecha = "Fecha";
 	String cCodMascota = "CodMascota";
 	String cDNI = "DNI";
+
+	// --------------------VariablesNecesariasParaElTest--------------------/
+	String fechaDate = "2023-02-13";
+
+	int codAdopcionNuevo = 900;
+	float precioTotalNuevo = 416;
+	Date fechaNuevo = Date.valueOf(fechaDate);
+
+	String dniNuevo = "X7650931G";
+
+	String nombreNuevo = "Ander";
+	String apellidosNuevo = "Perex";
+	String direccionNuevo = "Mi casa";
+	String contrasenyaNuevo = "hola";
+
+	int codMascotaNuevo = 900;
+	String especieMascotaNuevo = "Perro";
+	int stockMascotaNuevo = 10;
+	float precioMascotaNuevo = 50;
 	
+	String[] precioTotalUpdate = { "416" };
+	String column[] = { "PrecioTotal" };
+	float precioTotalUpdatear = 416;
+
 	@Test
 	void recogerAnimalAdoptadosTest() {
 
-		String fechaDate = "2023-02-13";
-
-		int codAdopcionNuevo = 900;
-		float precioTotalNuevo = 416;
-		Date fechaNuevo = Date.valueOf(fechaDate);
-		;
-		int codMascotaNuevo = 4;
-		String dniNuevo = "X7650931G";
-
-		String nombreNuevo = "Ander";
-		String apellidosNuevo = "Perex";
-		String direccionNuevo = "Mi casa";
-		String contrasenyaNuevo = "hola";
-
-		Connection conexion;
 		try {
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			Statement resul = conexion.createStatement();
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
+			Statement resul = conexion.createStatement();
 			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_CLIENTE + "`"
 					+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`) " + "VALUES( '" + dniNuevo + "' , '"
 					+ nombreNuevo + "' , '" + apellidosNuevo + "' , '" + contrasenyaNuevo + "' , '" + direccionNuevo
 					+ "');");
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul2 = conexion.createStatement();
-			resul2.executeUpdate("Insert into `" + ManagerAbstract.TABLE_ADOPCION + "`"
+			resul2.executeUpdate("Insert into `" + ManagerAbstract.TABLE_MASCOTA + "`"
+					+ "(`CodMascota`, `Especie`, `Stock`, `Precio`) " + "VALUES( '" + codMascotaNuevo + "' , '"
+					+ especieMascotaNuevo + "' , '" + stockMascotaNuevo + "' , '" + precioMascotaNuevo + "');");
+
+			Statement resul3 = conexion.createStatement();
+			resul3.executeUpdate("Insert into `" + ManagerAbstract.TABLE_ADOPCION + "`"
 					+ "(`CodAdopcion`, `PrecioTotal`, `Fecha`, `CodMascota`, `DNI`) " + "VALUES( '" + codAdopcionNuevo
 					+ "' , '" + precioTotalNuevo + "' , '" + fechaNuevo + "' , '" + codMascotaNuevo + "' , '" + dniNuevo
 					+ "');");
@@ -74,207 +86,175 @@ class MetodosAdopcionTest extends ManagerAbstract {
 				}
 			}
 
-			assertEquals(resultado, "Adopcion [codAdopcion=900, precioTotal=416.0, fecha=2023-02-13, listaMascota=[Mascota [codMascota=3, especie=Loro, stock=5, precio=35.0], Mascota [codMascota=4, especie=Pez, stock=50, precio=5.0], Mascota [codMascota=2, especie=Gato, stock=19, precio=15.0], Mascota [codMascota=4, especie=Pez, stock=50, precio=5.0]], cliente=Cliente [animal=null, nombre=Ander, apellido=Perex, dni=X7650931G, direccion=Mi casa, contrasenya=hola]]");
+			assertEquals(resultado,
+					"Adopcion [codAdopcion=900, precioTotal=416.0, fecha=2023-02-13, listaMascota=[Mascota [codMascota=3, especie=Loro, stock=5, precio=35.0], Mascota [codMascota=2, especie=Gato, stock=19, precio=15.0], Mascota [codMascota=900, especie=Perro, stock=10, precio=50.0]], cliente=Cliente [animal=null, nombre=Ander, apellido=Perex, dni=X7650931G, direccion=Mi casa, contrasenya=hola]]");
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			Statement resul3 = conexion.createStatement();
-
-			resul3.executeUpdate(
+			Statement resul4 = conexion.createStatement();
+			resul4.executeUpdate(
 					"DELETE FROM `" + ManagerAbstract.TABLE_CLIENTE + "`" + "WHERE cliente.DNI = '" + dniNuevo + "';");
+
+			Statement resul5 = conexion.createStatement();
+			resul5.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_MASCOTA + "`" + "WHERE CodMascota = '"
+					+ codMascotaNuevo + "';");
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
-	
-	
+
 	@Test
 	void insertarAnimalAdoptadosTest() {
-		
-		String fechaDate = "2023-02-13";
 
-		int codAdopcionNuevo = 651651;
-		float precioTotalNuevo = 416;
-		Date fechaNuevo = Date.valueOf(fechaDate);
-		;
-		int codMascotaNuevo = 4;
-		String dniNuevo = "X7650931G";
-
-		String nombreNuevo = "Ander";
-		String apellidosNuevo = "Perex";
-		String direccionNuevo = "Mi casa";
-		String contrasenyaNuevo = "hola";
-		
-		Adopcion adopcion = new Adopcion();
-		
-		adopcion.setCodAdopcion(codAdopcionNuevo);
-		adopcion.setFecha(fechaNuevo);
-		adopcion.setPrecioTotal(precioTotalNuevo);
-		
 		try {
-			Connection conexion;
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			Statement resul = conexion.createStatement();
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
+			Adopcion adopcion = new Adopcion();
+
+			adopcion.setCodAdopcion(codAdopcionNuevo);
+			adopcion.setFecha(fechaNuevo);
+			adopcion.setPrecioTotal(precioTotalNuevo);
+
+			Statement resul = conexion.createStatement();
 			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_CLIENTE + "`"
 					+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`) " + "VALUES( '" + dniNuevo + "' , '"
 					+ nombreNuevo + "' , '" + apellidosNuevo + "' , '" + contrasenyaNuevo + "' , '" + direccionNuevo
 					+ "');");
+			
+			Statement resul2 = conexion.createStatement();
+			resul2.executeUpdate("Insert into `" + ManagerAbstract.TABLE_MASCOTA + "`"
+					+ "(`CodMascota`, `Especie`, `Stock`, `Precio`) " + "VALUES( '" + codMascotaNuevo + "' , '"
+					+ especieMascotaNuevo + "' , '" + stockMascotaNuevo + "' , '" + precioMascotaNuevo + "');");
 
-			
 			metodosAdopcion.insertarAnimalAdoptado(adopcion, dniNuevo, codMascotaNuevo);
-			
-			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
 			Statement sacaAnimal = conexion.createStatement();
 			String sql = "select * from " + ManagerAbstract.TABLE_ADOPCION + " order by CodAdopcion DESC limit 1 ;";
-			ResultSet resul2 = sacaAnimal.executeQuery(sql);
-			while (resul2.next()) {
-				
-				assertEquals(precioTotalNuevo, resul2.getFloat(cPrecioTotal));
-				assertEquals(fechaNuevo, resul2.getDate(cFecha));
-				assertEquals(codMascotaNuevo, resul2.getInt(cCodMascota));
-				assertEquals(dniNuevo, resul2.getString(cDNI));
-			}	
-			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			Statement resul3 = conexion.createStatement();
+			ResultSet resul3 = sacaAnimal.executeQuery(sql);
+			while (resul3.next()) {
 
-			resul3.executeUpdate(
+				assertEquals(precioTotalNuevo, resul3.getFloat(cPrecioTotal));
+				assertEquals(fechaNuevo, resul3.getDate(cFecha));
+				assertEquals(codMascotaNuevo, resul3.getInt(cCodMascota));
+				assertEquals(dniNuevo, resul3.getString(cDNI));
+			}
+
+			Statement resul4 = conexion.createStatement();
+			resul4.executeUpdate(
 					"DELETE FROM `" + ManagerAbstract.TABLE_CLIENTE + "`" + "WHERE cliente.DNI = '" + dniNuevo + "';");
-		
+			
+			Statement resul5 = conexion.createStatement();
+			resul5.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_MASCOTA + "`" + "WHERE CodMascota = '"
+					+ codMascotaNuevo + "';");
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	@Test
 	void eliminarAnimalAdoptadosTest() {
-		
-		String fechaDate = "2023-02-13";
 
-		int codAdopcionNuevo = 900;
-		float precioTotalNuevo = 416;
-		Date fechaNuevo = Date.valueOf(fechaDate);
-		;
-		int codMascotaNuevo = 4;
-		String dniNuevo = "X7650931G";
-
-		String nombreNuevo = "Ander";
-		String apellidosNuevo = "Perex";
-		String direccionNuevo = "Mi casa";
-		String contrasenyaNuevo = "hola";
-		
-		Connection conexion;
 		try {
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			Statement resul = conexion.createStatement();
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
+			Statement resul = conexion.createStatement();
 			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_CLIENTE + "`"
 					+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`) " + "VALUES( '" + dniNuevo + "' , '"
 					+ nombreNuevo + "' , '" + apellidosNuevo + "' , '" + contrasenyaNuevo + "' , '" + direccionNuevo
 					+ "');");
-
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			
 			Statement resul2 = conexion.createStatement();
-			resul2.executeUpdate("Insert into `" + ManagerAbstract.TABLE_ADOPCION + "`"
+			resul2.executeUpdate("Insert into `" + ManagerAbstract.TABLE_MASCOTA + "`"
+					+ "(`CodMascota`, `Especie`, `Stock`, `Precio`) " + "VALUES( '" + codMascotaNuevo + "' , '"
+					+ especieMascotaNuevo + "' , '" + stockMascotaNuevo + "' , '" + precioMascotaNuevo + "');");
+
+			Statement resul3 = conexion.createStatement();
+			resul3.executeUpdate("Insert into `" + ManagerAbstract.TABLE_ADOPCION + "`"
 					+ "(`CodAdopcion`, `PrecioTotal`, `Fecha`, `CodMascota`, `DNI`) " + "VALUES( '" + codAdopcionNuevo
 					+ "' , '" + precioTotalNuevo + "' , '" + fechaNuevo + "' , '" + codMascotaNuevo + "' , '" + dniNuevo
 					+ "');");
-			
+
 			metodosAdopcion.eliminarAnimalAdoptado(codAdopcionNuevo);
-			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
 			Statement sacaEmpleado = conexion.createStatement();
-			String sql = "select * from " + ManagerAbstract.TABLE_ADOPCION + " where CodAdopcion = '" + codAdopcionNuevo + "';";
-			ResultSet resul3 = sacaEmpleado.executeQuery(sql);
+			String sql = "select * from " + ManagerAbstract.TABLE_ADOPCION + " where CodAdopcion = '" + codAdopcionNuevo
+					+ "';";
+			ResultSet resul4 = sacaEmpleado.executeQuery(sql);
+			assertEquals(resul4.isBeforeFirst(), false);
 
-			assertEquals(resul3.isBeforeFirst(), false);
-			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			Statement resul4 = conexion.createStatement();
-
-			resul4.executeUpdate(
+			Statement resul5 = conexion.createStatement();
+			resul5.executeUpdate(
 					"DELETE FROM `" + ManagerAbstract.TABLE_CLIENTE + "`" + "WHERE cliente.DNI = '" + dniNuevo + "';");
 			
+			Statement resul6 = conexion.createStatement();
+			resul6.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_MASCOTA + "`" + "WHERE CodMascota = '"
+					+ codMascotaNuevo + "';");
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
 	}
-	
+
 	@Test
 	void updateAnimalAdoptadosTest() {
-		
-		String fechaDate = "2023-02-13";
-
-		int codAdopcionNuevo = 651651;
-		String[] precioTotalUpdate = { "416" };
-		float precioTotalNuevo = 416;
-		float precioTotalUpdatear = 416;
-		Date fechaNuevo = Date.valueOf(fechaDate);
-		;
-		int codMascotaNuevo = 4;
-		String dniNuevo = "X7650931G";
-
-		String nombreNuevo = "Ander";
-		String apellidosNuevo = "Perex";
-		String direccionNuevo = "Mi casa";
-		String contrasenyaNuevo = "hola";
-		
-		String column[] = { "PrecioTotal" };
-		
-		Adopcion adopcion = new Adopcion();
-		
-		adopcion.setCodAdopcion(codAdopcionNuevo);
-		adopcion.setFecha(fechaNuevo);
-		adopcion.setPrecioTotal(513);
-		
-		Connection conexion;
 
 		try {
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
+			Adopcion adopcion = new Adopcion();
+
+			adopcion.setCodAdopcion(codAdopcionNuevo);
+			adopcion.setFecha(fechaNuevo);
+			adopcion.setPrecioTotal(513);
+
 			Statement resul = conexion.createStatement();
 
 			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_CLIENTE + "`"
 					+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`) " + "VALUES( '" + dniNuevo + "' , '"
 					+ nombreNuevo + "' , '" + apellidosNuevo + "' , '" + contrasenyaNuevo + "' , '" + direccionNuevo
 					+ "');");
-
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			
 			Statement resul2 = conexion.createStatement();
-			resul2.executeUpdate("Insert into `" + ManagerAbstract.TABLE_ADOPCION + "`"
-					+ "(`CodAdopcion`, `PrecioTotal`, `Fecha`, `CodMascota`, `DNI`) " + "VALUES( '" + codAdopcionNuevo
-					+ "' , '" + precioTotalUpdatear + "' , '" + fechaNuevo + "' , '" + codMascotaNuevo + "' , '" + dniNuevo
-					+ "');");
-			
-			metodosAdopcion.updateAnimalADoptado(column, precioTotalUpdate, adopcion);
-			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			Statement sacaCliente = conexion.createStatement();
-			String sql = "select * from " + ManagerAbstract.TABLE_ADOPCION + " where CodAdopcion = '" + codAdopcionNuevo + " ';";
-			ResultSet resul3 = sacaCliente.executeQuery(sql);
-			while (resul3.next()) {
-				assertEquals(precioTotalNuevo, resul3.getFloat(cPrecioTotal));
-			}
-			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
-			Statement resul4 = conexion.createStatement();
+			resul2.executeUpdate("Insert into `" + ManagerAbstract.TABLE_MASCOTA + "`"
+					+ "(`CodMascota`, `Especie`, `Stock`, `Precio`) " + "VALUES( '" + codMascotaNuevo + "' , '"
+					+ especieMascotaNuevo + "' , '" + stockMascotaNuevo + "' , '" + precioMascotaNuevo + "');");
 
-			resul4.executeUpdate(
+			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Statement resul3 = conexion.createStatement();
+			resul3.executeUpdate("Insert into `" + ManagerAbstract.TABLE_ADOPCION + "`"
+					+ "(`CodAdopcion`, `PrecioTotal`, `Fecha`, `CodMascota`, `DNI`) " + "VALUES( '" + codAdopcionNuevo
+					+ "' , '" + precioTotalUpdatear + "' , '" + fechaNuevo + "' , '" + codMascotaNuevo + "' , '"
+					+ dniNuevo + "');");
+
+			metodosAdopcion.updateAnimalADoptado(column, precioTotalUpdate, adopcion);
+
+			Statement sacaCliente = conexion.createStatement();
+			String sql = "select * from " + ManagerAbstract.TABLE_ADOPCION + " where CodAdopcion = '" + codAdopcionNuevo
+					+ " ';";
+			ResultSet resul4 = sacaCliente.executeQuery(sql);
+			while (resul4.next()) {
+				assertEquals(precioTotalNuevo, resul4.getFloat(cPrecioTotal));
+			}
+
+			Statement resul5 = conexion.createStatement();
+			resul5.executeUpdate(
 					"DELETE FROM `" + ManagerAbstract.TABLE_CLIENTE + "`" + "WHERE cliente.DNI = '" + dniNuevo + "';");
 			
+			Statement resul6 = conexion.createStatement();
+			resul6.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_MASCOTA + "`" + "WHERE CodMascota = '"
+					+ codMascotaNuevo + "';");
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
 	}
 }

@@ -29,53 +29,58 @@ class MetodosGestionAnimalTest extends ManagerAbstract {
 	final String cDNI = "DNI";
 
 	MetodosGestionAnimal metodosGestionAnimal = new MetodosGestionAnimal();
+	
+	// --------------------VariablesNecesariasParaElTest--------------------//
+	
+	int codGestionAnimalNuevo = 900;
+	String fechaDate = "2023-02-13";
+	Date fechaNueva = Date.valueOf(fechaDate);
+	int cantidadNuevo = 65;
+	String[] stockNuevoUpdateado = { "75" };
+	int stockNuevo = 75;
+	String column[] = { "Cantidad" };
+	
+	// --------------------------------------------//
+	int codMascotaNuevo = 900;
+	String especieMascotaNuevo = "Perro";
+	int stockMascotaNuevo = 10;
+	float precioMascotaNuevo = 50;
+	// --------------------------------------------//
+
+	String nombreEmpleado = "Juan";
+	String apellidosNuevo = "Calvo";
+	String dniEmpleado = "27446177R";
+	String direccionNuevo = "AveCesas";
+	String contrasenyaNuevo = "2684";
+	int codClinica = 2;
+	float salarioNuevo = 5615;
+	int antiguedadNuevo = 25;
+	Especialidad especializacionNuevo = Especialidad.Perros;
 
 	@Test
 	void recogerGestionAnimalTest() {
 
-		int codGestionAnimalNuevo = 900;
-		String fechaDate = "2023-02-13";
-		Date fechaNueva = Date.valueOf(fechaDate);
-		int cantidadNuevo = 65;
-		// --------------------------------------------//
-		int codMascotaNuevo = 900;
-		String especieMascotaNuevo = "Perro";
-		int stockMascotaNuevo = 10;
-		float precioMascotaNuevo = 50;
-		// --------------------------------------------//
 
-		String nombreEmpleado = "Juan";
-		String apellidosNuevo = "Calvo";
-		String dniEmpleado = "27446177R";
-		String direccionNuevo = "AveCesas";
-		String contrasenyaNuevo = "2684";
-		int codClinica = 2;
-		float salarioNuevo = 5615;
-		int antiguedadNuevo = 25;
-		Especialidad especializacionNuevo = Especialidad.Perros;
 
-		Connection conexion;
+
 		try {
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul = conexion.createStatement();
-
 			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_EMPLEADO + "`"
 					+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`, `Salario`, `Antiguedad`, `Especializacion`, `CodClinica`) "
 					+ "VALUES( '" + dniEmpleado + "' , '" + nombreEmpleado + "' , '" + apellidosNuevo + "' , '"
 					+ contrasenyaNuevo + "' , '" + direccionNuevo + "' , '" + salarioNuevo + "' , '" + antiguedadNuevo
 					+ "' , '" + especializacionNuevo + "' , '" + codClinica + "');");
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+
 			Statement resul2 = conexion.createStatement();
 
 			resul2.executeUpdate("Insert into `" + ManagerAbstract.TABLE_MASCOTA + "`"
 					+ "(`CodMascota`, `Especie`, `Stock`, `Precio`) " + "VALUES( '" + codMascotaNuevo + "' , '"
 					+ especieMascotaNuevo + "' , '" + stockMascotaNuevo + "' , '" + precioMascotaNuevo + "');");
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul3 = conexion.createStatement();
-
 			resul3.executeUpdate("Insert into `" + ManagerAbstract.TABLE_GESTIONANIMAL + "`"
 					+ "(`CodGestionAnimal`, `Fecha`, `Cantidad`, `CodMascota`, `DNI`) " + "VALUES( '"
 					+ codGestionAnimalNuevo + "' , '" + fechaNueva + "' , '" + cantidadNuevo + "' , '" + codMascotaNuevo
@@ -94,15 +99,11 @@ class MetodosGestionAnimalTest extends ManagerAbstract {
 			
 			assertEquals(resultado, "GestionAnimal [codGestionAnimal=900, fecha=2023-02-13, cantidad=65, listaMAscota=[Mascota [codMascota=1, especie=Perro, stock=15, precio=26.0], Mascota [codMascota=2, especie=Gato, stock=19, precio=15.0], Mascota [codMascota=3, especie=Loro, stock=5, precio=35.0], Mascota [codMascota=4, especie=Pez, stock=50, precio=5.0], Mascota [codMascota=900, especie=Perro, stock=10, precio=50.0]], empleado=Empleado [antiguedad=25, salario=5615.0, especializacion=Perros, nombre=Juan, apellido=Calvo, dni=27446177R, direccion=AveCesas, contrasenya=2684]]");
 			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul5 = conexion.createStatement();
-
 			resul5.executeUpdate(
 					"DELETE FROM `" + ManagerAbstract.TABLE_EMPLEADO + "`" + "WHERE DNI = '" + dniEmpleado + "';");
 			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul4 = conexion.createStatement();
-
 			resul4.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_MASCOTA + "`" + "WHERE CodMascota = '"
 					+ codMascotaNuevo + "';");
 			
@@ -116,11 +117,6 @@ class MetodosGestionAnimalTest extends ManagerAbstract {
 	
 	@Test
 	void insertarGestionAnimalTest() {
-		// -------------Mascota-------------//
-		int codMascotaNuevo = 900;
-		String especieMascotaNuevo = "Perro";
-		int stockMascotaNuevo = 10;
-		float precioMascotaNuevo = 50;
 
 		Mascota mascota = new Mascota();
 
@@ -129,28 +125,11 @@ class MetodosGestionAnimalTest extends ManagerAbstract {
 		mascota.setPrecio(precioMascotaNuevo);
 		mascota.setStock(stockMascotaNuevo);
 
-		// -------------GestionAnimal-------------//
-		int codGestionAnimalNuevo = 800;
-		String fechaDate = "2023-02-13";
-		Date fechaNueva = Date.valueOf(fechaDate);
-		int cantidadNuevo = 65;
-
 		GestionAnimal gestionAnimal = new GestionAnimal();
 
 		gestionAnimal.setCantidad(cantidadNuevo);
 		gestionAnimal.setCodGestionAnimal(codGestionAnimalNuevo);
 		gestionAnimal.setFecha(fechaNueva);
-
-		// -------------Empleado-------------//
-		String nombreEmpleado = "Juan";
-		String apellidosNuevo = "Calvo";
-		String dniEmpleado = "27446177R";
-		String direccionNuevo = "AveCesas";
-		String contrasenyaNuevo = "2684";
-		float salarioNuevo = 5615;
-		int antiguedadNuevo = 25;
-		int codClinica = 2;
-		Especialidad especializacionNuevo = Especialidad.Perros;
 
 		Empleado empleadoNuevo = new Empleado();
 
@@ -163,29 +142,23 @@ class MetodosGestionAnimalTest extends ManagerAbstract {
 		empleadoNuevo.setNombre(nombreEmpleado);
 		empleadoNuevo.setSalario(salarioNuevo);
 		
-		Connection conexion;
+		
 		try {
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul = conexion.createStatement();
-
 			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_EMPLEADO + "`"
 					+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`, `Salario`, `Antiguedad`, `Especializacion`, `CodClinica`) "
 					+ "VALUES( '" + dniEmpleado + "' , '" + nombreEmpleado + "' , '" + apellidosNuevo + "' , '"
 					+ contrasenyaNuevo + "' , '" + direccionNuevo + "' , '" + salarioNuevo + "' , '" + antiguedadNuevo
 					+ "' , '" + especializacionNuevo + "' , '" + codClinica + "');");
 
-			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul2 = conexion.createStatement();
-
 			resul2.executeUpdate("Insert into `" + ManagerAbstract.TABLE_MASCOTA + "`"
 					+ "(`CodMascota`, `Especie`, `Stock`, `Precio`) " + "VALUES( '" + codMascotaNuevo + "' , '"
 					+ especieMascotaNuevo + "' , '" + stockMascotaNuevo + "' , '" + precioMascotaNuevo + "');");
 			
-			
 			metodosGestionAnimal.insertarGestion(gestionAnimal, dniEmpleado, codMascotaNuevo);
 			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement sacaGestion = conexion.createStatement();
 			String sql = "select * from " + ManagerAbstract.TABLE_GESTIONANIMAL + " order by CodGestionAnimal DESC limit 1";
 			
@@ -197,15 +170,11 @@ class MetodosGestionAnimalTest extends ManagerAbstract {
 				assertEquals(dniEmpleado, resul3.getString(cDNI));
 			}
 			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul5 = conexion.createStatement();
-
 			resul5.executeUpdate(
 					"DELETE FROM `" + ManagerAbstract.TABLE_EMPLEADO + "`" + "WHERE DNI = '" + dniEmpleado + "';");
-			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			;
 			Statement resul4 = conexion.createStatement();
-
 			resul4.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_MASCOTA + "`" + "WHERE CodMascota = '"
 					+ codMascotaNuevo + "';");
 			
@@ -219,73 +188,39 @@ class MetodosGestionAnimalTest extends ManagerAbstract {
 	@Test
 	void eliminarGestionAnimalTest() {
 		
-		int codGestionAnimalNuevo = 900;
-		String fechaDate = "2023-02-13";
-		Date fechaNueva = Date.valueOf(fechaDate);
-		int cantidadNuevo = 65;
-		// --------------------------------------------//
-		int codMascotaNuevo = 900;
-		String especieMascotaNuevo = "Perro";
-		int stockMascotaNuevo = 10;
-		float precioMascotaNuevo = 50;
-		// --------------------------------------------//
-
-		String nombreEmpleado = "Juan";
-		String apellidosNuevo = "Calvo";
-		String dniEmpleado = "27446177R";
-		String direccionNuevo = "AveCesas";
-		String contrasenyaNuevo = "2684";
-		int codClinica = 2;
-		float salarioNuevo = 5615;
-		int antiguedadNuevo = 25;
-		Especialidad especializacionNuevo = Especialidad.Perros;
-
-		Connection conexion;
-		
 		try {
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul = conexion.createStatement();
-
 			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_EMPLEADO + "`"
 					+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`, `Salario`, `Antiguedad`, `Especializacion`, `CodClinica`) "
 					+ "VALUES( '" + dniEmpleado + "' , '" + nombreEmpleado + "' , '" + apellidosNuevo + "' , '"
 					+ contrasenyaNuevo + "' , '" + direccionNuevo + "' , '" + salarioNuevo + "' , '" + antiguedadNuevo
 					+ "' , '" + especializacionNuevo + "' , '" + codClinica + "');");
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul2 = conexion.createStatement();
-
 			resul2.executeUpdate("Insert into `" + ManagerAbstract.TABLE_MASCOTA + "`"
 					+ "(`CodMascota`, `Especie`, `Stock`, `Precio`) " + "VALUES( '" + codMascotaNuevo + "' , '"
 					+ especieMascotaNuevo + "' , '" + stockMascotaNuevo + "' , '" + precioMascotaNuevo + "');");
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul3 = conexion.createStatement();
-
 			resul3.executeUpdate("Insert into `" + ManagerAbstract.TABLE_GESTIONANIMAL + "`"
 					+ "(`CodGestionAnimal`, `Fecha`, `Cantidad`, `CodMascota`, `DNI`) " + "VALUES( '"
 					+ codGestionAnimalNuevo + "' , '" + fechaNueva + "' , '" + cantidadNuevo + "' , '" + codMascotaNuevo
 					+ "' , '" + dniEmpleado + "');");
 			
-			
 			metodosGestionAnimal.eliminarGestionAnimal(codGestionAnimalNuevo);
 			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement sacaAnimal = conexion.createStatement();
 			String sql = "select * from " + ManagerAbstract.TABLE_GESTIONANIMAL + " WHERE CodGestionAnimal = '" + codGestionAnimalNuevo
 					+ " ';";
 			ResultSet resul4 = sacaAnimal.executeQuery(sql);
 			assertEquals(resul4.isBeforeFirst(), false);
 			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul5 = conexion.createStatement();
-
 			resul5.executeUpdate(
 					"DELETE FROM `" + ManagerAbstract.TABLE_EMPLEADO + "`" + "WHERE DNI = '" + dniEmpleado + "';");
 			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul6 = conexion.createStatement();
-
 			resul6.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_MASCOTA + "`" + "WHERE CodMascota = '"
 					+ codMascotaNuevo + "';");
 			
@@ -298,13 +233,6 @@ class MetodosGestionAnimalTest extends ManagerAbstract {
 	@Test
 	void updateGestionAnimalTest() {
 		
-		int codMascotaNuevo = 900;
-		String especieMascotaNuevo = "Perro";
-		int stockMascotaNuevo = 10;
-		float precioMascotaNuevo = 50;
-		String[] stockNuevoUpdateado = { "75" };
-		int stockNuevo = 75;
-		String column[] = { "Cantidad" };
 
 		Mascota mascota = new Mascota();
 
@@ -313,28 +241,11 @@ class MetodosGestionAnimalTest extends ManagerAbstract {
 		mascota.setPrecio(precioMascotaNuevo);
 		mascota.setStock(stockMascotaNuevo);
 
-		// -------------GestionAnimal-------------//
-		int codGestionAnimalNuevo = 900;
-		String fechaDate = "2023-02-13";
-		Date fechaNueva = Date.valueOf(fechaDate);
-		int cantidadNuevo = 65;
-
 		GestionAnimal gestionAnimal = new GestionAnimal();
 
 		gestionAnimal.setCantidad(65);
 		gestionAnimal.setCodGestionAnimal(codGestionAnimalNuevo);
 		gestionAnimal.setFecha(fechaNueva);
-
-		// -------------Empleado-------------//
-		String nombreEmpleado = "Juan";
-		String apellidosNuevo = "Calvo";
-		String dniEmpleado = "27446177R";
-		String direccionNuevo = "AveCesas";
-		String contrasenyaNuevo = "2684";
-		float salarioNuevo = 5615;
-		int antiguedadNuevo = 25;
-		int codClinica = 2;
-		Especialidad especializacionNuevo = Especialidad.Perros;
 
 		Empleado empleadoNuevo = new Empleado();
 
@@ -347,28 +258,21 @@ class MetodosGestionAnimalTest extends ManagerAbstract {
 		empleadoNuevo.setNombre(nombreEmpleado);
 		empleadoNuevo.setSalario(salarioNuevo);
 		
-		Connection conexion;
-		
 		try {
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			Connection conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul = conexion.createStatement();
-
 			resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_EMPLEADO + "`"
 					+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`, `Salario`, `Antiguedad`, `Especializacion`, `CodClinica`) "
 					+ "VALUES( '" + dniEmpleado + "' , '" + nombreEmpleado + "' , '" + apellidosNuevo + "' , '"
 					+ contrasenyaNuevo + "' , '" + direccionNuevo + "' , '" + salarioNuevo + "' , '" + antiguedadNuevo
 					+ "' , '" + especializacionNuevo + "' , '" + codClinica + "');");
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul2 = conexion.createStatement();
-
 			resul2.executeUpdate("Insert into `" + ManagerAbstract.TABLE_MASCOTA + "`"
 					+ "(`CodMascota`, `Especie`, `Stock`, `Precio`) " + "VALUES( '" + codMascotaNuevo + "' , '"
 					+ especieMascotaNuevo + "' , '" + stockMascotaNuevo + "' , '" + precioMascotaNuevo + "');");
 
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul3 = conexion.createStatement();
-
 			resul3.executeUpdate("Insert into `" + ManagerAbstract.TABLE_GESTIONANIMAL + "`"
 					+ "(`CodGestionAnimal`, `Fecha`, `Cantidad`, `CodMascota`, `DNI`) " + "VALUES( '"
 					+ codGestionAnimalNuevo + "' , '" + fechaNueva + "' , '" + cantidadNuevo + "' , '" + codMascotaNuevo
@@ -376,7 +280,6 @@ class MetodosGestionAnimalTest extends ManagerAbstract {
 			
 			metodosGestionAnimal.updateGestion(column, stockNuevoUpdateado, gestionAnimal);
 			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement sacaAnimal = conexion.createStatement();
 			String sql = "select * from " + ManagerAbstract.TABLE_GESTIONANIMAL + " WHERE CodGestionAnimal = '" + codGestionAnimalNuevo
 					+ " ';";
@@ -385,15 +288,11 @@ class MetodosGestionAnimalTest extends ManagerAbstract {
 				assertEquals(stockNuevo, resul4.getInt(cCantidad));
 			}
 			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul5 = conexion.createStatement();
-
 			resul5.executeUpdate(
 					"DELETE FROM `" + ManagerAbstract.TABLE_EMPLEADO + "`" + "WHERE DNI = '" + dniEmpleado + "';");
 			
-			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			Statement resul6 = conexion.createStatement();
-
 			resul6.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_MASCOTA + "`" + "WHERE CodMascota = '"
 					+ codMascotaNuevo + "';");
 			

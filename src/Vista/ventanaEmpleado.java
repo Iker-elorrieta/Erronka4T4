@@ -21,17 +21,25 @@ public class ventanaEmpleado extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private JPanel contentPane;
+	
 	private JLabel lblFrase;
+	private JLabel lblNombreApellido;
+	
 	private JButton btnTienda;
 	private JButton btnGestionarAnimales;
-	private JLabel lblNombreApellido;
 	private JButton btnCerrarSesion;
 	private JButton btnConfigurarPerfil;
 	private JButton btnGestionarEmpleados;
+	
 	PedirCita ventanaPedirCita;
-	TiendaEmpleado ventanaTiendaEmpleado;
+	TiendaEmpleado ventanaTiendaEmpleado ;
 	ConfigurarPerfil ventanaConfigurarPerfil;
+	MostrarEmple ventanaMostrarEmple;
+	ConfiguracionAnimalEmpledo ventanaConfiguracionAnimalEmpleado;
+	ConfigurarGestiones ventanaConfigurarGestiones;
+	
 	LogIn ventanaLogIn;
 	String nombreLogIn = "";
 	String apellidoLogIn = "";
@@ -50,7 +58,7 @@ public class ventanaEmpleado extends JFrame {
 		especializacionLogIn = empleadoLogIn.getEspecializacion();
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 743, 410);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -58,7 +66,7 @@ public class ventanaEmpleado extends JFrame {
 		contentPane.setLayout(null);
 
 		lblFrase = new JLabel("Elige una de estas opciones:");
-		lblFrase.setBounds(10, 11, 191, 14);
+		lblFrase.setBounds(21, 27, 191, 14);
 		contentPane.add(lblFrase);
 
 		btnTienda = new JButton("Tienda");
@@ -69,29 +77,36 @@ public class ventanaEmpleado extends JFrame {
 				dispose();
 			}
 		});
-		if (especializacionLogIn.equals(Especialidad.Perros) || especializacionLogIn.equals(Especialidad.Limpieza)
-				|| especializacionLogIn.equals(Especialidad.Pez) || especializacionLogIn.equals(Especialidad.Gatos)
-				|| especializacionLogIn.equals(Especialidad.Loros)) {
+		if (especializacionLogIn.equals(Especialidad.Perros) || especializacionLogIn.equals(Especialidad.limpieza) || especializacionLogIn.equals(Especialidad.Pez) || especializacionLogIn.equals(Especialidad.Gatos) || especializacionLogIn.equals(Especialidad.Loros)) {
 			btnTienda.setEnabled(false);
 		}
-		btnTienda.setBounds(10, 36, 191, 87);
+		btnTienda.setBounds(258, 64, 203, 118);
 		contentPane.add(btnTienda);
 
 		btnGestionarAnimales = new JButton("Gestionar animales");
 		btnGestionarAnimales.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					ventanaConfiguracionAnimalEmpleado = new ConfiguracionAnimalEmpledo(empleadoLogIn);
+					ventanaConfiguracionAnimalEmpleado.setVisible(true);
+					dispose();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 			}
 
 		});
-		if (especializacionLogIn.equals(Especialidad.Ventas) || especializacionLogIn.equals(Especialidad.Limpieza)) {
+		if (especializacionLogIn.equals(Especialidad.ventas) || especializacionLogIn.equals(Especialidad.limpieza)) {
 			btnGestionarAnimales.setEnabled(false);
 		}
-
-		btnGestionarAnimales.setBounds(223, 36, 201, 87);
+		
+		btnGestionarAnimales.setBounds(497, 64, 203, 118);
 		contentPane.add(btnGestionarAnimales);
 
 		lblNombreApellido = new JLabel(texto);
-		lblNombreApellido.setBounds(221, 11, 203, 14);
+		lblNombreApellido.setBounds(497, 27, 203, 14);
 		contentPane.add(lblNombreApellido);
 
 		btnCerrarSesion = new JButton("Cerrar sesion");
@@ -107,7 +122,7 @@ public class ventanaEmpleado extends JFrame {
 				}
 			}
 		});
-		btnCerrarSesion.setBounds(151, 232, 117, 23);
+		btnCerrarSesion.setBounds(89, 226, 203, 118);
 		contentPane.add(btnCerrarSesion);
 
 		btnConfigurarPerfil = new JButton("Configurar perfil");
@@ -120,12 +135,12 @@ public class ventanaEmpleado extends JFrame {
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}
+				}			
 			}
 		});
-		btnConfigurarPerfil.setBounds(223, 134, 201, 87);
+		btnConfigurarPerfil.setBounds(377, 226, 203, 118);
 		contentPane.add(btnConfigurarPerfil);
-
+		
 		btnGestionarEmpleados = new JButton("Gestionar empleados");
 		btnGestionarEmpleados.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -133,23 +148,30 @@ public class ventanaEmpleado extends JFrame {
 				ArrayList<Empleado> mer;
 				try {
 					mer = me.recogerEmpleado();
-					MostrarEmple me2 = new MostrarEmple(mer,empleadoLogIn);
-					me2.setVisible(true);
+					ventanaMostrarEmple = new MostrarEmple(mer, empleadoLogIn);
+					ventanaMostrarEmple.setVisible(true);
 					dispose();
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
 			}
 		});
-		if (especializacionLogIn.equals(Especialidad.Perros) || especializacionLogIn.equals(Especialidad.Limpieza)
-				|| especializacionLogIn.equals(Especialidad.Pez) || especializacionLogIn.equals(Especialidad.Gatos)
-				|| especializacionLogIn.equals(Especialidad.Loros)
-				|| especializacionLogIn.equals(Especialidad.Ventas)) {
+		if (especializacionLogIn.equals(Especialidad.Perros) || especializacionLogIn.equals(Especialidad.limpieza) || especializacionLogIn.equals(Especialidad.Pez) || especializacionLogIn.equals(Especialidad.Gatos) || especializacionLogIn.equals(Especialidad.Loros) || especializacionLogIn.equals(Especialidad.ventas)) {
 			btnGestionarEmpleados.setEnabled(false);
 		}
-		btnGestionarEmpleados.setBounds(10, 134, 191, 87);
+		btnGestionarEmpleados.setBounds(21, 64, 203, 118);
 		contentPane.add(btnGestionarEmpleados);
+		
+		JButton btnNewButton = new JButton("New button");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ventanaConfigurarGestiones = new ConfigurarGestiones(empleadoLogIn);
+				ventanaConfigurarGestiones.setVisible(true);
+				dispose();
+			}
+		});
+		btnNewButton.setBounds(590, 275, 85, 21);
+		contentPane.add(btnNewButton);
 	}
 }
