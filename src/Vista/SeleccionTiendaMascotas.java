@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -64,6 +65,10 @@ public class SeleccionTiendaMascotas extends JFrame {
 	boolean precio = true;
 	boolean stock = true;
 	
+	private final String precioTitulo = "Precio";
+	private final String stockTitulo = "Stock";
+	private final String mascotaTitulo = "Mascota";
+	
 	/**
 	 * Create the frame.
 	 */
@@ -85,8 +90,15 @@ public class SeleccionTiendaMascotas extends JFrame {
 	
 		tableSeleccionMascotas = new JTable();
 		try {
+			
+			String[] titulosTiendaMascota = new String[] { mascotaTitulo, precioTitulo, stockTitulo };
 			ArrayList<ObjetosComprables> listaMascota = metodosMascota.recogerMascotaTienda(valorUbicacion);						
-			tableSeleccionMascotas = metodosGenerales.generarTablaSeleccionMascotas(listaMascota);
+			Object[][] txtTiendaMascota = metodosGenerales.generarTablaSeleccionMascotas(listaMascota);
+			
+			tableSeleccionMascotas.setModel(new DefaultTableModel(txtTiendaMascota, titulosTiendaMascota));
+			tableSeleccionMascotas.setCellSelectionEnabled(false);
+			tableSeleccionMascotas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			tableSeleccionMascotas.setDefaultEditor(Object.class, null);
 			scrollpanelSeleccionMascotas.setViewportView(tableSeleccionMascotas);
 			tableSeleccionMascotas.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 				public void valueChanged(ListSelectionEvent event) {
@@ -217,9 +229,14 @@ public class SeleccionTiendaMascotas extends JFrame {
 				 DefaultTableModel modelo = (DefaultTableModel) tableSeleccionMascotas.getModel();
 			       modelo.setRowCount(0);
 					try {
-						ArrayList<ObjetosComprables> listaMascotaPrecio = metodosMascota.recogerMascotaTienda(valorUbicacion);						
-						metodosGenerales.ordenarPorPrecioDesc(listaMascotaPrecio, precio);
-						tableSeleccionMascotas = metodosGenerales.generarTablaSeleccionMascotas(listaMascotaPrecio);
+						String[] titulosTiendaMascota = new String[] { mascotaTitulo, precioTitulo, stockTitulo };
+						ArrayList<ObjetosComprables> listaMascota = metodosMascota.recogerMascotaTienda(valorUbicacion);						
+						Object[][] txtTiendaMascota = metodosGenerales.generarTablaSeleccionMascotas(listaMascota);
+						metodosGenerales.ordenarPorPrecioDesc(listaMascota, precio);
+						tableSeleccionMascotas.setModel(new DefaultTableModel(txtTiendaMascota, titulosTiendaMascota));
+						tableSeleccionMascotas.setCellSelectionEnabled(false);
+						tableSeleccionMascotas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+						tableSeleccionMascotas.setDefaultEditor(Object.class, null);
 						scrollpanelSeleccionMascotas.setViewportView(tableSeleccionMascotas);
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
@@ -244,9 +261,14 @@ public class SeleccionTiendaMascotas extends JFrame {
 				 DefaultTableModel modelo = (DefaultTableModel) tableSeleccionMascotas.getModel();
 			       modelo.setRowCount(0);
 					try {
-						ArrayList<ObjetosComprables> listaMascotaStock = metodosMascota.recogerMascotaTienda(valorUbicacion);						
-						metodosGenerales.ordenarPorStockDesc(listaMascotaStock, stock);
-						tableSeleccionMascotas = metodosGenerales.generarTablaSeleccionMascotas(listaMascotaStock);
+						String[] titulosTiendaMascota = new String[] { mascotaTitulo, precioTitulo, stockTitulo };
+						ArrayList<ObjetosComprables> listaMascota = metodosMascota.recogerMascotaTienda(valorUbicacion);						
+						Object[][] txtTiendaMascota = metodosGenerales.generarTablaSeleccionMascotas(listaMascota);
+						metodosGenerales.ordenarPorStockDesc(listaMascota, stock);
+						tableSeleccionMascotas.setModel(new DefaultTableModel(txtTiendaMascota, titulosTiendaMascota));
+						tableSeleccionMascotas.setCellSelectionEnabled(false);
+						tableSeleccionMascotas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+						tableSeleccionMascotas.setDefaultEditor(Object.class, null);
 						scrollpanelSeleccionMascotas.setViewportView(tableSeleccionMascotas);
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
@@ -268,5 +290,14 @@ public class SeleccionTiendaMascotas extends JFrame {
 		lblIMG.setBounds(0, 0, 137, 129);
 		panelFotos.add(lblIMG);
 		
+		ImageIcon img1 = new ImageIcon("imgReto2/ll.jpg");
+		img1 = new ImageIcon(img1.getImage().getScaledInstance(743, 410, Image.SCALE_DEFAULT));
+
+		contentPane.setLayout(null);
+
+		JLabel lblIMG1 = new JLabel();
+		lblIMG1.setBounds(0, 0, 743, 410);
+		lblIMG1.setIcon(img1);
+		contentPane.add(lblIMG1);
 	}
 }

@@ -13,7 +13,10 @@ import B.D_Util.ManagerAbstract;
 import Modelo.Consulta;
 import ModeloAnimal.Animal;
 import ModeloPerfil.Empleado;
-
+/**
+ * *MetodosConsulta esta clase contiene los metodos crud de la clase
+ * consulta
+ */
 public class MetodosConsulta extends ManagerAbstract {
 
 	final String codConsulta = "CodConsulta";
@@ -23,10 +26,13 @@ public class MetodosConsulta extends ManagerAbstract {
 	final String fecha = "Fecha";
 	final String hora = "Hora";
 
+	Connection conexion;
+	/**
+	 *recogerConsulta recoge los datos de las consultas de la bd en un arraylist y lo devuelve
+	 */
 	public ArrayList<Consulta> recogerConsulta() throws SQLException {
 
 		ArrayList<Consulta> listaConsulta = new ArrayList<Consulta>();
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement sacaConsulta = conexion.createStatement();
 		String sql = "select distinct * from " + ManagerAbstract.TABLE_CONSULTA;
@@ -65,7 +71,9 @@ public class MetodosConsulta extends ManagerAbstract {
 		return listaConsulta;
 
 	}
-
+	/**
+	 *insertarConsulta inserta los datos de una consulta en la bd 
+	 */
 	public void insertarConsulta(Consulta consultaNueva, int idAnimal, String dni) throws SQLException {
 
 		int idConsulta = 0;
@@ -80,7 +88,6 @@ public class MetodosConsulta extends ManagerAbstract {
 		fecha = consulta.getFecha();
 		hora = consulta.getHora();
 
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
@@ -88,19 +95,22 @@ public class MetodosConsulta extends ManagerAbstract {
 				+ "(`CodConsulta`, `Precio`, `Fecha`, `Hora`, `DNI`, `IdAnimal`) " + "VALUES( '" + idConsulta + "' , '"
 				+ precio + "' , '" + fecha + "' , '" + hora + "' , '" + dni + "' , '" + idAnimal + "');");
 	}
-
+	/**
+	 *eliminarConsulta elimina los datos de una consulta en la bd 
+	 */
 	public void eliminarConsulta(int idConsulta) throws SQLException {
 
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
 		resul.executeUpdate(
 				"DELETE FROM `" + ManagerAbstract.TABLE_CONSULTA + "`" + "WHERE CodConsulta = '" + idConsulta + "';");
 	}
-
+	/**
+	 *updateConsulta renueva los datos de una consulta en la bd 
+	 */
 	public void updateConsulta(String[] nombreColumna, String[] UpdateColumna, Consulta consulta) throws SQLException {
-		Connection conexion;
+
 		int cont = 0;
 		do {
 			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);

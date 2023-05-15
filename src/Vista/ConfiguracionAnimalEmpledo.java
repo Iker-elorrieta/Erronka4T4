@@ -1,5 +1,6 @@
 package Vista;
 
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -9,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,6 +20,7 @@ import Controlador.MetodosGenerales;
 import ModeloPerfil.Cliente;
 import ModeloPerfil.Empleado;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -41,6 +44,10 @@ public class ConfiguracionAnimalEmpledo extends JFrame {
 	Cliente clienteSelect;
 	ventanaEmpleado ventanaEmpleado;
 
+	private final String sexo = "Sexo";
+	private final String edad = "Edad";	
+	private final String nombre = "Nombre";
+	private final String especie = "Especie";
 
 	/**
 	 * Create the frame.
@@ -119,7 +126,15 @@ public class ConfiguracionAnimalEmpledo extends JFrame {
 
 					table = new JTable();
 					table.setBounds(0, 0, 1, 1);
-					table = metodosGenerales.generarTablaGestionarAnimalCliente(clienteSelect, listaCliente);
+					
+					String[] titulosGestionAnimal = new String[] { nombre, edad, especie, sexo };
+					Object[][] txtGestionAnimal = metodosGenerales.generarTablaGestionarAnimalCliente(clienteSelect, listaCliente);
+					
+					table.setModel(new DefaultTableModel(txtGestionAnimal, titulosGestionAnimal));
+					table.setCellSelectionEnabled(false);
+					table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+					table.setDefaultEditor(Object.class, null);
+					
 					scrollPane.setViewportView(table);
 
 				} catch (SQLException e1) {
@@ -167,5 +182,15 @@ public class ConfiguracionAnimalEmpledo extends JFrame {
 				}
 			}
 		});
+		
+		ImageIcon img1 = new ImageIcon("imgReto2/ll.jpg");
+		img1 = new ImageIcon(img1.getImage().getScaledInstance(743, 410, Image.SCALE_DEFAULT));
+
+		contentPane.setLayout(null);
+
+		JLabel lblIMG1 = new JLabel();
+		lblIMG1.setBounds(0, 0, 743, 410);
+		lblIMG1.setIcon(img1);
+		contentPane.add(lblIMG1);
 	}
 }

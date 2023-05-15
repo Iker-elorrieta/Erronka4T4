@@ -16,7 +16,9 @@ import B.D_Util.ManagerAbstract;
 import Modelo.Pedido;
 import Modelo.Producto;
 import ModeloPerfil.Cliente;
-
+/** 
+ * *MetodosPedido esta clase contiene los metodos crud de la clase Pedido
+ */
 public class MetodosPedido extends ManagerAbstract {
 
 	final String productos = "CodProducto";
@@ -30,11 +32,15 @@ public class MetodosPedido extends ManagerAbstract {
 	final String precio = "Precio";
 	final String stock = "Stock";
 	final String codProducto = "CodProducto";
-
+	
+	Connection conexion;
+	/** 
+	 * *recogerPedido recoge los pedidos de la bd en un arraylist y lo devuelve
+	 */
 	public ArrayList<Pedido> recogerPedido() throws SQLException {
 
 		ArrayList<Pedido> listaPedido = new ArrayList<Pedido>();
-		Connection conexion;
+		
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement sacaPedido = conexion.createStatement();
 		String sql = "select * from " + ManagerAbstract.TABLE_PEDIDO;
@@ -70,11 +76,13 @@ public class MetodosPedido extends ManagerAbstract {
 
 		return listaPedido;
 	}
-	
+	/** 
+	 * *recogerPedidoCliente recoge los pedidos de un cliente por pedido 
+	 */
 	public ArrayList<Pedido> recogerPedidoCliente(String dnicliente) throws SQLException {
 
 		ArrayList<Pedido> listaPedido = new ArrayList<Pedido>();
-		Connection conexion;
+		
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement sacaPedido = conexion.createStatement();
 		String sql = "select * from " + ManagerAbstract.TABLE_PEDIDO  + " where dni = '" + dnicliente + "';";
@@ -110,7 +118,9 @@ public class MetodosPedido extends ManagerAbstract {
 
 		return listaPedido;
 	}
-
+	/** 
+	 * *insertarPedido inserta un pedido en la bd
+	 */
 	public void insertarPedido(Pedido pedidoNuevo, String dni, int codProducto, int codPedidoNuevo)
 			throws SQLException {
 
@@ -128,7 +138,6 @@ public class MetodosPedido extends ManagerAbstract {
 		precioTotal = pedido.getPreciototal();
 		cantidadProductos = pedido.getCantidadProducto();
 
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
@@ -142,10 +151,11 @@ public class MetodosPedido extends ManagerAbstract {
 			}
 		}
 	}
-
+	/** 
+	 * *eliminarPedido elimina un pedido en la bd
+	 */
 	public void eliminarPedido(int codPedido) throws SQLException {
 
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
@@ -153,9 +163,11 @@ public class MetodosPedido extends ManagerAbstract {
 				+ codPedido + "';");
 
 	}
-
+	/** 
+	 * *updatePedido renueva un pedido en la bd
+	 */
 	public void updatePedido(String[] nombreColumna, String[] UpdateColumna, Pedido pedido) throws SQLException {
-		Connection conexion;
+
 		int cont = 0;
 		do {
 			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
@@ -166,7 +178,9 @@ public class MetodosPedido extends ManagerAbstract {
 			cont++;
 		} while (cont < nombreColumna.length);
 	}
-
+	/** 
+	 * *ArrayListTxt escribe en un txt los datos de un pedido
+	 */
 	public ArrayList<Pedido> ArrayListTxt(ArrayList<Pedido> listaPedido) throws SQLException {
 		ArrayList<Pedido> listaPedidotxt = listaPedido;
 

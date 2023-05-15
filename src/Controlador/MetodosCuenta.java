@@ -11,15 +11,22 @@ import B.D_Util.ManagerAbstract;
 import ModeloPerfil.Cliente;
 import ModeloPerfil.Cuenta;
 
+/** 
+ * *MetodosCuenta esta clase contiene los metodos crud de la clase cuenta 
+ */
 public class MetodosCuenta extends ManagerAbstract {
 
 	final String numeroCuenta = "NumeroCuenta";
 	final String dni = "DNI";
 
+	Connection conexion;
+	/** 
+	 * *recogerCuenta recoge de las consultas de la bd en un arraylist y lo devuelve
+	 */
 	public ArrayList<Cuenta> recogerCuenta() throws SQLException {
 
 		ArrayList<Cuenta> listaCuenta = new ArrayList<Cuenta>();
-		Connection conexion;
+
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement sacaProducto = conexion.createStatement();
 		String sql = "select * from " + ManagerAbstract.TABLE_CUENTA;
@@ -44,7 +51,9 @@ public class MetodosCuenta extends ManagerAbstract {
 		}
 		return listaCuenta;
 	}
-
+	/** 
+	 * *insertarCuenta inserta una consulta en la bd
+	 */
 	public void insertarCuenta(Cuenta cuentaNueva, String dni) throws SQLException {
 
 		int numeroCuenta = 0;
@@ -53,17 +62,17 @@ public class MetodosCuenta extends ManagerAbstract {
 
 		numeroCuenta = cuenta.getNumeroCuenta();
 
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
 		resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_CUENTA + "`" + "(`NumeroCuenta`, `DNI`) "
 				+ "VALUES( '" + numeroCuenta + "' , '" + dni + "');");
 	}
-
+	/** 
+	 * *eliminarCuenta elimina una consulta en la bd
+	 */
 	public void eliminarCuenta(int numeroCuenta) throws SQLException {
 
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
@@ -71,9 +80,10 @@ public class MetodosCuenta extends ManagerAbstract {
 				"DELETE FROM `" + ManagerAbstract.TABLE_CUENTA + "`" + "WHERE NumeroCuenta = '" + numeroCuenta + "';");
 
 	}
-
+	/** 
+	 * *updateCuenta renueva una consulta en la bd
+	 */
 	public void updateCuenta(String[] nombreColumna, String[] UpdateColumna, Cuenta cuenta) throws SQLException {
-		Connection conexion;
 		int cont = 0;
 		do {
 			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);

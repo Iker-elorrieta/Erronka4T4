@@ -10,7 +10,9 @@ import B.D_Util.DBUtils;
 import B.D_Util.ManagerAbstract;
 import Modelo.ObjetosComprables;
 import Modelo.Producto;
-
+/** 
+ * *MetodosProducto esta clase contiene los metodos crud de la clase Producto
+ */
 public class MetodosProducto extends ManagerAbstract {
 
 	final String nombreProducto = "Nombre";
@@ -18,10 +20,14 @@ public class MetodosProducto extends ManagerAbstract {
 	final String stock = "Stock";
 	final String codProducto = "CodProducto";
 
+	Connection conexion;
+	/** 
+	 * *recogerProducto recoge los productos de la bd en un arraylist y lo devuelve
+	 */
 	public ArrayList<Producto> recogerProducto() throws SQLException {
 
 		ArrayList<Producto> listaProducto = new ArrayList<Producto>();
-		Connection conexion;
+		
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement sacaProducto = conexion.createStatement();
 		String sql = "select * from " + ManagerAbstract.TABLE_PRODUCTOS;
@@ -37,7 +43,9 @@ public class MetodosProducto extends ManagerAbstract {
 		return listaProducto;
 
 	}
-
+	/** 
+	 * *insertarProducto inserta un producto en la bd
+	 */
 	public void insertarProducto(Producto productoNuevo) throws SQLException {
 
 		String nombreProducto = "";
@@ -52,7 +60,6 @@ public class MetodosProducto extends ManagerAbstract {
 		stock = producto.getStock();
 		codProducto = producto.getCodProducto();
 
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
@@ -60,10 +67,12 @@ public class MetodosProducto extends ManagerAbstract {
 				+ "(`CodProducto`, `Nombre`, `Stock`, `Precio`) " + "VALUES( '" + codProducto + "' , '" + nombreProducto
 				+ "' , '" + stock + "' , '" + precio + "');");
 	}
+	/** 
+	 * *eliminarProducto elimina un producto en la bd
+	 */
 
 	public void eliminarProducto(int codProducto) throws SQLException {
 
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
@@ -71,9 +80,11 @@ public class MetodosProducto extends ManagerAbstract {
 				"DELETE FROM `" + ManagerAbstract.TABLE_PRODUCTOS + "`" + "WHERE CodProducto = '" + codProducto + "';");
 
 	}
-
+	/** 
+	 * *updateProducto renueva un producto en la bd
+	 */
 	public void updateProducto(String[] nombreColumna, String[] UpdateColumna, Producto producto) throws SQLException {
-		Connection conexion;
+
 		int cont = 0;
 		do {
 			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
@@ -88,7 +99,7 @@ public class MetodosProducto extends ManagerAbstract {
 	public ArrayList<ObjetosComprables> recogerProductoTienda(String valorUbicacion) throws SQLException {
 
 		ArrayList<ObjetosComprables> listaProducto = new ArrayList<ObjetosComprables>();
-		Connection conexion;
+
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement sacaProducto = conexion.createStatement();
 		String sql = "select p.Nombre, p.Precio, p.Stock, p.CodProducto from " + ManagerAbstract.TABLE_PRODUCTOS + " p join " + ManagerAbstract.TABLE_ALMACEN +

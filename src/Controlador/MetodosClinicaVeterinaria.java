@@ -12,6 +12,10 @@ import Modelo.ClinicaVeterinaria;
 import ModeloPerfil.Empleado;
 import ModeloPerfil.Especializacion.Especialidad;
 
+/**
+ * *MetodosClinicaVeterinaria esta clase contiene los metodos crud de la clase
+ * ClinicaVeterinaria
+ */
 public class MetodosClinicaVeterinaria extends ManagerAbstract {
 
 	final String ubicacion = "Ubicacion";
@@ -36,10 +40,13 @@ public class MetodosClinicaVeterinaria extends ManagerAbstract {
 	final String limpieza = "Limpieza";
 	final String ventas = "Ventas";
 
+	Connection conexion;
+	/**
+	*recogerClinicaVeterinaria recoge de la bd las clinicas en aun arraylist de clinicaveterinaria y lo devuelve renueva
+	*/
 	public ArrayList<ClinicaVeterinaria> recogerClinicaVeterinaria() throws SQLException {
 
 		ArrayList<ClinicaVeterinaria> listaClinicaVeterinaria = new ArrayList<ClinicaVeterinaria>();
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement sacaClinicaVeterinaria = conexion.createStatement();
 		String sql = "select * from " + ManagerAbstract.TABLE_CLINICAVETERINARIA;
@@ -88,7 +95,9 @@ public class MetodosClinicaVeterinaria extends ManagerAbstract {
 		}
 		return listaClinicaVeterinaria;
 	}
-
+	/**
+	*insertarClinicaVeterinaria inserta en la bd una clinica
+	*/
 	public void insertarClinicaVeterinaria(ClinicaVeterinaria clinicaVeterinariaNueva) throws SQLException {
 
 		int codVeterinaria = 0;
@@ -99,27 +108,28 @@ public class MetodosClinicaVeterinaria extends ManagerAbstract {
 		codVeterinaria = clinicaVeterinaria.getCodVeterinaria();
 		ubicacion = clinicaVeterinaria.getUbicacion();
 
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
 		resul.executeUpdate("INSERT INTO " + ManagerAbstract.TABLE_CLINICAVETERINARIA
 				+ "(`CodClinica`, `Ubicacion`) VALUES ('" + codVeterinaria + "','" + ubicacion + "');");
 	}
-
+	/**
+	*eliminarClinicaVeterinaria elimina en la bd una clinica
+	*/
 	public void eliminarClinicaVeterinaria(int codVeterinaria) throws SQLException {
 
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
 		resul.executeUpdate("DELETE FROM " + ManagerAbstract.TABLE_CLINICAVETERINARIA + " WHERE CodClinica = " + "'"
 				+ codVeterinaria + "'");
 	}
-
+	/**
+	*updateClinicaVeterinaria renueva  los datos de un cliente de la bd
+	*/
 	public void updateClinicaVeterinaria(String[] nombreColumna, String[] UpdateColumna,
 			ClinicaVeterinaria clinicaVeterinaria) throws SQLException {
-		Connection conexion;
 		int cont = 0;
 		do {
 			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);

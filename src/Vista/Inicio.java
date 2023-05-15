@@ -13,7 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
 
-public class Inicio extends JFrame implements MouseListener{
+public class Inicio extends JFrame implements MouseListener {
 	/**
 	 * 
 	 */
@@ -43,36 +43,47 @@ public class Inicio extends JFrame implements MouseListener{
 	 * Create the frame.
 	 */
 	public Inicio() {
+		contentPane = new JPanel();
+		contentPane.setLayout(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 743, 410);
-		contentPane = new JPanel();
-		
 
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		
 		panel = new JPanel();
 		panel.addMouseListener((MouseListener) this);
 		ImageIcon img = new ImageIcon("imgReto2/imgBienvenida/bienvenida.png");
 		img = new ImageIcon(img.getImage().getScaledInstance(609, 250, Image.SCALE_DEFAULT));
-
-	
-		panel.setBackground(new Color(192, 192, 192));
-		panel.setBounds(0, 0, 727, 371);
-		contentPane.add(panel);
+		panel.setBounds(41, 35, 498, 257);
 		panel.setLayout(null);
-		
+
 		JLabel lblIMG = new JLabel();
-		lblIMG.setBounds(67, 57, 585, 258);
-		panel.add(lblIMG);
+		lblIMG.setBounds(-43, -34, 605, 352);
 		lblIMG.setIcon(img);
-		
+		panel.add(lblIMG);
+
 		lblBienvenida = new JLabel("Bienvenido");
-		lblBienvenida.setBounds(275, 0, 159, 66);
-		panel.add(lblBienvenida);
+		lblBienvenida.setBounds(100, 0, 126, 66);
 		lblBienvenida.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		contentPane.add(lblBienvenida);
+
+		panel.setOpaque(true);
+		panel.setBackground(Color.WHITE);
+
+		contentPane.add(panel);
+
+		setContentPane(contentPane);
+		setVisible(true);
+
+		ImageIcon img1 = new ImageIcon("imgReto2/ll.jpg");
+		img1 = new ImageIcon(img1.getImage().getScaledInstance(743, 410, Image.SCALE_DEFAULT));
+
+		contentPane.setLayout(null);
+
+		JLabel lblIMG1 = new JLabel();
+		lblIMG1.setBounds(0, 0, 743, 410);
+		lblIMG1.setIcon(img1);
+		contentPane.add(lblIMG1);
 	}
-	
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		try {
@@ -94,7 +105,7 @@ public class Inicio extends JFrame implements MouseListener{
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {	
+	public void mouseEntered(MouseEvent e) {
 	}
 
 	@Override

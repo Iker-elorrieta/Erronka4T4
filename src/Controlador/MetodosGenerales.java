@@ -12,9 +12,6 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableModel;
 
 import B.D_Util.DBUtils;
 import B.D_Util.ManagerAbstract;
@@ -31,7 +28,9 @@ import ModeloAnimal.Animal;
 import ModeloAnimal.Mascota;
 import ModeloPerfil.Cliente;
 import ModeloPerfil.Empleado;
-
+/** 
+ * *MetodosGenerales esta clase contiene los metodos que estan fueron de los metodos crud
+ */
 public class MetodosGenerales extends ManagerAbstract {
 
 	MetodosConsulta metodosConsulta = new MetodosConsulta();
@@ -52,9 +51,23 @@ public class MetodosGenerales extends ManagerAbstract {
 	private final String cantidad = "Cantidad";
 	private final String fecha = "Fecha";
 	private final String hora = "Hora";
+	private final String dni = "DNI";
+	private final String nombre = "Nombre";
+	private final String apellidos = "Apellidos";
+	private final String contrasenya = "Contraseña";
+	private final String direccion = "Dirección";
+	private final String salario = "Salario";
+	private final String antiguedad = "Antiguedad";
+	private final String especializacion = "Especialización";
+	private final String sexo = "Sexo";
+	private final String edad = "Edad";
+	private final String tienda = "Tienda";
+	private final String idProducto = "Id del Producto";
 
 	Connection conexion;
-
+	/** 
+	 * *LogIn valida si el log in es correcto
+	 */
 	public void LogIn(String dni, String contra) throws SQLException, DniInvalidoException, NumberFormatException {
 		boolean errorLogIN = true;
 		MetodosCliente metodosCliente = new MetodosCliente();
@@ -73,7 +86,9 @@ public class MetodosGenerales extends ManagerAbstract {
 			JOptionPane.showMessageDialog(null, "Bienvenido :)");
 		}
 	}
-
+	/** 
+	 * *comprobarDni valida si el dni es correcto
+	 */
 	public static boolean comprobarDni(String dni) throws DniInvalidoException, NumberFormatException {
 		boolean dniCorrecto = true;
 		final int longitudDNI = 9;
@@ -97,7 +112,9 @@ public class MetodosGenerales extends ManagerAbstract {
 
 		return dniCorrecto;
 	}
-
+	/** 
+	 * *AnadirStockProducto añade mas cantidad en un producto
+	 */
 	public void AnadirStockProducto(Producto producto, Gestion gestion, Empleado empleado) throws SQLException {
 
 		String cantidad = String.valueOf(gestion.getCantidad() + producto.getStock());
@@ -109,7 +126,9 @@ public class MetodosGenerales extends ManagerAbstract {
 		metodosProducto.updateProducto(column, cantidadNueva, producto);
 
 	}
-
+	/** 
+	 * *EliminarStockProducto elimina una cantidad del stock producto
+	 */
 	public void EliminarStockProducto(Producto producto, Pedido pedido, Cliente cliente) throws SQLException {
 
 		String cantidad = String.valueOf(producto.getStock() - pedido.getCantidadProducto());
@@ -120,7 +139,9 @@ public class MetodosGenerales extends ManagerAbstract {
 		metodosPedido.insertarPedido(pedido, cliente.getDni(), producto.getCodProducto(), 0);
 		metodosProducto.updateProducto(column, cantidadNueva, producto);
 	}
-	
+	/** 
+	 * *EliminarGestion elimina una gestion hecha por un empleado
+	 */
 	public void EliminarGestion(Gestion gestion, int numero) throws SQLException {
 
 		String cantidad = String.valueOf(numero);
@@ -130,7 +151,9 @@ public class MetodosGenerales extends ManagerAbstract {
 
 		metodosGestion.updateGestion(column, cantidadNueva, gestion);
 	}
-
+	/** 
+	 * *AnadirStockAnimal añade stock a animales 
+	 */
 	public void AnadirStockAnimal(Mascota mascota, GestionAnimal gestionanimal, Empleado empleado) throws SQLException {
 
 		String cantidad = String.valueOf(gestionanimal.getCantidad() + mascota.getStock());
@@ -142,7 +165,9 @@ public class MetodosGenerales extends ManagerAbstract {
 		metodoMascota.updateMascota(column, cantidadNueva, mascota);
 
 	}
-
+	/** 
+	 * *AnadirEdadAnimal añade edad a un animal
+	 */
 	public void AnadirEdadAnimal(Animal animal, int numero) throws SQLException {
 
 		String edad = String.valueOf(numero);
@@ -153,7 +178,9 @@ public class MetodosGenerales extends ManagerAbstract {
 		metodosAnimal.updateAnimal(column, edadNueva, animal);
 
 	}
-
+	/** 
+	 * *EditarCantidadGestion edita las cantidades de las gestiones
+	 */
 	public void EditarCantidadGestion(Gestion gestion, int numero) throws SQLException {
 
 		String cantidad = String.valueOf(numero);
@@ -164,7 +191,9 @@ public class MetodosGenerales extends ManagerAbstract {
 		metodosGestion.updateGestion(column, cantidadNueva, gestion);
 
 	}
-	
+	/** 
+	 * *EditarCantidadPedido edita las cantidades de los pedidos
+	 */
 	public void EditarCantidadPedido(Pedido pedido, int numero) throws SQLException {
 
 		String cantidad = String.valueOf(numero);
@@ -175,7 +204,9 @@ public class MetodosGenerales extends ManagerAbstract {
 		metodosPedido.updatePedido(column, cantidadNueva, pedido);
 
 	}
-	
+	/** 
+	 * *EditarCantidadAdopcion edita la de los animales adoptados
+	 */
 	public void EditarCantidadAdopcion(Adopcion adopcion, int numero) throws SQLException {
 
 		String cantidad = String.valueOf(numero);
@@ -186,7 +217,9 @@ public class MetodosGenerales extends ManagerAbstract {
 		metodosAdopcion.updateAnimalADoptado(column, cantidadNueva, adopcion);
 
 	}
-
+	/** 
+	 * *EditarCantidadGestionAnimal edita la cantidad de las gestiones animales
+	 */
 	public void EditarCantidadGestionAnimal(GestionAnimal gestionAnimal, int numero) throws SQLException {
 
 		String cantidad = String.valueOf(numero);
@@ -197,7 +230,9 @@ public class MetodosGenerales extends ManagerAbstract {
 		metodosGestionAnimal.updateGestion(column, cantidadNueva, gestionAnimal);
 
 	}
-
+	/** 
+	 * *EliminarStockAnimal elimina el stock de un animal
+	 */
 	public void EliminarStockAnimal(Mascota mascota, Adopcion adopcion, Cliente cliente) throws SQLException {
 
 		String cantidad = String.valueOf(mascota.getStock() - 1);
@@ -209,7 +244,9 @@ public class MetodosGenerales extends ManagerAbstract {
 		metodoMascota.updateMascota(column, cantidadNueva, mascota);
 
 	}
-
+	/** 
+	 * * generarTablaUbicaciones genera en una tabla con un array bidimensional con los datos de ubicion
+	 */
 	public Object[][] generarTablaUbicaciones() throws SQLException {
 		MetodosClinicaVeterinaria metodosClinicaveterinaria = new MetodosClinicaVeterinaria();
 		ArrayList<ClinicaVeterinaria> listaClinicaVeterinaria = metodosClinicaveterinaria.recogerClinicaVeterinaria();
@@ -222,21 +259,24 @@ public class MetodosGenerales extends ManagerAbstract {
 		}
 		return txt;
 	}
-
+	/** 
+	 * * generarTablaTiendas genera en una tabla con un array bidimensional con los datos de tiendas
+	 */
 	public Object[][] generarTablaTiendas() throws SQLException {
-		String[] titulos = null;
-		Object[][] txt = null;
-		titulos = new String[] { "Tienda" };
-		txt = new String[2][titulos.length];
+		String[] titulos = new String[] { tienda };
+		Object[][] txt = new String[2][titulos.length];
 		txt[0][0] = "Mascotas";
 		txt[1][0] = "Productos";
 
 		return txt;
 	}
-
-	public JTable generarTablaSeleccionMascotas(ArrayList<ObjetosComprables> listaMascota) throws SQLException {
+	/** 
+	 * * generarTablaSeleccionMascotas genera en una tabla con un array bidimensional con los datos de mascotas
+	 */
+	public Object[][] generarTablaSeleccionMascotas(ArrayList<ObjetosComprables> listaMascota) throws SQLException {
 		String[] titulos = new String[] { mascota, precio, stock };
 		Object[][] txt = new String[listaMascota.size()][titulos.length];
+
 		int cont = 0;
 		for (ObjetosComprables objetosComprables : listaMascota) {
 			if (objetosComprables instanceof Mascota) {
@@ -247,21 +287,14 @@ public class MetodosGenerales extends ManagerAbstract {
 				cont++;
 			}
 		}
-
-		JTable table = new JTable();
-		table.setModel(new DefaultTableModel(txt, titulos));
-		table.setCellSelectionEnabled(false);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setDefaultEditor(Object.class, null);
-
-		return table;
+		return txt;
 	}
-
-	public JTable generarTablaSeleccionProductos(ArrayList<ObjetosComprables> listaProducto) throws SQLException {
-		String[] titulos = null;
-		Object[][] txt = null;
-		titulos = new String[] { nombreProducto, precio, stock };
-		txt = new String[listaProducto.size()][titulos.length];
+	/** 
+	 * * generarTablaSeleccionProductos genera en una tabla con un array bidimensional con los datos de los productos seleccionados
+	 */
+	public Object[][] generarTablaSeleccionProductos(ArrayList<ObjetosComprables> listaProducto) throws SQLException {
+		String[] titulos = new String[] { nombreProducto, precio, stock };
+		Object[][] txt = new String[listaProducto.size()][titulos.length];
 		int cont = 0;
 
 		for (ObjetosComprables objetosComprables : listaProducto) {
@@ -274,23 +307,19 @@ public class MetodosGenerales extends ManagerAbstract {
 			}
 		}
 
-		JTable table = new JTable();
-		table.setModel(new DefaultTableModel(txt, titulos));
-		table.setCellSelectionEnabled(false);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setDefaultEditor(Object.class, null);
-
-		return table;
+		return txt;
 	}
-
-	public JTable generarTablasALL() throws SQLException {
-		String[] titulos = null;
-		Object[][] txt = null;
+	/** 
+	 * * generarTablasALL genera en una tabla con un array bidimensional con los datos de los empleados
+	 */
+	public Object[][] generarTablasALL() throws SQLException {
 		MetodosEmpleado metodosEmpleado = new MetodosEmpleado();
 		ArrayList<Empleado> listaEmpleados = metodosEmpleado.recogerEmpleado();
-		titulos = new String[] { "DNI", "Nombre", "Apellidos", "Contraseña", "Dirección", "Salario", "Antigüedad",
-				"Especialización" };
-		txt = new Object[listaEmpleados.size()][titulos.length];
+
+		String[] titulos = new String[] { dni, nombre, apellidos, contrasenya, direccion, salario, antiguedad,
+				especializacion };
+		Object[][] txt = new Object[listaEmpleados.size()][titulos.length];
+
 		int cont = 0;
 		for (int i = 0; i < listaEmpleados.size(); i++) {
 			txt[cont][0] = listaEmpleados.get(i).getDni();
@@ -303,40 +332,11 @@ public class MetodosGenerales extends ManagerAbstract {
 			txt[cont][7] = listaEmpleados.get(i).getEspecializacion();
 			cont++;
 		}
-
-		JTable table = new JTable();
-		table.setModel(new DefaultTableModel(txt, titulos));
-		table.setCellSelectionEnabled(false);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setDefaultEditor(Object.class, null);
-		return table;
+		return txt;
 	}
-
-	public JTable generarTablaConfiguracionAnimalEmpleado() throws SQLException {
-		String[] titulos = { "Cliente", "Nombre de su mascota", "Especie", "Edad", "Sexo" };
-		ArrayList<Cliente> listClienteConAnimales = metodosCliente.recogerClienteYSusAnimales();
-		ArrayList<Animal> listAnimal = metodosAnimal.recogerAnimal();
-		Object[][] txt = new Object[listClienteConAnimales.size()][titulos.length];
-		int cont = 0;
-		for (int i = 0; i < listClienteConAnimales.size(); i++) {
-			Cliente cliente = listClienteConAnimales.get(i);
-			for (int j = 0; j < listAnimal.size(); j++) {
-				txt[cont][0] = cliente.getNombre() + " " + cliente.getApellido();
-				txt[cont][1] = cliente.getAnimal().get(j).getNombreAnimal();
-				txt[cont][2] = cliente.getAnimal().get(j).getEspecie();
-				txt[cont][3] = cliente.getAnimal().get(j).getEdad();
-				txt[cont][4] = cliente.getAnimal().get(j).getSexo();
-				cont++;
-			}
-		}
-		JTable table = new JTable();
-		table.setModel(new DefaultTableModel(txt, titulos));
-		table.setCellSelectionEnabled(false);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setDefaultEditor(Object.class, null);
-		return table;
-	}
-
+	/** 
+	 * * modificarSalarioAntiguedad modifica el salario y la antiguedad de un empleado
+	 */
 	public void modificarSalarioAntiguedad(String dni, int antiguedad) throws SQLException {
 
 		Connection conexion;
@@ -347,7 +347,9 @@ public class MetodosGenerales extends ManagerAbstract {
 		while (resul.next()) {
 		}
 	}
-
+	/** 
+	 * * asignarSalario asigna un salrio a un empleado
+	 */
 	public void asignarSalario(String dni) throws SQLException {
 		try {
 			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
@@ -360,7 +362,9 @@ public class MetodosGenerales extends ManagerAbstract {
 		}
 
 	}
-
+	/** 
+	 * * ordenarPorPrecioDesc ordena los productos por precio
+	 */
 	public void ordenarPorPrecioDesc(ArrayList<ObjetosComprables> listaObjetocomprablesPrecio, boolean precio) {
 
 		if (precio == true) {
@@ -383,7 +387,9 @@ public class MetodosGenerales extends ManagerAbstract {
 			});
 		}
 	}
-
+	/** 
+	 * * ordenarPorStockDesc ordena los productos por stock
+	 */
 	public void ordenarPorStockDesc(ArrayList<ObjetosComprables> listaObjetocomprablesStock, boolean stock) {
 		if (stock == true) {
 			Collections.sort(listaObjetocomprablesStock, new Comparator<ObjetosComprables>() {
@@ -403,19 +409,20 @@ public class MetodosGenerales extends ManagerAbstract {
 			});
 		}
 	}
-
-	public JTable generarTablaGestionarAnimalCliente(Cliente cliente, ArrayList<Cliente> clienteRecibido)
+	/** 
+	 * * generarTablaGestionarAnimalCliente genera una tabla los animales de los clientes
+	 */
+	public Object[][] generarTablaGestionarAnimalCliente(Cliente cliente, ArrayList<Cliente> clienteRecibido)
 			throws SQLException {
 
-		String[] titulos = null;
+		String[] titulos = new String[] { nombre, edad, especie, sexo };
 		Object[][] txt = null;
-		titulos = new String[] { "Nombre", "Edad", "Especie", "Sexo" };
 
 		if (!(cliente == null)) {
 			int pos = clienteRecibido.indexOf(cliente);
 			ArrayList<Cliente> listaCliente = metodosCliente.recogerClienteYSusAnimales();
-
 			txt = new String[listaCliente.get(pos).getAnimal().size()][titulos.length];
+
 			int cont = 0;
 			for (Cliente clienteTabla : listaCliente) {
 
@@ -428,19 +435,15 @@ public class MetodosGenerales extends ManagerAbstract {
 						txt[cont][3] = clienteTabla.getAnimal().get(i).getSexo();
 						cont++;
 					}
-					break;
 				}
 			}
 		}
-		JTable table = new JTable();
-		table.setModel(new DefaultTableModel(txt, titulos));
-		table.setCellSelectionEnabled(false);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setDefaultEditor(Object.class, null);
-		return table;
+		return txt;
 
 	}
-
+	/** 
+	 * * ArrayListTxt genera una txt de la consulta hecha por un cliente
+	 */
 	public ArrayList<Consulta> ArrayListTxt(Consulta consulta, Cliente cliente) throws SQLException {
 		MetodosConsulta metodosConsulta = new MetodosConsulta();
 		ArrayList<Consulta> lista = metodosConsulta.recogerConsulta();
@@ -458,9 +461,10 @@ public class MetodosGenerales extends ManagerAbstract {
 		}
 		return lista;
 	}
-
-	public JTable generarTablaSeleccionMascotasTiendaEmpleado(ArrayList<Mascota> listaObjetosMascota)
-			throws SQLException {
+	/** 
+	 * * generarTablaSeleccionMascotasTiendaEmpleado genera una tabla con las mascotas 
+	 */
+	public Object[][] generarTablaSeleccionMascotasTiendaEmpleado(ArrayList<Mascota> listaObjetosMascota) throws SQLException {
 
 		String[] titulos = new String[] { especie, stock, precio };
 		Object[][] txt = new String[listaObjetosMascota.size()][titulos.length];
@@ -475,22 +479,15 @@ public class MetodosGenerales extends ManagerAbstract {
 				cont++;
 			}
 		}
-
-		JTable table = new JTable();
-		table.setModel(new DefaultTableModel(txt, titulos));
-		table.setCellSelectionEnabled(false);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setDefaultEditor(Object.class, null);
-		return table;
+		return txt;
 	}
+	/** 
+	 * * generarTablaSeleccionProductosTiendaEmpleado genera una tabla con las productos que gestionaran los empleados
+	 */
+	public Object[][] generarTablaSeleccionProductosTiendaEmpleado(ArrayList<Producto> listaObjetosComprables) throws SQLException {
 
-	public JTable generarTablaSeleccionProductosTiendaEmpleado(ArrayList<Producto> listaObjetosComprables)
-			throws SQLException {
-		String[] titulos = null;
-		Object[][] txt = null;
-
-		titulos = new String[] { nombreProducto, stock, precio };
-		txt = new String[listaObjetosComprables.size()][titulos.length];
+		String[] titulos = new String[] { nombreProducto, stock, precio };
+		Object[][] txt = new String[listaObjetosComprables.size()][titulos.length];
 
 		int cont = 0;
 
@@ -503,18 +500,14 @@ public class MetodosGenerales extends ManagerAbstract {
 				cont++;
 			}
 		}
-
-		JTable table = new JTable();
-		table.setModel(new DefaultTableModel(txt, titulos));
-		table.setCellSelectionEnabled(false);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setDefaultEditor(Object.class, null);
-		return table;
+		return txt;
 	}
+	/** 
+	 * * generarTablaSeleccionGestionTiendaEmpleado genera una tabla con los producto modificados
+	 */
+	public Object[][] generarTablaSeleccionGestionTiendaEmpleado(ArrayList<Gestion> listaGestiones) throws SQLException {
 
-	public JTable generarTablaSeleccionGestionTiendaEmpleado(ArrayList<Gestion> listaGestiones) throws SQLException {
-
-		String[] titulos = new String[] { nombreProducto, cantidad, fecha };
+		String[] titulos = new String[] { idProducto, cantidad, fecha };
 		Object[][] txt = new String[listaGestiones.size()][titulos.length];
 
 		int cont = 0;
@@ -527,42 +520,33 @@ public class MetodosGenerales extends ManagerAbstract {
 			cont++;
 
 		}
-
-		JTable table = new JTable();
-		table.setModel(new DefaultTableModel(txt, titulos));
-		table.setCellSelectionEnabled(false);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setDefaultEditor(Object.class, null);
-		return table;
+		return txt;
 	}
-	
+	/** 
+	 * * generarTablaSeleccionPedidoCliente genera una tabla con los datos de un pedido de un cliente
+	 */
 
-	public JTable generarTablaSeleccionPedidoCliente(ArrayList<Pedido> listaPedido) throws SQLException {
+	public Object[][] generarTablaSeleccionPedidoCliente(ArrayList<Pedido> listaPedido) throws SQLException {
 
-		String[] titulos = new String[] { nombreProducto, cantidad, fecha , hora , precio};
+		String[] titulos = new String[] { idProducto, cantidad, fecha , hora , precio};
 		Object[][] txt = new String[listaPedido.size()][titulos.length];
 
 		int cont = 0;
 
 		for (Pedido pedido : listaPedido) {
-
 			txt[cont][0] = String.valueOf(pedido.getCodPedido());
 			txt[cont][1] = String.valueOf(pedido.getCantidadProducto());
 			txt[cont][2] = String.valueOf(pedido.getFecha());
 			txt[cont][3] = String.valueOf(pedido.getHora());
 			txt[cont][4] = String.valueOf(pedido.getPreciototal());
 			cont++;
-
 		}
-
-		JTable table = new JTable();
-		table.setModel(new DefaultTableModel(txt, titulos));
-		table.setCellSelectionEnabled(false);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setDefaultEditor(Object.class, null);
-		return table;
+		return txt;
 	}
-	
+	/** 
+	 * * generarTablaSeleccionGestionTAnimaliendaEmpleado genera una tabla con los datos de las gestiones de un animal por un empleado
+	 */
+
 	public Object[][] generarTablaSeleccionGestionTAnimaliendaEmpleado(ArrayList<GestionAnimal> listaGestionAnimal) throws SQLException {
 
 		String[] titulos = new String[] { nombreProducto, cantidad, fecha };
@@ -580,7 +564,9 @@ public class MetodosGenerales extends ManagerAbstract {
 		}
 		return txt;
 	}
-	
+	/** 
+	 * * generarTablaSeleccionAdopcionCliente genera una tabla con los datos de las animales adoptados por un cliente
+	 */
 	public Object[][] generarTablaSeleccionAdopcionCliente(ArrayList<Adopcion> listaAdopcion) throws SQLException {
 
 		String[] titulos = new String[] { nombreProducto, fecha , precio};
@@ -598,12 +584,14 @@ public class MetodosGenerales extends ManagerAbstract {
 
 		return txt;
 	}
-	
+	/** 
+	 * * generarTablaClienteAnimal genera una tabla con los datos de las animales de un cliente
+	 */
 	public Object[][] generarTablaClienteAnimal(Cliente cliente, ArrayList<Cliente> cs) throws SQLException {
 		MetodosCliente mc = new MetodosCliente();
 		int pos = cs.indexOf(cliente);
 		ArrayList<Cliente> cl = mc.recogerClienteYSusAnimales();
-		String[] titulos = new String[] { "Nombre", "Edad", "Especie", "Sexo" };
+		String[] titulos = new String[] { nombre, edad, especie, sexo };
 		Object[][] txt = new String[cl.get(pos).getAnimal().size()][titulos.length];
 		int cont = 0;
 		for (Cliente cli : cl) {

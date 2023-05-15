@@ -13,16 +13,21 @@ import Modelo.GestionAnimal;
 import Modelo.Producto;
 import ModeloAnimal.Mascota;
 import ModeloPerfil.Empleado;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 
 public class TiendaEmpleado extends JFrame {
@@ -55,6 +60,11 @@ public class TiendaEmpleado extends JFrame {
 	ventanaEmpleado ventanaEmpleado;
 	AnyadirProducto ventanaAniadirProducto;
 	AnyadirMascota ventanaAnyadirMascota;
+	
+	private final String precio = "Precio";
+    private final String stock = "Stock";
+    private final String nombreProducto = "Producto";
+    private final String especie = "Especie";
 
 	/**
 	 * Create the frame.
@@ -183,15 +193,20 @@ public class TiendaEmpleado extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				try {
-					listaProducto = metodosProductos.recogerProducto();
-					table = metodosGenerales.generarTablaSeleccionProductosTiendaEmpleado(listaProducto);
-					scrollPaneTabla.setViewportView(table);
+                    listaProducto = metodosProductos.recogerProducto();
+                    Object[][] Productos = metodosGenerales.generarTablaSeleccionProductosTiendaEmpleado(listaProducto);
+                    String[] titulos = new String[] { nombreProducto, stock, precio };
+                    table.setModel(new DefaultTableModel(Productos, titulos));
+                    table.setCellSelectionEnabled(false);
+                    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                    table.setDefaultEditor(Object.class, null);
+                    scrollPaneTabla.setViewportView(table);
 
-					btnConfigurar.setEnabled(true);
-					btnAnyadir.setEnabled(true);
-					btnEliminar.setEnabled(true);
-					
-					isProducto = true;
+                    btnConfigurar.setEnabled(true);
+                    btnAnyadir.setEnabled(true);
+                    btnEliminar.setEnabled(true);
+                    
+                    isProducto = true;
 
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
@@ -208,16 +223,21 @@ public class TiendaEmpleado extends JFrame {
 
 				try {
 
-					listaMascota = metodosMascota.recogerMascota();
-					table = metodosGenerales.generarTablaSeleccionMascotasTiendaEmpleado(listaMascota);
-					scrollPaneTabla.setViewportView(table);
+                    listaMascota = metodosMascota.recogerMascota();
+                    Object[][] empleado = metodosGenerales.generarTablaSeleccionMascotasTiendaEmpleado(listaMascota);
+                    String[] titulos = new String[] { especie, stock, precio };
+                    table.setModel(new DefaultTableModel(empleado, titulos));
+                    table.setCellSelectionEnabled(false);
+                    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                    table.setDefaultEditor(Object.class, null);
+                    scrollPaneTabla.setViewportView(table);
 
-					btnConfigurar.setEnabled(true);
-					btnAnyadir.setEnabled(true);
-					btnEliminar.setEnabled(true);
+                    btnConfigurar.setEnabled(true);
+                    btnAnyadir.setEnabled(true);
+                    btnEliminar.setEnabled(true);
 
 
-					isProducto = false;
+                    isProducto = false;
 
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
@@ -308,5 +328,14 @@ public class TiendaEmpleado extends JFrame {
 		btnEliminar.setBounds(122, 338, 186, 23);
 		contentPane.add(btnEliminar);
 
+		ImageIcon img1 = new ImageIcon("imgReto2/ll.jpg");
+		img1 = new ImageIcon(img1.getImage().getScaledInstance(743, 410, Image.SCALE_DEFAULT));
+
+		contentPane.setLayout(null);
+
+		JLabel lblIMG1 = new JLabel();
+		lblIMG1.setBounds(0, 0, 743, 410);
+		lblIMG1.setIcon(img1);
+		contentPane.add(lblIMG1);
 	}
 }

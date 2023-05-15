@@ -8,10 +8,12 @@ import Controlador.MetodosCliente;
 import ModeloPerfil.Cliente;
 
 import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 
 public class ventanaCliente extends JFrame {
@@ -50,7 +52,7 @@ public class ventanaCliente extends JFrame {
 	 */
 
 	public ventanaCliente(Cliente clienteLogIn) {
-
+		
 		nombreLogIn = clienteLogIn.getNombre();
 		apellidoLogIn = clienteLogIn.getApellido();
 		texto = nombreLogIn + " " + apellidoLogIn;
@@ -75,7 +77,7 @@ public class ventanaCliente extends JFrame {
 				dispose();
 			}
 		});
-		btnTienda.setBounds(76, 73, 212, 136);
+		btnTienda.setBounds(31, 88, 203, 111);
 		contentPane.add(btnTienda);
 
 		btnPedirCita = new JButton("Pedir cita");
@@ -86,19 +88,11 @@ public class ventanaCliente extends JFrame {
 				try {
 					listaCliente = metodosCliente.recogerClienteYSusAnimales();
 					
-					if(clienteLogIn.getAnimal() == null) {
-						atras = false;
-						ventanaAnaydirAnimal = new AnaydirAnimal(clienteLogIn, atras);
-						ventanaAnaydirAnimal.setVisible(true);
-						dispose();
-					}else {
-						atras = true;
-						ventanaPedirCita = new PedirCita(clienteLogIn, listaCliente, atras);
+
+						ventanaPedirCita = new PedirCita(clienteLogIn, listaCliente);
 						ventanaPedirCita.setVisible(true);
 						dispose();
-					}
 					
-
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -106,7 +100,7 @@ public class ventanaCliente extends JFrame {
 			}
 
 		});
-		btnPedirCita.setBounds(400, 73, 246, 136);
+		btnPedirCita.setBounds(258, 88, 203, 111);
 		contentPane.add(btnPedirCita);
 
 		lblNombreApellido = new JLabel(texto);
@@ -126,7 +120,7 @@ public class ventanaCliente extends JFrame {
 				}
 			}
 		});
-		btnCerrarSesion.setBounds(76, 220, 212, 136);
+		btnCerrarSesion.setBounds(125, 225, 203, 111);
 		contentPane.add(btnCerrarSesion);
 
 		btnConfigurarPerfil = new JButton("Configurar perfil");
@@ -142,10 +136,10 @@ public class ventanaCliente extends JFrame {
 				}	
 			}
 		});
-		btnConfigurarPerfil.setBounds(400, 220, 246, 136);
+		btnConfigurarPerfil.setBounds(372, 225, 203, 111);
 		contentPane.add(btnConfigurarPerfil);
 		
-		btnNewButton = new JButton("New button");
+		btnNewButton = new JButton("Carrito");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ventanaCarrito = new Carrito(clienteLogIn);
@@ -153,7 +147,19 @@ public class ventanaCliente extends JFrame {
 				dispose();
 			}
 		});
-		btnNewButton.setBounds(298, 208, 85, 21);
+		btnNewButton.setBounds(481, 88, 203, 111);
 		contentPane.add(btnNewButton);
+		
+		ImageIcon img1 = new ImageIcon("imgReto2/ll.jpg");
+		img1 = new ImageIcon(img1.getImage().getScaledInstance(743, 410, Image.SCALE_DEFAULT));
+
+		contentPane.setLayout(null);
+
+		JLabel lblIMG1 = new JLabel();
+		lblIMG1.setBounds(0, 0, 743, 410);
+		lblIMG1.setIcon(img1);
+		contentPane.add(lblIMG1);
+		
+		
 	}
 }

@@ -1,9 +1,11 @@
 package Vista;
 
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -67,7 +69,7 @@ public class TiendaCliente extends JFrame {
 		scrollpanelUbicacion.setBounds(36, 73, 281, 189);
 		contentPane.add(scrollpanelUbicacion);
 		
-		String[] titulosUbicacion = new String[] { "Ubicacion" };
+		String[] titulosUbicacio = new String[] { "Ubicacion" };
 		
 		tableUbicacion = new JTable();
 		try {
@@ -75,7 +77,7 @@ public class TiendaCliente extends JFrame {
 			Object [][] txtUbicacion = metodosGenerales.generarTablaUbicaciones();
 			
 			tableUbicacion = new JTable();
-			tableUbicacion.setModel(new DefaultTableModel(txtUbicacion, titulosUbicacion));
+			tableUbicacion.setModel(new DefaultTableModel(txtUbicacion, titulosUbicacio));
 			tableUbicacion.setCellSelectionEnabled(false);
 			tableUbicacion.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			tableUbicacion.setDefaultEditor(Object.class, null);
@@ -139,5 +141,15 @@ public class TiendaCliente extends JFrame {
 		lblElemento = new JLabel("Selecciona una elemento:");
 		lblElemento.setBounds(355, 30, 150, 14);
 		contentPane.add(lblElemento);
+		
+		ImageIcon img1 = new ImageIcon("imgReto2/ll.jpg");
+		img1 = new ImageIcon(img1.getImage().getScaledInstance(743, 410, Image.SCALE_DEFAULT));
+
+		contentPane.setLayout(null);
+
+		JLabel lblIMG1 = new JLabel();
+		lblIMG1.setBounds(0, 0, 743, 410);
+		lblIMG1.setIcon(img1);
+		contentPane.add(lblIMG1);
 	}
 }

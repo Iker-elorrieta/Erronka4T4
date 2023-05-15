@@ -11,7 +11,9 @@ import B.D_Util.DBUtils;
 import B.D_Util.ManagerAbstract;
 import ModeloPerfil.Empleado;
 import ModeloPerfil.Especializacion.Especialidad;
-
+/** 
+ * *MetodosEmpleado esta clase contiene los metodos crud de la clase Empleado 
+ */
 public class MetodosEmpleado extends ManagerAbstract {
 
 	final String nombreCliente = "Nombre";
@@ -34,10 +36,14 @@ public class MetodosEmpleado extends ManagerAbstract {
 	final String limpieza = "Limpieza";
 	final String ventas = "Ventas";
 
+	Connection conexion;
+	/** 
+	 * *recogerEmpleado recoge los empleados de la bd en un arraylist y lo devuelve
+	 */
 	public ArrayList<Empleado> recogerEmpleado() throws SQLException {
 
 		ArrayList<Empleado> listaEmpleado = new ArrayList<Empleado>();
-		Connection conexion;
+
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement sacaEmpleado = conexion.createStatement();
 		String sql = "select * from " + ManagerAbstract.TABLE_EMPLEADO;
@@ -64,9 +70,9 @@ public class MetodosEmpleado extends ManagerAbstract {
 				empleado.setEspecializacion(Especialidad.Pez);
 			} else if (especializacion.equalsIgnoreCase(limpieza)) {
 				empleado.setEspecializacion(Especialidad.limpieza);
-			} else if(especializacion.equalsIgnoreCase(ventas)){
+			} else if (especializacion.equalsIgnoreCase(ventas)) {
 				empleado.setEspecializacion(Especialidad.ventas);
-			}else {
+			} else {
 				empleado.setEspecializacion(Especialidad.admin);
 			}
 
@@ -75,7 +81,9 @@ public class MetodosEmpleado extends ManagerAbstract {
 		return listaEmpleado;
 
 	}
-
+	/** 
+	 * *insertarEmpleado inserta un empleasdo en la bd
+	 */
 	public void insertarEmpleado(Empleado empleadoNuevo, int codClinica) throws SQLException {
 
 		String nombre = "";
@@ -98,7 +106,6 @@ public class MetodosEmpleado extends ManagerAbstract {
 		antiguedad = empleado.getAntiguedad();
 		especializacion = empleado.getEspecializacion();
 
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
@@ -109,10 +116,11 @@ public class MetodosEmpleado extends ManagerAbstract {
 				+ codClinica + "');");
 
 	}
-
+	/** 
+	 * *eliminarEmpleado elimina un empleasdo en la bd
+	 */
 	public void eliminarEmpleado(String dni) throws SQLException {
 
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
@@ -120,9 +128,11 @@ public class MetodosEmpleado extends ManagerAbstract {
 				"DELETE FROM `" + ManagerAbstract.TABLE_EMPLEADO + "`" + "WHERE empleado.DNI = '" + dni + "';");
 
 	}
-
+	/** 
+	 * *updateEmpleado renueva un empleasdo en la bd
+	 */
 	public void updateEmpleado(String[] nombreColumna, String[] UpdateColumna, Empleado empleado) throws SQLException {
-		Connection conexion;
+
 		int cont = 0;
 		do {
 			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);

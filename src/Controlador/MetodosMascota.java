@@ -11,18 +11,24 @@ import B.D_Util.DBUtils;
 import B.D_Util.ManagerAbstract;
 import Modelo.ObjetosComprables;
 import ModeloAnimal.Mascota;
-
+/** 
+ * *MetodosMascota esta clase contiene los metodos crud de la clase Mascota
+ */
 public class MetodosMascota extends ManagerAbstract {
 
 	final String especie = "Especie";
 	final String precio = "Precio";
 	final String stock = "Stock";
 	final String codMascota = "CodMascota";
-
+	
+	Connection conexion;
+	/** 
+	 * *recogerMascota recoge los datos de las mascotas de la bd en un arraylist y lo devuelve
+	 */
 	public ArrayList<Mascota> recogerMascota() throws SQLException {
 
 		ArrayList<Mascota> listaMascota = new ArrayList<Mascota>();
-		Connection conexion;
+		
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement sacaProducto = conexion.createStatement();
 		String sql = "select * from " + ManagerAbstract.TABLE_MASCOTA;
@@ -38,7 +44,9 @@ public class MetodosMascota extends ManagerAbstract {
 		return listaMascota;
 
 	}
-
+	/** 
+	 * *insertarMascota inserta una mascota en la bd 
+	 */
 	public void insertarMascota(Mascota mascotaNuevo) throws SQLException {
 
 		String especieMascota = "";
@@ -53,7 +61,6 @@ public class MetodosMascota extends ManagerAbstract {
 		stock = producto.getStock();
 		codMascota = producto.getCodMascota();
 
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
@@ -61,10 +68,11 @@ public class MetodosMascota extends ManagerAbstract {
 				+ "(`CodMascota`, `Especie`, `Stock`, `Precio`) " + "VALUES( '" + codMascota + "' , '" + especieMascota
 				+ "' , '" + stock + "' , '" + precio + "');");
 	}
-
+	/** 
+	 * *eliminarMascota elimina una mascota en la bd 
+	 */
 	public void eliminarMascota(int codMascota) throws SQLException {
 
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
@@ -72,9 +80,11 @@ public class MetodosMascota extends ManagerAbstract {
 				"DELETE FROM `" + ManagerAbstract.TABLE_MASCOTA + "`" + "WHERE CodMascota = '" + codMascota + "';");
 
 	}
-
+	/** 
+	 * *updateMascota renueva una mascota en la bd 
+	 */
 	public void updateMascota(String[] nombreColumna, String[] UpdateColumna, Mascota mascota) throws SQLException {
-		Connection conexion;
+
 		int cont = 0;
 		do {
 			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
@@ -85,7 +95,9 @@ public class MetodosMascota extends ManagerAbstract {
 			cont++;
 		} while (cont < nombreColumna.length);
 	}
-	
+	/** 
+	 * *recogerMascotaTienda recoge las mascotas separadas por tiendas
+	 */
 	public ArrayList<ObjetosComprables> recogerMascotaTienda(String valorUbicacion) throws SQLException {
 
 		ArrayList<ObjetosComprables> listaMascota = new ArrayList<ObjetosComprables>();

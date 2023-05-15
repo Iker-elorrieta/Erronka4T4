@@ -13,7 +13,9 @@ import B.D_Util.ManagerAbstract;
 import Modelo.Gestion;
 import Modelo.Producto;
 import ModeloPerfil.Empleado;
-
+/** 
+ * *MetodosGestion esta clase contiene los metodos crud de la clase Gestion
+ */
 public class MetodosGestion extends ManagerAbstract {
 
 	final String codGestion = "CodGestion";
@@ -27,10 +29,14 @@ public class MetodosGestion extends ManagerAbstract {
 	final String stock = "Stock";
 	final String codProducto = "CodProducto";
 
+	Connection conexion;
+	/** 
+	 * *recogerGestion recoge los datos de las gestiones de la bd en un arraylist y lo devuelve
+	 */
 	public ArrayList<Gestion> recogerGestion() throws SQLException {
 
 		ArrayList<Gestion> listaGestion = new ArrayList<Gestion>();
-		Connection conexion;
+
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement sacaGestion = conexion.createStatement();
 		String sql = "select * from " + ManagerAbstract.TABLE_GESTION;
@@ -76,7 +82,9 @@ public class MetodosGestion extends ManagerAbstract {
 		}
 		return listaGestion;
 	}
-
+	/** 
+	 * *insertarGestion inserta una gestion en la bd
+	 */
 	public void insertarGestion(Gestion gestionNueva, String dni, int codProducto) throws SQLException {
 
 		MetodosProducto metodosProducto = new MetodosProducto();
@@ -92,7 +100,6 @@ public class MetodosGestion extends ManagerAbstract {
 		fecha = (Date) gestion.getFecha();
 		cantidad = gestion.getCantidad();
 
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
@@ -106,10 +113,11 @@ public class MetodosGestion extends ManagerAbstract {
 			}
 		}
 	}
-
+	/** 
+	 * *eliminarGestion elimina una gestion en la bd
+	 */
 	public void eliminarGestion(int codGestion) throws SQLException {
 
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
@@ -117,9 +125,11 @@ public class MetodosGestion extends ManagerAbstract {
 				+ codGestion + "';");
 
 	}
-
+	/** 
+	 * *updateGestion renueva una gestion en la bd
+	 */
 	public void updateGestion(String[] nombreColumna, String[] UpdateColumna, Gestion gestion) throws SQLException {
-		Connection conexion;
+
 		int cont = 0;
 		do {
 			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);

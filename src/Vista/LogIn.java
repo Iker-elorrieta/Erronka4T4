@@ -11,6 +11,7 @@ import ModeloPerfil.Cliente;
 import ModeloPerfil.Empleado;
 
 import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
@@ -19,6 +20,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.awt.Image;
 
 public class LogIn extends JFrame {
 
@@ -157,5 +159,15 @@ public class LogIn extends JFrame {
 		lblTexto = new JLabel("Introduce el DNI y la contraseña para iniciar sesion:");
 		lblTexto.setBounds(51, 38, 408, 14);
 		contentPane.add(lblTexto);
+		
+		ImageIcon img1 = new ImageIcon("imgReto2/ll.jpg");
+		img1 = new ImageIcon(img1.getImage().getScaledInstance(743, 410, Image.SCALE_DEFAULT));
+
+		contentPane.setLayout(null);
+
+		JLabel lblIMG1 = new JLabel();
+		lblIMG1.setBounds(0, 0, 743, 410);
+		lblIMG1.setIcon(img1);
+		contentPane.add(lblIMG1);
 	}
 }

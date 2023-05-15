@@ -9,10 +9,12 @@ import ModeloPerfil.Empleado;
 import ModeloPerfil.Especializacion.Especialidad;
 
 import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 
 public class ventanaEmpleado extends JFrame {
@@ -122,7 +124,7 @@ public class ventanaEmpleado extends JFrame {
 				}
 			}
 		});
-		btnCerrarSesion.setBounds(89, 226, 203, 118);
+		btnCerrarSesion.setBounds(21, 213, 203, 118);
 		contentPane.add(btnCerrarSesion);
 
 		btnConfigurarPerfil = new JButton("Configurar perfil");
@@ -138,7 +140,7 @@ public class ventanaEmpleado extends JFrame {
 				}			
 			}
 		});
-		btnConfigurarPerfil.setBounds(377, 226, 203, 118);
+		btnConfigurarPerfil.setBounds(258, 213, 203, 118);
 		contentPane.add(btnConfigurarPerfil);
 		
 		btnGestionarEmpleados = new JButton("Gestionar empleados");
@@ -163,15 +165,24 @@ public class ventanaEmpleado extends JFrame {
 		btnGestionarEmpleados.setBounds(21, 64, 203, 118);
 		contentPane.add(btnGestionarEmpleados);
 		
-		JButton btnNewButton = new JButton("New button");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnConfigurarGestiones = new JButton("Configurar gestiones");
+		btnConfigurarGestiones.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ventanaConfigurarGestiones = new ConfigurarGestiones(empleadoLogIn);
 				ventanaConfigurarGestiones.setVisible(true);
 				dispose();
 			}
 		});
-		btnNewButton.setBounds(590, 275, 85, 21);
-		contentPane.add(btnNewButton);
+		btnConfigurarGestiones.setBounds(497, 213, 203, 118);
+		contentPane.add(btnConfigurarGestiones);
+		ImageIcon img1 = new ImageIcon("imgReto2/ll.jpg");
+		img1 = new ImageIcon(img1.getImage().getScaledInstance(743, 410, Image.SCALE_DEFAULT));
+
+		contentPane.setLayout(null);
+
+		JLabel lblIMG1 = new JLabel();
+		lblIMG1.setBounds(0, 0, 743, 410);
+		lblIMG1.setIcon(img1);
+		contentPane.add(lblIMG1);
 	}
 }

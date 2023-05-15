@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -68,6 +69,10 @@ public class SeleccionTiendaProductos extends JFrame {
 	private JPanel panelFotos;
 	private ImageIcon img;
 	private JLabel lblIMG;
+	
+	private final String precioTitulo = "Precio";
+	private final String stockTitulo = "Stock";
+	private final String nombreProductoTitulo = "Producto";
 
 	/**
 	 * Create the frame.
@@ -90,9 +95,17 @@ public class SeleccionTiendaProductos extends JFrame {
 		tableSeleccionProductos = new JTable();
 		try {
 			ArrayList<ObjetosComprables> listaProducto = metodosProducto.recogerProductoTienda(valorUbicacion);
-			tableSeleccionProductos = metodosGenerales.generarTablaSeleccionProductos(listaProducto);
+			
+			String[] titulos = new String[] { nombreProductoTitulo, precioTitulo, stockTitulo };
+			Object[][] txtProducto = metodosGenerales.generarTablaSeleccionProductos(listaProducto);
+			
+			tableSeleccionProductos.setModel(new DefaultTableModel(txtProducto, titulos));
+			tableSeleccionProductos.setCellSelectionEnabled(false);
+			tableSeleccionProductos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			tableSeleccionProductos.setDefaultEditor(Object.class, null);
 			scrollpanelSeleccionProductos.setViewportView(tableSeleccionProductos);
 			tableSeleccionProductos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+				
 				public void valueChanged(ListSelectionEvent event) {
 					if (tableSeleccionProductos.getSelectedRow() != -1) {
 						DefaultTableModel modelo = (DefaultTableModel) tableSeleccionProductos.getModel();
@@ -291,9 +304,16 @@ public class SeleccionTiendaProductos extends JFrame {
 				DefaultTableModel modelo = (DefaultTableModel) tableSeleccionProductos.getModel();
 				modelo.setRowCount(0);
 				try {
-					ArrayList<ObjetosComprables> listaProductoPrecio = metodosProducto.recogerProductoTienda(valorUbicacion);
-					metodosGenerales.ordenarPorPrecioDesc(listaProductoPrecio, precio);
-					tableSeleccionProductos = metodosGenerales.generarTablaSeleccionProductos(listaProductoPrecio);
+					ArrayList<ObjetosComprables> listaProducto = metodosProducto.recogerProductoTienda(valorUbicacion);
+					metodosGenerales.ordenarPorPrecioDesc(listaProducto, precio);				
+					String[] titulos = new String[] { nombreProductoTitulo, precioTitulo, stockTitulo };
+					Object[][] txtProducto = metodosGenerales.generarTablaSeleccionProductos(listaProducto);
+					
+					tableSeleccionProductos.setModel(new DefaultTableModel(txtProducto, titulos));
+					tableSeleccionProductos.setCellSelectionEnabled(false);
+					tableSeleccionProductos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+					tableSeleccionProductos.setDefaultEditor(Object.class, null);
+					
 					scrollpanelSeleccionProductos.setViewportView(tableSeleccionProductos);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
@@ -302,7 +322,7 @@ public class SeleccionTiendaProductos extends JFrame {
 
 			}
 		});
-		btnOrdenarPrecio.setBounds(518, 255, 183, 23);
+		btnOrdenarPrecio.setBounds(227, 255, 183, 23);
 		contentPane.add(btnOrdenarPrecio);
 
 		btnOrdenarStock = new JButton("Ordenar por stock");
@@ -316,10 +336,16 @@ public class SeleccionTiendaProductos extends JFrame {
 				DefaultTableModel modelo = (DefaultTableModel) tableSeleccionProductos.getModel();
 				modelo.setRowCount(0);
 				try {
-					ArrayList<ObjetosComprables> listaProductoStock = metodosProducto
-							.recogerProductoTienda(valorUbicacion);
-					metodosGenerales.ordenarPorStockDesc(listaProductoStock, stock);
-					tableSeleccionProductos = metodosGenerales.generarTablaSeleccionProductos(listaProductoStock);
+					ArrayList<ObjetosComprables> listaProducto = metodosProducto.recogerProductoTienda(valorUbicacion);
+					metodosGenerales.ordenarPorStockDesc(listaProducto, stock);
+					String[] titulos = new String[] { nombreProductoTitulo, precioTitulo, stockTitulo };
+					Object[][] txtProducto = metodosGenerales.generarTablaSeleccionProductos(listaProducto);
+					
+					tableSeleccionProductos.setModel(new DefaultTableModel(txtProducto, titulos));
+					tableSeleccionProductos.setCellSelectionEnabled(false);
+					tableSeleccionProductos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+					tableSeleccionProductos.setDefaultEditor(Object.class, null);
+					
 					scrollpanelSeleccionProductos.setViewportView(tableSeleccionProductos);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
@@ -328,7 +354,7 @@ public class SeleccionTiendaProductos extends JFrame {
 
 			}
 		});
-		btnOrdenarStock.setBounds(242, 255, 203, 23);
+		btnOrdenarStock.setBounds(488, 255, 203, 23);
 		contentPane.add(btnOrdenarStock);
 
 		panelFotos = new JPanel();
@@ -372,5 +398,15 @@ public class SeleccionTiendaProductos extends JFrame {
 		});
 		btnRestar.setBounds(10, 280, 41, 23);
 		contentPane.add(btnRestar);
+		
+		ImageIcon img1 = new ImageIcon("imgReto2/ll.jpg");
+		img1 = new ImageIcon(img1.getImage().getScaledInstance(743, 410, Image.SCALE_DEFAULT));
+
+		contentPane.setLayout(null);
+
+		JLabel lblIMG1 = new JLabel();
+		lblIMG1.setBounds(0, 0, 743, 410);
+		lblIMG1.setIcon(img1);
+		contentPane.add(lblIMG1);
 	}
 }

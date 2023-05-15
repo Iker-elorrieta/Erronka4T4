@@ -12,10 +12,12 @@ import Controlador.MetodosEmpleado;
 import ModeloPerfil.Cliente;
 import ModeloPerfil.Empleado;
 import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.awt.Image;
 
 public class ConfigurarPerfil extends JFrame {
 
@@ -239,5 +241,15 @@ public class ConfigurarPerfil extends JFrame {
 					textDireccion.setText(cliente.getDireccion());
 					textContrasenya.setText(cliente.getContrasenya());
 				}
+				
+				ImageIcon img1 = new ImageIcon("imgReto2/ll.jpg");
+				img1 = new ImageIcon(img1.getImage().getScaledInstance(743, 410, Image.SCALE_DEFAULT));
+
+				contentPane.setLayout(null);
+
+				JLabel lblIMG1 = new JLabel();
+				lblIMG1.setBounds(0, 0, 743, 410);
+				lblIMG1.setIcon(img1);
+				contentPane.add(lblIMG1);
 	}
 }

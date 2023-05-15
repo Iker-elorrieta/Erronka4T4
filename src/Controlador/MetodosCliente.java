@@ -15,7 +15,9 @@ import ModeloAnimal.Loro;
 import ModeloAnimal.Perro;
 import ModeloAnimal.Pez;
 import ModeloPerfil.Cliente;
-
+/**
+*MetodosCliente esta clase contiene los metodos crud de la clase cliente
+*/
 public class MetodosCliente extends ManagerAbstract {
 	final String nombreCliente = "Nombre";
 	final String apellido = "Apellidos";
@@ -36,10 +38,13 @@ public class MetodosCliente extends ManagerAbstract {
 	final String especieTabla = "especie";
 	final String sexo = "Sexo";
 
+	Connection conexion;
+	/**
+	*recogerClienteYSusAnimales recoge en un arraylist de cliente los clientes y sus animales de la bd y lo devuelve
+	*/
 	public ArrayList<Cliente> recogerClienteYSusAnimales() throws SQLException {
 
 		ArrayList<Cliente> listaClientes = new ArrayList<Cliente>();
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement sacaCliente = conexion.createStatement();
 		String sql = "select * from " + ManagerAbstract.TABLE_CLIENTE;
@@ -106,9 +111,10 @@ public class MetodosCliente extends ManagerAbstract {
 		return listaClientes;
 
 	}
-	
-
-	public void insertarCliente(Cliente clienteNuevo) throws SQLException{
+	/**
+	*insertarCliente inserta en la bd un cliente
+	*/
+	public void insertarCliente(Cliente clienteNuevo) throws SQLException {
 
 		String nombre = "";
 		String apellidos = "";
@@ -123,9 +129,6 @@ public class MetodosCliente extends ManagerAbstract {
 		apellidos = cliente.getApellido();
 		contrasenya = cliente.getContrasenya();
 		direccion = cliente.getDireccion();
-		
-		
-		Connection conexion;
 
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
@@ -133,12 +136,13 @@ public class MetodosCliente extends ManagerAbstract {
 		resul.executeUpdate("Insert into `" + ManagerAbstract.TABLE_CLIENTE + "`"
 				+ "(`DNI`, `Nombre`, `Apellidos`, `Contraseña`, `Direccion`) " + "VALUES( '" + dni + "' , '" + nombre
 				+ "' , '" + apellidos + "' , '" + contrasenya + "' , '" + direccion + "');");
-		
-	}
 
+	}
+	/**
+	*eliminarCliente elimina en la bd un cliente
+	*/
 	public void eliminarCliente(String dni) throws SQLException {
-		
-		Connection conexion;
+
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
@@ -146,9 +150,10 @@ public class MetodosCliente extends ManagerAbstract {
 				"DELETE FROM `" + ManagerAbstract.TABLE_CLIENTE + "`" + "WHERE cliente.DNI = '" + dni + "';");
 
 	}
-
+	/**
+	*updateCliente renueva en la bd un cliente
+	*/
 	public void updateCliente(String[] nombreColumna, String[] UpdateColumna, Cliente cliente) throws SQLException {
-		Connection conexion;
 		int cont = 0;
 		do {
 			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);

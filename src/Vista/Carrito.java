@@ -11,6 +11,8 @@ import Controlador.MetodosPedido;
 import Modelo.Pedido;
 import Modelo.Adopcion;
 import ModeloPerfil.Cliente;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,6 +23,7 @@ import javax.swing.ListSelectionModel;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 
 public class Carrito extends JFrame {
@@ -32,27 +35,29 @@ public class Carrito extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	private JScrollPane scrollPaneTabla;
-	
-	private final String precio = "Precio";
-	private final String nombreProducto = "Producto";
-	private final String fecha = "Fecha";
 
-	
 	private JButton btnEliminar;
 
 	MetodosGenerales metodosGenerales = new MetodosGenerales();
 	MetodosAdopcion metodosAdopcion = new MetodosAdopcion();
 	MetodosPedido metodosPedido = new MetodosPedido();
-	
+
 	Pedido pedido = new Pedido();
 	Adopcion adopcion = new Adopcion();
 
 	ArrayList<Pedido> listaPedido = new ArrayList<Pedido>();
 	ArrayList<Adopcion> listaAdopcion = new ArrayList<Adopcion>();
 
-	boolean isPedido= true;
-	
+	boolean isPedido = true;
+
 	ventanaCliente ventanaCliente;
+
+	private final String precio = "Precio";
+	private final String nombreProducto = "Producto";
+	private final String fecha = "Fecha";
+	private final String cantidad = "Cantidad";
+	private final String hora = "Hora";
+	private final String especie = "Especie";
 
 	/**
 	 * Create the frame.
@@ -71,7 +76,7 @@ public class Carrito extends JFrame {
 		JButton btnAtras = new JButton("Atras");
 		btnAtras.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				ventanaCliente = new ventanaCliente(clienteLogIn);
 				ventanaCliente.setVisible(true);
 				dispose();
@@ -85,7 +90,7 @@ public class Carrito extends JFrame {
 		btnConfigurar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (table.getSelectedRow() != -1) {
-					int filaseleccionada = table.getSelectedRow();				
+					int filaseleccionada = table.getSelectedRow();
 
 					// -------ConfiguracionJOptionPane-------//
 
@@ -124,7 +129,7 @@ public class Carrito extends JFrame {
 							adopcion = (Adopcion) listaAdopcion.get(filaseleccionada);
 							int codGestionAdopcion = adopcion.getCodAdopcion();
 							adopcion.setCodAdopcion(codGestionAdopcion);
-							
+
 							metodosGenerales.EditarCantidadAdopcion(adopcion, numero);
 						}
 					} catch (SQLException e1) {
@@ -132,47 +137,24 @@ public class Carrito extends JFrame {
 						e1.printStackTrace();
 					}
 				} else {
-					JOptionPane.showMessageDialog(null, "Primero debe de seleccionar un articulo para cambiar su cantidad");
+					JOptionPane.showMessageDialog(null,
+							"Primero debe de seleccionar un articulo para cambiar su cantidad");
 				}
 
 			}
 		});
-		btnConfigurar.setBounds(531, 337, 186, 23);
+		btnConfigurar.setBounds(466, 337, 186, 23);
 		contentPane.add(btnConfigurar);
 
-		JButton btnProductos = new JButton("Mostrar Productos");
+		JButton btnProductos = new JButton("Mostrar tus pedidos");
 		btnProductos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				try {
 					listaPedido = metodosPedido.recogerPedidoCliente(clienteLogIn.getDni());
-					table = metodosGenerales.generarTablaSeleccionPedidoCliente(listaPedido);
-					scrollPaneTabla.setViewportView(table);
-
-					btnConfigurar.setEnabled(true);
-					btnEliminar.setEnabled(true);
-					
-					isPedido = true;
-
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
-		btnProductos.setBounds(317, 45, 144, 23);
-		contentPane.add(btnProductos);
-
-		JButton btnAnimales = new JButton("Mostrar Animales");
-		btnAnimales.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				try {
-
-					listaAdopcion = metodosAdopcion.recogerAnimalAdoptados();
-					Object[][] animalAdopcion = metodosGenerales.generarTablaSeleccionAdopcionCliente(listaAdopcion);
-					String[] titulos = new String[] { nombreProducto, fecha , precio};
-					table.setModel(new DefaultTableModel(animalAdopcion, titulos));
+					Object[][] carrito = metodosGenerales.generarTablaSeleccionPedidoCliente(listaPedido);
+					String[] titulos = new String[] { nombreProducto, cantidad, fecha, hora, precio };
+					table.setModel(new DefaultTableModel(carrito, titulos));
 					table.setCellSelectionEnabled(false);
 					table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 					table.setDefaultEditor(Object.class, null);
@@ -181,6 +163,34 @@ public class Carrito extends JFrame {
 					btnConfigurar.setEnabled(true);
 					btnEliminar.setEnabled(true);
 
+					isPedido = true;
+
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnProductos.setBounds(130, 74, 197, 23);
+		contentPane.add(btnProductos);
+
+		JButton btnAnimales = new JButton("Mostrar tus mascotas");
+		btnAnimales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				try {
+
+					listaAdopcion = metodosAdopcion.recogerAnimalAdoptados();
+					Object[][] animalAdopcion = metodosGenerales.generarTablaSeleccionAdopcionCliente(listaAdopcion);
+					String[] titulos = new String[] { especie, fecha, precio };
+					table.setModel(new DefaultTableModel(animalAdopcion, titulos));
+					table.setCellSelectionEnabled(false);
+					table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+					table.setDefaultEditor(Object.class, null);
+					scrollPaneTabla.setViewportView(table);
+
+					btnConfigurar.setEnabled(true);
+					btnEliminar.setEnabled(true);
 
 					isPedido = false;
 
@@ -191,7 +201,7 @@ public class Carrito extends JFrame {
 
 			}
 		});
-		btnAnimales.setBounds(508, 45, 144, 23);
+		btnAnimales.setBounds(399, 74, 173, 23);
 		contentPane.add(btnAnimales);
 
 		// -----------------------------Labels-----------------------------//
@@ -203,14 +213,13 @@ public class Carrito extends JFrame {
 		// -----------------------------CreaciónTabla-----------------------------//
 
 		scrollPaneTabla = new JScrollPane();
-		scrollPaneTabla.setBounds(85, 97, 569, 212);
+		scrollPaneTabla.setBounds(85, 103, 569, 206);
 		contentPane.add(scrollPaneTabla);
 
 		table = new JTable();
 		table.setBounds(0, 0, 1, 1);
 		scrollPaneTabla.add(table);
-		
-		
+
 		btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -220,9 +229,6 @@ public class Carrito extends JFrame {
 						modelEditar = (DefaultTableModel) table.getModel();
 						int filaseleccionada = table.getSelectedRow();
 						int id = listaPedido.get(filaseleccionada).getCodPedido();
-						int cantidad = listaPedido.get(filaseleccionada).getCantidadProducto();
-					
-								
 						try {
 							metodosPedido.eliminarPedido(id);
 							modelEditar.removeRow(table.getSelectedRow());
@@ -231,7 +237,7 @@ public class Carrito extends JFrame {
 							e1.printStackTrace();
 						}
 					} else {
-						JOptionPane.showMessageDialog(null, "Selecciona un producto");
+						JOptionPane.showMessageDialog(null, "Selecciona un pedido");
 					}
 				} else {
 					DefaultTableModel modelEditar;
@@ -254,8 +260,17 @@ public class Carrito extends JFrame {
 			}
 		});
 		btnEliminar.setEnabled(false);
-		btnEliminar.setBounds(122, 338, 186, 23);
+		btnEliminar.setBounds(197, 337, 186, 23);
 		contentPane.add(btnEliminar);
 
+		ImageIcon img1 = new ImageIcon("imgReto2/ll.jpg");
+		img1 = new ImageIcon(img1.getImage().getScaledInstance(743, 410, Image.SCALE_DEFAULT));
+
+		contentPane.setLayout(null);
+
+		JLabel lblIMG1 = new JLabel();
+		lblIMG1.setBounds(0, 0, 743, 410);
+		lblIMG1.setIcon(img1);
+		contentPane.add(lblIMG1);
 	}
 }

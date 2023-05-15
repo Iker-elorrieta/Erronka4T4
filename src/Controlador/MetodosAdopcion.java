@@ -13,7 +13,9 @@ import B.D_Util.ManagerAbstract;
 import Modelo.Adopcion;
 import ModeloAnimal.Mascota;
 import ModeloPerfil.Cliente;
-
+/**
+*MetodosAdopcion Esta clase contiene los metodos de adopcion
+*/
 public class MetodosAdopcion extends ManagerAbstract {
 
 	final String cCodAdopcion = "CodAdopcion";
@@ -26,13 +28,18 @@ public class MetodosAdopcion extends ManagerAbstract {
 	MetodosCliente mc = new MetodosCliente();
 	MetodosMascota mm = new MetodosMascota();
 
+	Connection conexion;
+	
+	/**
+	*recogerAnimalAdoptados este metodo recoge de la bd en un arraylist de la clase adopcion y lo devuleve
+	*/
+
 	public ArrayList<Adopcion> recogerAnimalAdoptados() throws SQLException {
 		ArrayList<Cliente> rc = mc.recogerClienteYSusAnimales();
 		ArrayList<Mascota> rm = mm.recogerMascota();
 
 		ArrayList<Adopcion> listaAnimalesAdoptados = new ArrayList<Adopcion>();
 
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement sacaAnimalAdoptado = conexion.createStatement();
 		String sql = "select * from " + ManagerAbstract.TABLE_ADOPCION;
@@ -61,11 +68,13 @@ public class MetodosAdopcion extends ManagerAbstract {
 
 			adop.setListaMascota(mNuevas);
 			listaAnimalesAdoptados.add(adop);
-			
+
 		}
 		return listaAnimalesAdoptados;
 	}
-
+	/**
+	*insertarAnimalAdoptado este metodo inserta en la bd un animal adoptado
+	*/
 	public void insertarAnimalAdoptado(Adopcion animalNuevo, String dni, int codigoMascota) throws SQLException {
 
 		int codAdopcion = 0;
@@ -75,18 +84,18 @@ public class MetodosAdopcion extends ManagerAbstract {
 		Adopcion animal = animalNuevo;
 		precioTotal = animal.getPrecioTotal();
 		fecha = animal.getFecha();
-		
-		Connection conexion;
+
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 		resul.executeUpdate("INSERT INTO `adopcion`(`CodAdopcion`, `PrecioTotal`, `Fecha`, `CodMascota`, `DNI`) "
-				+ "VALUES( '" + codAdopcion + "' , '" + precioTotal + "' , '" + fecha + "' , '" + codigoMascota + "' , '"
-				+ dni + "');");
+				+ "VALUES( '" + codAdopcion + "' , '" + precioTotal + "' , '" + fecha + "' , '" + codigoMascota
+				+ "' , '" + dni + "');");
 
 	}
-
+	/**
+	*eliminarAnimalAdoptado este metodo elimina en la bd un animal adoptado
+	*/
 	public void eliminarAnimalAdoptado(int codAdopcion) throws SQLException {
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
@@ -94,10 +103,12 @@ public class MetodosAdopcion extends ManagerAbstract {
 				"DELETE FROM `" + ManagerAbstract.TABLE_ADOPCION + "`" + "WHERE CodAdopcion = '" + codAdopcion + "';");
 
 	}
-
+	/**
+	*updateAnimalADoptado este metodo renueva en la bd los datos de un animal adoptado
+	*/
 	public void updateAnimalADoptado(String[] nombreColumna, String[] UpdateColumna, Adopcion animal)
 			throws SQLException {
-		Connection conexion;
+
 		int cont = 0;
 		do {
 			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);

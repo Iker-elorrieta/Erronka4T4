@@ -1,15 +1,20 @@
 package Vista;
 
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import Controlador.MetodosEmpleado;
@@ -30,6 +35,15 @@ public class MostrarEmple extends JFrame {
 	
 	String recogerDNI="";
 	Empleado empleado;
+	
+	private final String dni = "DNI";
+	private final String nombre = "Nombre";
+	private final String apellidos = "Apellidos";
+	private final String contrasenya = "Contraseña";
+	private final String direccion = "Dirección";
+	private final String salario = "Salario";
+	private final String antiguedad = "Antiguedad";
+	private final String especializacion = "Especialización";
 	
 	/**
 	 * Create the frame.
@@ -74,7 +88,17 @@ public class MostrarEmple extends JFrame {
 
 		table = new JTable();
 		try {
-			table = metodosGenerales.generarTablasALL();
+			
+			String[] titulosGenerarTablasALL = new String[] { dni, nombre, apellidos, contrasenya, direccion, salario, antiguedad,
+					especializacion };
+			
+			Object[][] txtGenerarTablasALL = metodosGenerales.generarTablasALL();
+			
+			table.setModel(new DefaultTableModel(txtGenerarTablasALL, titulosGenerarTablasALL));
+			table.setCellSelectionEnabled(false);
+			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			table.setDefaultEditor(Object.class, null);
+			
 			scrollPane.setViewportView(table);
 
 		} catch (SQLException e) {
@@ -103,8 +127,8 @@ public class MostrarEmple extends JFrame {
 		btnAtras.setBounds(10, 337, 115, 23);
 		contentPane.add(btnAtras);
 		
-		JButton btnAumentarAntiguedad = new JButton("Aumerntar antiguedad");
-		btnAumentarAntiguedad.addActionListener(new ActionListener() {
+		JButton btnConfigurarSalario = new JButton("Configurar salario");
+		btnConfigurarSalario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	
 				DefaultTableModel tm = (DefaultTableModel) table.getModel();
 				recogerDNI = String.valueOf(tm.getValueAt(table.getSelectedRow(), 0));
@@ -129,7 +153,17 @@ public class MostrarEmple extends JFrame {
 				}
 			}
 		});
-		btnAumentarAntiguedad.setBounds(151, 337, 171, 23);
-		contentPane.add(btnAumentarAntiguedad);
+		btnConfigurarSalario.setBounds(151, 337, 171, 23);
+		contentPane.add(btnConfigurarSalario);
+		
+		ImageIcon img1 = new ImageIcon("imgReto2/ll.jpg");
+		img1 = new ImageIcon(img1.getImage().getScaledInstance(743, 410, Image.SCALE_DEFAULT));
+
+		contentPane.setLayout(null);
+
+		JLabel lblIMG1 = new JLabel();
+		lblIMG1.setBounds(0, 0, 743, 410);
+		lblIMG1.setIcon(img1);
+		contentPane.add(lblIMG1);
 	}
 }

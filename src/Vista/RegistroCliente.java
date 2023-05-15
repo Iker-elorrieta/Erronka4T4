@@ -12,12 +12,14 @@ import ModeloPerfil.Cliente;
 import ModeloPerfil.Cuenta;
 
 import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 
 public class RegistroCliente extends JFrame {
@@ -178,5 +180,15 @@ public class RegistroCliente extends JFrame {
 		txtDireccion.setColumns(10);
 		txtDireccion.setBounds(224, 243, 244, 20);
 		contentPane.add(txtDireccion);
+		
+		ImageIcon img1 = new ImageIcon("imgReto2/ll.jpg");
+		img1 = new ImageIcon(img1.getImage().getScaledInstance(743, 410, Image.SCALE_DEFAULT));
+
+		contentPane.setLayout(null);
+
+		JLabel lblIMG1 = new JLabel();
+		lblIMG1.setBounds(0, 0, 743, 410);
+		lblIMG1.setIcon(img1);
+		contentPane.add(lblIMG1);
 	}
 }

@@ -27,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -36,6 +37,7 @@ import java.sql.Date;
 import java.util.Properties;
 
 import javax.swing.JComboBox;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import javax.swing.JSpinner;
@@ -67,7 +69,7 @@ public class PedirCitaAnimalSeleccionado extends JFrame {
 	 */
 	Animal animal;
 
-	public PedirCitaAnimalSeleccionado(Cliente cliente, int valor, boolean atras) {
+	public PedirCitaAnimalSeleccionado(Cliente cliente, int valor) {
 		MetodosAnimal ma = new MetodosAnimal();
 		try {
 			ArrayList<Animal> an = ma.recogerAnimal();
@@ -178,7 +180,7 @@ public class PedirCitaAnimalSeleccionado extends JFrame {
 						
 						metodosGenerales.ArrayListTxt(consulta, cliente);
 						ArrayList<Cliente> listaCliente = metodosCliente.recogerClienteYSusAnimales();
-						ventanaPedirCita = new PedirCita(cliente, listaCliente, atras);
+						ventanaPedirCita = new PedirCita(cliente, listaCliente);
 						ventanaPedirCita.setVisible(true);
 						dispose();
 					} catch (SQLException e1) {
@@ -252,7 +254,7 @@ public class PedirCitaAnimalSeleccionado extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					ArrayList<Cliente> listaCliente = metodosCliente.recogerClienteYSusAnimales();
-					PedirCita ventanaPedirCita = new PedirCita(cliente, listaCliente, atras);
+					PedirCita ventanaPedirCita = new PedirCita(cliente, listaCliente);
 					ventanaPedirCita.setVisible(true);
 					dispose();
 				} catch (SQLException e1) {
@@ -279,6 +281,15 @@ public class PedirCitaAnimalSeleccionado extends JFrame {
 			e.printStackTrace();
 		}
 
+		ImageIcon img1 = new ImageIcon("imgReto2/ll.jpg");
+		img1 = new ImageIcon(img1.getImage().getScaledInstance(743, 410, Image.SCALE_DEFAULT));
+
+		contentPane.setLayout(null);
+
+		JLabel lblIMG1 = new JLabel();
+		lblIMG1.setBounds(0, 0, 743, 410);
+		lblIMG1.setIcon(img1);
+		contentPane.add(lblIMG1);
 	}
 }
 

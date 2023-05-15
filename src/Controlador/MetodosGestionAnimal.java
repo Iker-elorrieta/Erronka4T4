@@ -13,7 +13,9 @@ import B.D_Util.ManagerAbstract;
 import Modelo.GestionAnimal;
 import ModeloAnimal.Mascota;
 import ModeloPerfil.Empleado;
-
+/** 
+ * *MetodosGestionAnimal esta clase contiene los metodos crud de la clase GestionAnimal
+ */
 public class MetodosGestionAnimal extends ManagerAbstract {
 	final String cCodGestionAnimal = "CodGestionAnimal";
 	final String cFecha = "Fecha";
@@ -24,12 +26,16 @@ public class MetodosGestionAnimal extends ManagerAbstract {
 	MetodosEmpleado me = new MetodosEmpleado();
 	MetodosMascota mm = new MetodosMascota();
 
+	Connection conexion;
+	/** 
+	 * *recogerGestion recoge los datos de las gestionesanimales de la bd en un arraylist y lo devuelve
+	 */
 	public ArrayList<GestionAnimal> recogerGestionAnimal() throws SQLException {
 		ArrayList<Empleado> re = me.recogerEmpleado();
 		ArrayList<GestionAnimal> listaGestion = new ArrayList<GestionAnimal>();
 		ArrayList<Mascota> listaGestionNueva = new ArrayList<Mascota>();
 		ArrayList<Mascota> lm = mm.recogerMascota();
-		Connection conexion;
+
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement sacaGestion = conexion.createStatement();
 		String sql = "select * from " + ManagerAbstract.TABLE_GESTIONANIMAL;
@@ -58,7 +64,9 @@ public class MetodosGestionAnimal extends ManagerAbstract {
 		}
 		return listaGestion;
 	}
-
+	/** 
+	 * *insertarGestion inserta una gestion en la bd
+	 */
 	public void insertarGestion(GestionAnimal gestionNueva, String dni, int codMascota) throws SQLException {
 
 		MetodosMascota met = new MetodosMascota();
@@ -72,7 +80,6 @@ public class MetodosGestionAnimal extends ManagerAbstract {
 		fecha = gestion.getFecha();
 		cantidad = gestion.getCantidad();
 
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
@@ -87,20 +94,23 @@ public class MetodosGestionAnimal extends ManagerAbstract {
 			}
 		}
 	}
-
+	/** 
+	 * *eliminarGestionAnimal inserta una gestionanimal en la bd
+	 */
 	public void eliminarGestionAnimal(int codGestion) throws SQLException {
 
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
 		resul.executeUpdate("DELETE FROM `" + ManagerAbstract.TABLE_GESTIONANIMAL + "`" + "WHERE CodGestionAnimal = '"
 				+ codGestion + "';");
 	}
-
+	/** 
+	 * *updateGestion renueva una gestionanimal en la bd
+	 */
 	public void updateGestion(String[] nombreColumna, String[] UpdateColumna, GestionAnimal gestion)
 			throws SQLException {
-		Connection conexion;
+
 		int cont = 0;
 		do {
 			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);

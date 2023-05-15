@@ -16,8 +16,11 @@ import ModeloPerfil.Cliente;
 import javax.swing.JLabel;
 
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -36,7 +39,7 @@ public class AnaydirAnimal extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
-	private String[] especies = { "Perro", "Gato", "loro", "pez" };
+	private String[] especies = { "Perros", "Gatos", "loros", "pez" };
 	private String[] sexo = { "H", "M" };
 	private JLabel lblNewLabel_5, lblNewLabel_6;
 	final String perro = "Perro";
@@ -53,7 +56,7 @@ public class AnaydirAnimal extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AnaydirAnimal(Cliente cliente, boolean atras) {
+	public AnaydirAnimal(Cliente clienteLogIn) {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 743, 410);
@@ -128,9 +131,9 @@ public class AnaydirAnimal extends JFrame {
 						perro.setEdad(Integer.valueOf(textField_1.getText()));
 						perro.setEspecie(especie);
 						perro.setSexo(sexo);
-						perro.setCliente(cliente);
+						perro.setCliente(clienteLogIn);
 						try {
-							ma.insertarAnimal(perro, cliente.getDni());
+							ma.insertarAnimal(perro, clienteLogIn.getDni());
 						} catch (SQLException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -144,7 +147,7 @@ public class AnaydirAnimal extends JFrame {
 						gato.setEspecie(especie);
 						gato.setSexo(sexo);
 						try {
-							ma.insertarAnimal(gato, cliente.getDni());
+							ma.insertarAnimal(gato, clienteLogIn.getDni());
 						} catch (SQLException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -159,7 +162,7 @@ public class AnaydirAnimal extends JFrame {
 						loro.setEspecie(especie);
 						loro.setSexo(sexo);
 						try {
-							ma.insertarAnimal(loro, cliente.getDni());
+							ma.insertarAnimal(loro, clienteLogIn.getDni());
 						} catch (SQLException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -172,7 +175,7 @@ public class AnaydirAnimal extends JFrame {
 						pez.setEspecie(especie);
 						pez.setSexo(sexo);
 						try {
-							ma.insertarAnimal(pez, cliente.getDni());
+							ma.insertarAnimal(pez, clienteLogIn.getDni());
 						} catch (SQLException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -183,7 +186,7 @@ public class AnaydirAnimal extends JFrame {
 					MetodosCliente metodosCliente = new MetodosCliente();
 					try {
 						ArrayList<Cliente> listCliente = metodosCliente.recogerClienteYSusAnimales();
-						PedirCita pedirCita = new PedirCita(cliente, listCliente, atras);
+						PedirCita pedirCita = new PedirCita(clienteLogIn, listCliente);
 						pedirCita.setVisible(true);
 						dispose();
 					} catch (SQLException e1) {
@@ -208,13 +211,12 @@ public class AnaydirAnimal extends JFrame {
 				MetodosCliente metodosCliente = new MetodosCliente();
 				try {
 					ArrayList<Cliente> listCliente = metodosCliente.recogerClienteYSusAnimales();
-					if(atras == false) {
-						ventanacliente = new ventanaCliente(cliente);
+					if(clienteLogIn.getAnimal() == null) {
+						ventanacliente = new ventanaCliente(clienteLogIn);
                         ventanacliente.setVisible(true);
                         dispose();
 					}else {
-						
-						PedirCita pedirCita = new PedirCita(cliente, listCliente, atras);
+						PedirCita pedirCita = new PedirCita(clienteLogIn, listCliente);
 						pedirCita.setVisible(true);
 						dispose();
 					}
@@ -251,5 +253,15 @@ public class AnaydirAnimal extends JFrame {
 				}
 			}
 		});
+		
+		ImageIcon img1 = new ImageIcon("imgReto2/ll.jpg");
+		img1 = new ImageIcon(img1.getImage().getScaledInstance(743, 410, Image.SCALE_DEFAULT));
+
+		contentPane.setLayout(null);
+
+		JLabel lblIMG1 = new JLabel();
+		lblIMG1.setBounds(0, 0, 743, 410);
+		lblIMG1.setIcon(img1);
+		contentPane.add(lblIMG1);
 	}
 }

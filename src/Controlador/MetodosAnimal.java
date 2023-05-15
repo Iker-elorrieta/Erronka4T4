@@ -14,7 +14,9 @@ import ModeloAnimal.Gato;
 import ModeloAnimal.Loro;
 import ModeloAnimal.Perro;
 import ModeloAnimal.Pez;
-
+/**
+*MetodosAnimal esta clase contiende los metodos crud de animal
+*/
 public class MetodosAnimal extends ManagerAbstract {
 
 	String especie = "";
@@ -32,10 +34,14 @@ public class MetodosAnimal extends ManagerAbstract {
 	final String dniClienteTabla = "DNI";
 	String dniCliente = "";
 
+	Connection conexion;
+	/**
+	*recogerAnimal este metodo recoge de la bd los datos de un animal adoptado en un arraylist y lo devuelve
+	*/
+
 	public ArrayList<Animal> recogerAnimal() throws SQLException {
 		ArrayList<Animal> listaAnimales = new ArrayList<Animal>();
-		
-		Connection conexion;
+
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement sacaAnimal = conexion.createStatement();
 		String sql = "select * from " + ManagerAbstract.TABLE_ANIMAL;
@@ -81,7 +87,9 @@ public class MetodosAnimal extends ManagerAbstract {
 		}
 		return listaAnimales;
 	}
-
+	/**
+	*insertarAnimal este metodo inserta en la bd los datos de un animal adoptado 
+	*/
 	public void insertarAnimal(Animal animalNuevo, String dni) throws SQLException {
 
 		String nombreAnimal = "";
@@ -97,7 +105,6 @@ public class MetodosAnimal extends ManagerAbstract {
 		especie = animal.getEspecie();
 		sexo = animal.getSexo();
 
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
@@ -106,10 +113,11 @@ public class MetodosAnimal extends ManagerAbstract {
 				+ nombreAnimal + "' , '" + edad + "' , '" + especie + "' , '" + sexo + "' , '" + dni + "');");
 
 	}
-
+	/**
+	*insertarAnimal este metodo elimina de la bd los datos de un animal adoptado 
+	*/
 	public void eliminarAnimal(int idAnimal) throws SQLException {
 
-		Connection conexion;
 		conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 		Statement resul = conexion.createStatement();
 
@@ -117,9 +125,10 @@ public class MetodosAnimal extends ManagerAbstract {
 				"DELETE FROM `" + ManagerAbstract.TABLE_ANIMAL + "`" + "WHERE animal.IdAnimal = '" + idAnimal + "';");
 
 	}
-
+	/**
+	*insertarAnimal este metodo renueva en la bd los datos de un animal adoptado 
+	*/
 	public void updateAnimal(String[] nombreColumna, String[] UpdateColumna, Animal animal) throws SQLException {
-		Connection conexion;
 		int cont = 0;
 		do {
 			conexion = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);

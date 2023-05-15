@@ -12,6 +12,8 @@ import Modelo.Gestion;
 import Modelo.GestionAnimal;
 
 import ModeloPerfil.Empleado;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -22,6 +24,7 @@ import javax.swing.ListSelectionModel;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 
 public class ConfigurarGestiones extends JFrame {
@@ -33,28 +36,29 @@ public class ConfigurarGestiones extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	private JScrollPane scrollPaneTabla;
-	
-	private final String precio = "Precio";
-	private final String nombreProducto = "Producto";
-	private final String fecha = "Fecha";
-
-	
 	private JButton btnEliminar;
 
 	MetodosGenerales metodosGenerales = new MetodosGenerales();
 	MetodosGestion metodosGestion = new MetodosGestion();
 	MetodosGestionAnimal metodosGestionAnimal = new MetodosGestionAnimal();
-	
+
 	Gestion gestion = new Gestion();
 	GestionAnimal gestionAnimal = new GestionAnimal();
 
 	ArrayList<Gestion> listaGestion = new ArrayList<Gestion>();
 	ArrayList<GestionAnimal> listaGestionAnimal = new ArrayList<GestionAnimal>();
 
-	boolean isGestion= true;
-	
+	boolean isGestion = true;
+
 	ventanaEmpleado ventanaEmpleado;
-	
+
+	private final String precio = "Precio";
+	private final String nombreProducto = "Producto";
+	private final String fecha = "Fecha";
+	private final String cantidad = "Cantidad";
+	private final String especie = "Especie";
+
+
 	/**
 	 * Create the frame.
 	 */
@@ -72,7 +76,7 @@ public class ConfigurarGestiones extends JFrame {
 		JButton btnAtras = new JButton("Atras");
 		btnAtras.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				ventanaEmpleado = new ventanaEmpleado(empleadoLogIn);
 				ventanaEmpleado.setVisible(true);
 				dispose();
@@ -86,7 +90,7 @@ public class ConfigurarGestiones extends JFrame {
 		btnConfigurar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (table.getSelectedRow() != -1) {
-					int filaseleccionada = table.getSelectedRow();				
+					int filaseleccionada = table.getSelectedRow();
 
 					// -------ConfiguracionJOptionPane-------//
 
@@ -125,7 +129,7 @@ public class ConfigurarGestiones extends JFrame {
 							gestionAnimal = (GestionAnimal) listaGestionAnimal.get(filaseleccionada);
 							int codGestionAnimal = gestion.getCodGestion();
 							gestion.setCodGestion(codGestionAnimal);
-							
+
 							metodosGenerales.EditarCantidadGestionAnimal(gestionAnimal, numero);
 						}
 					} catch (SQLException e1) {
@@ -133,7 +137,8 @@ public class ConfigurarGestiones extends JFrame {
 						e1.printStackTrace();
 					}
 				} else {
-					JOptionPane.showMessageDialog(null, "Primero debe de seleccionar un articulo para cambiar su cantidad");
+					JOptionPane.showMessageDialog(null,
+							"Primero debe de seleccionar un articulo para cambiar su cantidad");
 				}
 
 			}
@@ -141,39 +146,15 @@ public class ConfigurarGestiones extends JFrame {
 		btnConfigurar.setBounds(531, 337, 186, 23);
 		contentPane.add(btnConfigurar);
 
-		JButton btnProductos = new JButton("Mostrar Productos");
+		JButton btnProductos = new JButton("Mostrar gestiones productos");
 		btnProductos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				try {
 					listaGestion = metodosGestion.recogerGestion();
-					table = metodosGenerales.generarTablaSeleccionGestionTiendaEmpleado(listaGestion);
-					scrollPaneTabla.setViewportView(table);
-
-					btnConfigurar.setEnabled(true);
-					btnEliminar.setEnabled(true);
-					
-					isGestion = true;
-
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
-		btnProductos.setBounds(317, 45, 144, 23);
-		contentPane.add(btnProductos);
-
-		JButton btnAnimales = new JButton("Mostrar Animales");
-		btnAnimales.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				try {
-
-					listaGestionAnimal = metodosGestionAnimal.recogerGestionAnimal();
-					Object[][] gestionAnimalesEmpleado= metodosGenerales.generarTablaSeleccionGestionTAnimaliendaEmpleado(listaGestionAnimal);
-					String[] titulos = new String[] { nombreProducto, fecha , precio};
-					table.setModel(new DefaultTableModel(gestionAnimalesEmpleado, titulos));
+					Object[][] gestionEmpleado = metodosGenerales.generarTablaSeleccionGestionTiendaEmpleado(listaGestion);
+					String[] titulos = new String[] { nombreProducto, cantidad, fecha };
+					table.setModel(new DefaultTableModel(gestionEmpleado, titulos));
 					table.setCellSelectionEnabled(false);
 					table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 					table.setDefaultEditor(Object.class, null);
@@ -182,6 +163,35 @@ public class ConfigurarGestiones extends JFrame {
 					btnConfigurar.setEnabled(true);
 					btnEliminar.setEnabled(true);
 
+					isGestion = true;
+
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnProductos.setBounds(85, 74, 233, 23);
+		contentPane.add(btnProductos);
+
+		JButton btnAnimales = new JButton("Mostrar gestiones animales");
+		btnAnimales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				try {
+
+					listaGestionAnimal = metodosGestionAnimal.recogerGestionAnimal();
+					Object[][] gestionAnimalesEmpleado = metodosGenerales
+							.generarTablaSeleccionGestionTAnimaliendaEmpleado(listaGestionAnimal);
+					String[] titulos = new String[] { especie, fecha, precio };
+					table.setModel(new DefaultTableModel(gestionAnimalesEmpleado, titulos));
+					table.setCellSelectionEnabled(false);
+					table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+					table.setDefaultEditor(Object.class, null);
+					scrollPaneTabla.setViewportView(table);
+
+					btnConfigurar.setEnabled(true);
+					btnEliminar.setEnabled(true);
 
 					isGestion = false;
 
@@ -192,7 +202,7 @@ public class ConfigurarGestiones extends JFrame {
 
 			}
 		});
-		btnAnimales.setBounds(508, 45, 144, 23);
+		btnAnimales.setBounds(412, 74, 242, 23);
 		contentPane.add(btnAnimales);
 
 		// -----------------------------Labels-----------------------------//
@@ -204,14 +214,13 @@ public class ConfigurarGestiones extends JFrame {
 		// -----------------------------CreaciónTabla-----------------------------//
 
 		scrollPaneTabla = new JScrollPane();
-		scrollPaneTabla.setBounds(85, 97, 569, 212);
+		scrollPaneTabla.setBounds(85, 117, 569, 192);
 		contentPane.add(scrollPaneTabla);
 
 		table = new JTable();
 		table.setBounds(0, 0, 1, 1);
 		scrollPaneTabla.add(table);
 
-		
 		btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -221,9 +230,6 @@ public class ConfigurarGestiones extends JFrame {
 						modelEditar = (DefaultTableModel) table.getModel();
 						int filaseleccionada = table.getSelectedRow();
 						int id = listaGestion.get(filaseleccionada).getCodGestion();
-						int cantidad = listaGestion.get(filaseleccionada).getCantidad();
-					
-								
 						try {
 							metodosGestion.eliminarGestion(id);
 							modelEditar.removeRow(table.getSelectedRow());
@@ -232,7 +238,7 @@ public class ConfigurarGestiones extends JFrame {
 							e1.printStackTrace();
 						}
 					} else {
-						JOptionPane.showMessageDialog(null, "Selecciona un producto");
+						JOptionPane.showMessageDialog(null, "Selecciona una gestion de producto");
 					}
 				} else {
 					DefaultTableModel modelEditar;
@@ -248,7 +254,7 @@ public class ConfigurarGestiones extends JFrame {
 							e1.printStackTrace();
 						}
 					} else {
-						JOptionPane.showMessageDialog(null, "Selecciona una mascota");
+						JOptionPane.showMessageDialog(null, "Selecciona una gestion de mascota");
 					}
 				}
 
@@ -258,5 +264,14 @@ public class ConfigurarGestiones extends JFrame {
 		btnEliminar.setBounds(215, 337, 186, 23);
 		contentPane.add(btnEliminar);
 
+		ImageIcon img1 = new ImageIcon("imgReto2/ll.jpg");
+		img1 = new ImageIcon(img1.getImage().getScaledInstance(743, 410, Image.SCALE_DEFAULT));
+
+		contentPane.setLayout(null);
+
+		JLabel lblIMG1 = new JLabel();
+		lblIMG1.setBounds(0, 0, 743, 410);
+		lblIMG1.setIcon(img1);
+		contentPane.add(lblIMG1);
 	}
 }

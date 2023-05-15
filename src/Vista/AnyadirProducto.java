@@ -11,11 +11,13 @@ import Modelo.Producto;
 import ModeloPerfil.Empleado;
 
 import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 
 public class AnyadirProducto extends JFrame {
@@ -168,5 +170,15 @@ public class AnyadirProducto extends JFrame {
 		});
 		btnAtras.setBounds(10, 337, 89, 23);
 		contentPane.add(btnAtras);
+		
+		ImageIcon img1 = new ImageIcon("imgReto2/ll.jpg");
+		img1 = new ImageIcon(img1.getImage().getScaledInstance(743, 410, Image.SCALE_DEFAULT));
+
+		contentPane.setLayout(null);
+
+		JLabel lblIMG1 = new JLabel();
+		lblIMG1.setBounds(0, 0, 743, 410);
+		lblIMG1.setIcon(img1);
+		contentPane.add(lblIMG1);
 	}
 }
