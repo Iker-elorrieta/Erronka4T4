@@ -26,6 +26,17 @@ class PerroTest {
 
 	@Test
 	void test() {
+		
+		Perro perroTestVacio = new Perro();
+		
+		perroTestVacio.setNombreAnimal(nombreAnimal);
+		perroTestVacio.setIdAnimal(idAnimal);
+		perroTestVacio.setEdad(edad);
+		perroTestVacio.setEspecie(especie);
+		perroTestVacio.setSexo(sexo);
+		perroTestVacio.setCliente(cliente);
+
+		
 		perroTest.setNombreAnimal(nombreAnimal);
 		perroTest.setIdAnimal(idAnimal);
 		perroTest.setEdad(edad);
@@ -52,11 +63,11 @@ class PerroTest {
 		assertFalse(perroTest.equals(perroTest3));
 		assertFalse(perroTest.equals(perroTest.getClass()));
 	}
+	
 	@Test
-	void testCalcularVacuna() {
-
-		float coste = perroTest.costeVacuna(perroTest);
-		assertEquals(coste, 0);
-
+	public void testCosteVacuna() {
+		float resultado = perroTest.CosteVacuna(perroTest);
+		
+		assertEquals(resultado, 0);
 	}
 }

@@ -26,6 +26,16 @@ class LoroTest {
 
 	@Test
 	void test() {
+		
+		Loro loroTestVacio = new Loro();
+		
+		loroTestVacio.setNombreAnimal(nombreAnimal);
+		loroTestVacio.setIdAnimal(idAnimal);
+		loroTestVacio.setEdad(edad);
+		loroTestVacio.setEspecie(especie);
+		loroTestVacio.setSexo(sexo);
+		loroTestVacio.setCliente(cliente);
+		
 		loroTest.setNombreAnimal(nombreAnimal);
 		loroTest.setIdAnimal(idAnimal);
 		loroTest.setEdad(edad);
@@ -52,11 +62,11 @@ class LoroTest {
 		assertTrue(loroTest.equals(loroTest3));
 		assertFalse(loroTest.equals(loroTest.getClass()));
 	}
+	
 	@Test
-	void testCalcularVacuna() {
-
-		float coste = loroTest.costeVacuna(loroTest);
-		assertEquals(coste, 0);
-
+	public void testCosteVacuna() {
+		float resultado = loroTest.CosteVacuna(loroTest);
+		
+		assertEquals(resultado, 0);
 	}
 }

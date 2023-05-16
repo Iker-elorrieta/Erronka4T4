@@ -10,7 +10,7 @@ import java.sql.Time;
 import org.junit.jupiter.api.Test;
 
 import Modelo.Consulta;
-import ModeloAnimal.Animales;
+import ModeloAnimal.Animal;
 import ModeloPerfil.Empleado;
 
 class ConsultaTest {
@@ -18,7 +18,7 @@ class ConsultaTest {
 	int idConsulta = 464661;
 	int idConsulta0 = 0;
 	float precio = (float) 19.66;
-	Animales animal;
+	Animal animal;
 	Empleado empleado;
 	Date fecha;
 	Time hora;
@@ -30,13 +30,15 @@ class ConsultaTest {
 
 	@Test
 	void test() {
+		
+		Consulta consultaTestVacio = new Consulta();
 
-		consultaTest.setIdConsulta(idConsulta);
-		consultaTest.setPrecio(precio);
-		consultaTest.setAnimal(animal);
-		consultaTest.setEmpleado(empleado);
-		consultaTest.setFecha(fecha);
-		consultaTest.setHora(hora);
+		consultaTestVacio.setIdConsulta(idConsulta);
+		consultaTestVacio.setPrecio(precio);
+		consultaTestVacio.setAnimal(animal);
+		consultaTestVacio.setEmpleado(empleado);
+		consultaTestVacio.setFecha(fecha);
+		consultaTestVacio.setHora(hora);
 
 		assertEquals(consultaTest.getIdConsulta(), idConsulta);
 		assertEquals(consultaTest.getPrecio(), precio);

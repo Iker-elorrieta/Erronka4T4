@@ -1,46 +1,47 @@
 package Test;
 
-
-import static org.junit.Assert.assertEquals;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import Modelo.Cuenta;
-import ModeloAnimal.Animales;
+import ModeloPerfil.Cliente;
+import ModeloPerfil.Cuenta;
+
 class CuentaTest {
-	String numeroCuenta ="121";
-	String numeroCuenta0="222";
-	String contrasenya = "1";
 
-	// ---------------------------------------------------//
-	Animales[] animales;
+	int numeroCuenta = 1662;
+	int numeroCuenta0 = 0;
+	Cliente cliente;
 
-
-	Cuenta cuentaTest = new Cuenta(numeroCuenta,contrasenya);
-	Cuenta cuentaTest1 = new Cuenta(numeroCuenta,contrasenya);
+	Cuenta cuentaTest = new Cuenta(numeroCuenta, cliente);
+	Cuenta cuentaTest1 = new Cuenta(numeroCuenta, cliente);
 	Cuenta cuentaTest2 = null;
-	Cuenta cuentaTest3 = new Cuenta(numeroCuenta,contrasenya);
+	Cuenta cuentaTest3 = new Cuenta(numeroCuenta0, cliente);
+
 	@Test
 	void test() {
-		cuentaTest.setContrasenya(contrasenya);
+		Cuenta cuentaTestVacio = new Cuenta();
+		cuentaTestVacio.setCliente(cliente);
+		cuentaTestVacio.setNumeroCuenta(numeroCuenta);
+
+		cuentaTest.setCliente(cliente);
 		cuentaTest.setNumeroCuenta(numeroCuenta);
 		
-		assertEquals(cuentaTest.getContrasenya(),contrasenya);
-		assertEquals(cuentaTest.getNumeroCuenta(),numeroCuenta);
+		assertEquals(cuentaTest.getCliente(), cliente);
+		assertEquals(cuentaTest.getNumeroCuenta(), numeroCuenta);
 		
-		assertEquals(cuentaTest.toString(),"Cuenta [numeroCuenta=" + numeroCuenta + ", contrasenya=" + contrasenya + "]");
-		
+		assertEquals(cuentaTest.toString(), "Cuenta [numeroCuenta=1662, cliente=null]");
+	}
+
+	@Test
+	public void testEquals() {
 		assertTrue(cuentaTest.equals(cuentaTest1));
 		assertFalse(cuentaTest.equals(cuentaTest2));
 		assertTrue(cuentaTest.equals(cuentaTest));
-		assertTrue(cuentaTest.equals(cuentaTest3));
-		assertFalse(cuentaTest.equals(numeroCuenta.getClass()));
-		
-	
-		
+		assertFalse(cuentaTest.equals(cuentaTest3));
+		assertFalse(cuentaTest.equals(cuentaTest.getClass()));
 	}
-
+	
 }

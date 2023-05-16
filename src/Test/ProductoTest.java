@@ -23,6 +23,14 @@ class ProductoTest {
 
 	@Test
 	void test() {
+		
+		Producto productoTestVacio = new Producto();
+		
+		productoTestVacio.setNombreProducto(nombreProducto);
+		productoTestVacio.setPrecio(precio);
+		productoTestVacio.setStock(stock);
+		productoTestVacio.setCodProducto(codProducto);
+		
 		productoTest.setNombreProducto(nombreProducto);
 		productoTest.setPrecio(precio);
 		productoTest.setStock(stock);

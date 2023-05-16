@@ -1,31 +1,32 @@
 package ModeloPerfil;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+
 import java.util.Objects;
 
-import Modelo.Cuenta;
-import ModeloAnimal.Animales;
+import ModeloAnimal.Animal;
 
 public class Cliente extends Perfil {
 
-	private Animales[] animales;
-	private Cuenta cuenta;
+	private ArrayList<Animal> animal;
 
-
-	
-	public Cliente(String nombre, String apellido, String dni, String direccion, String contrasenya,
-			Animales[] animales, Cuenta cuenta) {
+	public Cliente(String nombre, String apellido, String dni, String direccion, String contrasenya, ArrayList<Animal> animal) {
 		super(nombre, apellido, dni, direccion, contrasenya);
-		this.animales = animales;
-		this.setCuenta(cuenta);
+		// TODO Auto-generated constructor stub
+		this.animal = animal;
+	}
+	
+	public Cliente() {
+		
+	}
+	
+
+	public ArrayList<Animal> getAnimal() {
+		return animal;
 	}
 
-	public Animales[] getAnimales() {
-		return animales;
-	}
-
-	public void setAnimales(Animales[] animales) {
-		this.animales = animales;
+	public void setAnimal(ArrayList<Animal> animal) {
+		this.animal = animal;
 	}
 
 	@Override
@@ -40,22 +41,13 @@ public class Cliente extends Perfil {
 		return Objects.equals(dni, other.dni);
 	}
 
-
-
 	@Override
 	public String toString() {
-		return "Cliente [animales=" + Arrays.toString(animales) + ", cuenta=" + cuenta + ", nombre=" + nombre
-				+ ", apellido=" + apellido + ", dni=" + dni + ", direccion=" + direccion + ", contrasenya="
-				+ contrasenya + "]";
+		return "Cliente [animal=" + animal + ", nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni
+				+ ", direccion=" + direccion + ", contrasenya=" + contrasenya + "]";
 	}
 
-	public Cuenta getCuenta() {
-		return cuenta;
-	}
 
-	public void setCuenta(Cuenta cuenta) {
-		this.cuenta = cuenta;
-	}
 
 
 

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import ModeloAnimal.Gato;
 import ModeloPerfil.Cliente;
+
 class GatoTest {
 
 	String nombreAnimal = "Casper";
@@ -25,6 +26,16 @@ class GatoTest {
 
 	@Test
 	void test() {
+		
+		Gato gatoTestVacio = new Gato();
+		
+		gatoTestVacio.setNombreAnimal(nombreAnimal);
+		gatoTestVacio.setIdAnimal(idAnimal);
+		gatoTestVacio.setEdad(edad);
+		gatoTestVacio.setEspecie(especie);
+		gatoTestVacio.setSexo(sexo);
+		gatoTestVacio.setCliente(cliente);
+		
 		gatoTest.setNombreAnimal(nombreAnimal);
 		gatoTest.setIdAnimal(idAnimal);
 		gatoTest.setEdad(edad);
@@ -53,11 +64,10 @@ class GatoTest {
 	}
 	
 	@Test
-	void testCalcularVacuna() {
-
-		float coste = gatoTest.costeVacuna(gatoTest);
-		assertEquals(coste, 0);
-
+	public void testCosteVacuna() {
+		float resultado = gatoTest.CosteVacuna(gatoTest);
+		
+		assertEquals(resultado, 0);
 	}
 
 }

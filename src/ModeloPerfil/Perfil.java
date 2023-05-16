@@ -15,6 +15,10 @@ public abstract class Perfil {
 		this.direccion = direccion;
 		this.contrasenya = contrasenya;
 	}
+	
+	public Perfil() {
+		
+	}
 
 	public String getNombre() {
 		return nombre;
